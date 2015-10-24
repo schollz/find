@@ -1,0 +1,15 @@
+APScheduler==3.0.4
+decorator==4.0.0
+Flask==0.10.1
+Flask-Login==0.3.2
+itsdangerous==0.24
+Jinja2==2.7.3
+MarkupSafe==0.23
+networkx==1.9.1
+numpy==1.9.2
+requests==2.7.0
+tornado==4.2.1
+utm==0.4.0
+uWSGI==2.0.11.1
+Werkzeug==0.10.4
+wheel==0.24.0
