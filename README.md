@@ -45,7 +45,57 @@ where `address` is the address you set above.
 
 # App
 
-To use the system, you will need a fingerprinting device. The easiest thing to do is to use [our app from Google Play](https://play.google.com/store/apps/details?id=com.hcp.find&hl=en). 
+To use the system, you will need a fingerprinting device. The easiest thing to do is to use [our app from Google Play](https://play.google.com/store/apps/details?id=com.hcp.find&hl=en).  You can also build the app. Here are my instructions for building:
+
+## Building Android app
+
+This help assumes you are using Ubuntu 14. Follow similar instructions for Windows. First install Java 7
+
+```bash
+sudo add-apt-repository ppa:webupd8team/java
+sudo apt-get update
+sudo apt-get install oracle-java7-installer
+sudo apt-get install oracle-java7-set-default
+```
+
+And check if its installed using ```javac --version```.
+
+Then install some dependencies for Ubuntu (or wait until install fails to install...)
+
+```bash
+sudo apt-get install libc6:i386 libncurses5:i386 libstdc++6:i386 lib32z1
+```
+
+Then [Click here](http://developer.android.com/sdk/index.html#Other) to download the latest Android Studio package. Unpack the downloaded ZIP file into an appropriate location for your applications.
+
+Add this to your ```.profile```:
+
+```bash
+export PATH=$PATH:/path/to/android-studio/bin # where you unzipped the package
+export ANDROID_HOME=/where/you/unzipped/AndroidStudio/Android/Sdk
+```
+
+Now you are ready to install Cordova:
+
+```
+sudo npm install -g cordova
+```
+
+And finally, to generate the app, load your latest profile and go into tthe folder
+
+```
+source ~/.profile
+cd android/fingerprinting-app
+```
+
+and add the Android platform and build.
+
+```bash
+cordova platform add android
+cordova build android
+```
+
+which will build a new app in ```android/fingerprinting-app/platforms/android/build/outputs/apk/android-debug.pak```.
 
 # Notes
 

@@ -1,0 +1,18 @@
+{
+    "version": "0.0.1",
+    "name": "nl.nielsad.cordova.wifiscanner",
+    "cordova_name": "WifiScanner",
+    "description": "Interface for android.net.wifi.WifiManager to list available access points and their signal strengths on Android.",
+    "license": "Apache 2.0",
+    "repo": "https://github.com/nielsAD/cordova-wifiscanner.git",
+    "issue": "https://github.com/nielsAD/cordova-wifiscanner/issues",
+    "keywords": [
+        "wifi",
+        "wifimanager",
+        "rssi"
+    ],
+    "platforms": [
+        "android"
+    ],
+    "engines": []
+}
