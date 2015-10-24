@@ -1,10 +1,11 @@
 from tornado.wsgi import WSGIContainer
 from tornado.httpserver import HTTPServer
 from tornado.ioloop import IOLoop
-from libraries.routing import *
 from libraries.configuration import *
 
 conf = getOptions()
+
+from libraries.routing import *
 
 print('running on Tornado with port ' + str(conf['port']))
 if len(str(conf['port']))<1:
