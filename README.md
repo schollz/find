@@ -5,7 +5,7 @@
 The system is built on two main components - a server
 and a fingerprinting device. The fingerprinting device (computer or android app) sends the specified data to the machine learning server which stores the fingerprints and analyzes them. It then returns the result to the device and stores the result on the server for accessing via a web browser or triggering via hooks.
 
-More detailed documentation can be found in the [FIND Guide](http://internalpositioning.com/guide/).
+Splashy information can be found at [internalpositioning.com](http://internalpositioning.com/). More detailed information can be found in the [FIND Guide](http://internalpositioning.com/guide/).
 
 # Server setup
 
