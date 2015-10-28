@@ -5,7 +5,7 @@
 The system is built on two main components - a server
 and a fingerprinting device. The fingerprinting device (computer or android app) sends the specified data to the machine learning server which stores the fingerprints and analyzes them. It then returns the result to the device and stores the result on the server for accessing via a web browser or triggering via hooks.
 
-Splashy information can be found at [internalpositioning.com](http://internalpositioning.com/). More detailed information can be found in the [FIND Guide](http://internalpositioning.com/guide/).
+More detailed documentation can be found in the [FIND Guide](http://internalpositioning.com/guide/).
 
 # Server setup
 
@@ -45,57 +45,7 @@ where `address` is the address you set above.
 
 # App
 
-To use the system, you will need a fingerprinting device. The easiest thing to do is to use [our app from Google Play](https://play.google.com/store/apps/details?id=com.hcp.find&hl=en).  You can also build the app. Here are my instructions for building:
-
-## Building Android app
-
-This help assumes you are using Ubuntu 14. Follow similar instructions for Windows. First install Java 7
-
-```bash
-sudo add-apt-repository ppa:webupd8team/java
-sudo apt-get update
-sudo apt-get install oracle-java7-installer
-sudo apt-get install oracle-java7-set-default
-```
-
-And check if its installed using ```javac --version```.
-
-Then install some dependencies for Ubuntu (or wait until install fails to install...)
-
-```bash
-sudo apt-get install libc6:i386 libncurses5:i386 libstdc++6:i386 lib32z1
-```
-
-Then [Click here](http://developer.android.com/sdk/index.html#Other) to download the latest Android Studio package. Unpack the downloaded ZIP file into an appropriate location for your applications.
-
-Add this to your ```.profile```:
-
-```bash
-export PATH=$PATH:/path/to/android-studio/bin # where you unzipped the package
-export ANDROID_HOME=/where/you/unzipped/AndroidStudio/Android/Sdk
-```
-
-Now you are ready to install Cordova:
-
-```
-sudo npm install -g cordova
-```
-
-And finally, to generate the app, load your latest profile and go into tthe folder
-
-```
-source ~/.profile
-cd android/fingerprinting-app
-```
-
-and add the Android platform and build.
-
-```bash
-cordova platform add android
-cordova build android
-```
-
-which will build a new app in ```android/fingerprinting-app/platforms/android/build/outputs/apk/android-debug.pak```.
+To use the system, you will need a fingerprinting device. The easiest thing to do is to use [our app from Google Play](https://play.google.com/store/apps/details?id=com.hcp.find&hl=en). 
 
 # Notes
 
@@ -119,4 +69,67 @@ sqlite3 find.db < data
 
 ```
 rsync -avrP --files-from essential_files ./ ~/find
+```
+
+## Style guide
+
+
+To ensure uniform style in coding and documentation, please take a look
+at the following notes on style. Please try to follow these the best you
+can when submitting pull requests.
+
+PDF of the latest style guide can be found
+[here](http://yperevoznikov.com/wp-content/uploads/2014/09/PEP8-python-styles-guide.pdf). Try to follow it the best you can. Use
+[autopep8](https://pypi.python.org/pypi/autopep8/) for fixing anything
+you missed. General style takeaways:
+
+- **Use 4 spaces per indentation level**, *not tabs!* 
+- **Indent continued lines more often, and appropriately!** 
+- **Use leading underscore for non-public methods and instance variables**, 
+- Use “**if X is not Y**”, do not use “if not X is Y”.
+
+Module headers should be something like:
+
+```python
+"""The name of the module
+Short summary that makes sense on its own to describe what this module does.
+
+Longer more detailed summary
+"""
+
+import built-in-modules
+import third-part-modules
+import your-own modules
+
+__author__ = "YOUR NAME"
+__copyright__ = "Copyright 2015, FIND"
+__credits__ = ["YOUR NAME", "HIS/HER NAME"]
+__license__ = "MIT"
+__version__ = "1.0.1"
+__maintainer__ = "YOUR NAME"
+__email__ = "your@email"
+__status__ = "Development"
+
+
+CODE-GOES-HERE
+```
+
+Function comments should have doc strings as well:
+
+```python
+def complex(real=0.0, imag=0.0):
+    """Form a complex number.
+
+    Keyword arguments:
+    real -- the real part (default 0.0)
+    imag -- the imaginary part (default 0.0)
+    """
+    if imag == 0.0 and real == 0.0:
+        return complex_zero
+```
+
+If you decided to include more packages, be sure to add them in a virtualenv and add them to `requirements.txt` using:
+
+```bash
+pip freeze > requirements.txt
 ```
