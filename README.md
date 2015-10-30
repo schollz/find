@@ -7,6 +7,71 @@ and a fingerprinting device. The fingerprinting device (computer or android app)
 
 More detailed documentation can be found in the [FIND Guide](http://internalpositioning.com/guide/).
 
+# Screenshots
+
+## Sign-in
+
+When you first load up **FIND** you will see a signin page that only allows signins if you have inserted a group. The default signin is "find".
+
+<center>
+
+
+![Screenshot of the signin](http://internalpositioning.com/guide/img/signin1.png)
+*Screenshot of the signin page*
+
+</center>
+
+<br>
+
+Once you signin you can see the three basic steps to getting started.
+
+<center>
+
+![Landing](http://internalpositioning.com/guide/img/landing2.png)
+*Screenshot of the landing page*
+
+</center><br>
+
+## Monitor location in realtime
+
+Visualize the classifications in realtime with D3 optimized pie charts.
+
+<center>
+
+![Screenshot of the classifications page](http://internalpositioning.com/guide/img/classifications1.png)
+*Screenshot of the classifications page*
+
+</center><br>
+
+## Visualize accuracy and errors
+
+An intuitive dashboard page lets you calculate efficiencies and visualize the errors.
+
+<center>
+
+![Charts show a clear diagnostics of the accuracy for each room](http://internalpositioning.com/guide/img/stats1.png)
+*Charts show a clear diagnostics of the accuracy for each room*
+
+</center><br>
+
+<center>
+
+![Pie charts lets you visualize the classification errors](http://internalpositioning.com/guide/img/pies1.png)
+*Pie charts lets you visualize the classification errors*
+
+</center><br>
+
+## Visualize raw data
+
+There is even an in-depth analysis of the raw fingerprint data.
+
+<center>
+
+![In-depth analysis of the raw fingerprint data](http://internalpositioning.com/guide/img/signals1.png)
+*Analysis of the raw fingerprint data*
+
+</center><br>
+
 # Server setup
 
 First get the latest source code:
