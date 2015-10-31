@@ -9,6 +9,8 @@ More detailed documentation can be found in the [FIND Guide](http://internalposi
 
 # Screenshots
 
+[![Join the chat at https://gitter.im/schollz/find](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/schollz/find?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ## Sign-in
 
 When you first load up **FIND** you will see a signin page that only allows signins if you have inserted a group. The default signin is "find".
