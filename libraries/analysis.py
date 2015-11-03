@@ -378,8 +378,11 @@ def evaluateAccuracy_worker(group,num,total,timestamps,table):
 
     counter = 0;
     for timestamp in timestamps:
-        if num==0 and counter%int(numTimestamps/8)==0:
-            logger.debug('%d percent done' % int(100*counter/numTimestamps))
+        try:
+       	    if num==0 and counter%int(numTimestamps/8)==0:
+                logger.debug('%d percent done' % int(100*counter/numTimestamps))
+       	except:
+       	    pass
         if counter%total == num:
             db = mlDB(group)
             fingerprint = db.retrieveFingerprint(table,timestamp)

@@ -324,7 +324,7 @@ class mlDB(DataBase):
         """ Archives tracking database """
         logger = logging.getLogger('DataBase:archiveTrack')
         cmd = """SELECT DISTINCT user_id FROM track"""
-        logger.debug(cmd)
+        #logger.debug(cmd)
         self.c.execute(cmd)
         rows = self.c.fetchall()
         users = []
@@ -336,21 +336,21 @@ class mlDB(DataBase):
 
         for user in users:
             cmd = """SELECT id FROM track WHERE user_id='%s' GROUP BY timestamp ORDER BY timestamp DESC LIMIT 1 OFFSET 100""" % user
-            logger.debug(cmd)
+            #logger.debug(cmd)
             self.c.execute(cmd)
             rows = self.c.fetchall()
             maxid = "-1"
             for row in rows:
                 maxid = str(row[0])
             cmd = """INSERT INTO track_archive SELECT * from track WHERE user_id='%s' AND id<%s""" % (user,maxid)
-            logger.debug(cmd)
+            #logger.debug(cmd)
             self.c.execute(cmd)
             self.conn.commit()
             cmd = """DELETE from track WHERE user_id='%s' AND id<%s""" % (user,maxid)
-            logger.debug(cmd)
+            #logger.debug(cmd)
             self.c.execute(cmd)
             self.conn.commit()
-            logger.debug('Archived rows with id < ' + maxid + ' for ' + user)
+            #logger.debug('Archived rows with id < ' + maxid + ' for ' + user)
 
         return True
     

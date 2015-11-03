@@ -43,8 +43,8 @@
 
 
 
-    <script src="./static/js/d3.min.js"></script>
-    <script src="./static/js/d3.tip.v0.6.3.js"></script>
+    <script src="/static/js/d3.min.js"></script>
+    <script src="/static/js/d3.tip.v0.6.3.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -238,7 +238,7 @@ $("#objectives a").click(function() {
 
 var superdata;
 window.setInterval(function() {
-  $.getJSON("http://{{ data['address'] }}/getalllocations", {
+  $.getJSON("./getalllocations", {
      group: "{{ data['group'] }}"
     },
     function(data) {
@@ -259,16 +259,6 @@ window.setInterval(function() {
 
 
 
-<hr>
-		<!-- Footer -->
-        <footer>
-            <div class="row">
-                <div class="col-lg-12">
-                    <p>Copyright &copy; Zackary N. Scholl, Stefan Safranek, 2014-2015</p>
-                </div>
-            </div>
-            <!-- /.row -->
-        </footer>
 
 
 	</div>

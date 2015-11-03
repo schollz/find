@@ -1,3 +1,4 @@
+Test
 **The Framework for Internal Navigation and Discovery** (*FIND*) allows you to use your smartphone or laptop to determine your position within your home or office. You can easily use this system in place of motion sensors as its resoltion will allow your phone to distinguish whether you are in the living room or the kitchen or bedroom etc. Simply put, FIND will allow you to replace tons of motion sensors with a single smartphone. The position information can then be used in a variety of ways including home automation, way-finding, tracking, among a few!
 
 <blockquote>Simply put, FIND will allow you to replace <em>tons</em> of motion sensors with a <em>single</em> smartphone!</blockquote>
@@ -11,19 +12,14 @@ More detailed documentation can be found in the [FIND Guide](http://internalposi
 
 ## Sign-in
 
-When you first load up **FIND** you will see a signin page that only allows signins if you have inserted a group. The default signin is "find".
 
 <center>
 
-
 ![Screenshot of the signin](http://internalpositioning.com/guide/img/signin1.png)
-*Screenshot of the signin page*
 
 </center>
 
 <br>
-
-Once you signin you can see the three basic steps to getting started.
 
 <center>
 
@@ -34,79 +30,55 @@ Once you signin you can see the three basic steps to getting started.
 
 ## Monitor location in realtime
 
-Visualize the classifications in realtime with D3 optimized pie charts.
 
 <center>
 
 ![Screenshot of the classifications page](http://internalpositioning.com/guide/img/classifications1.png)
-*Screenshot of the classifications page*
 
 </center><br>
 
 ## Visualize accuracy and errors
 
-An intuitive dashboard page lets you calculate efficiencies and visualize the errors.
-
 <center>
 
 ![Charts show a clear diagnostics of the accuracy for each room](http://internalpositioning.com/guide/img/stats1.png)
-*Charts show a clear diagnostics of the accuracy for each room*
 
 </center><br>
 
 <center>
 
 ![Pie charts lets you visualize the classification errors](http://internalpositioning.com/guide/img/pies1.png)
-*Pie charts lets you visualize the classification errors*
 
 </center><br>
 
 ## Visualize raw data
 
-There is even an in-depth analysis of the raw fingerprint data.
 
 <center>
 
 ![In-depth analysis of the raw fingerprint data](http://internalpositioning.com/guide/img/signals1.png)
-*Analysis of the raw fingerprint data*
 
 </center><br>
 
 # Server setup
 
-First get the latest source code:
+Installation is very simple. Simply download the latest source code and install:
 
     git clone https://github.com/schollz/find.git
-
-Installation is very simple. First install Python 3.4 development
-packages and start a virtualenv:
-
-    sudo apt-get update
-    sudo apt-get -y upgrade
-    sudo apt-get install python3.4-dev
-    sudo apt-get install python3-pip
-    sudo pip3 install virtualenv
-
-    cd find-ml
-    virtualenv -p /usr/bin/python3 venv
-    source venv/bin/activate
-
-Now you can run the setup using:
-
-    (venv)$ python setup.py install
+    cd find/
+    sudo python3 setup.py install
 
 After which you will be prompted to enter the `address` and `port` of
 your server. If you want to run on a home network run `ifconfig` to
-check your `address` (it will be something like `192.168.X.Y` usually).
-If you want to use an public address you can also use that. If you are
+check your address (it will be something like `192.168.X.Y` usually).
+If you want to use an public address you can also use that. Note: if you are
 using a reverse proxy you can also set the `external address`, but if
 not, you can just leave that blank.
 
-To run the program simple use:
+To run **FIND** simple use:
 
-    (venv)$ uwsgi --http address -w server
+    python3 server.py
 
-where `address` is the address you set above.
 
 # App
 

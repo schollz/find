@@ -43,8 +43,8 @@
 
 
 <script src="/static/js/sweetalert.min.js"></script>
-    <script src="./static/js/d3.min.js"></script>
-    <script src="./static/js/d3.tip.v0.6.3.js"></script>
+    <script src="/static/js/d3.min.js"></script>
+    <script src="/static/js/d3.tip.v0.6.3.js"></script>
 <link rel="stylesheet" type="text/css" href="/static/css/sweetalert.css">
 {% endblock %}
 
@@ -176,7 +176,8 @@
     </div>
    <div class="well" id="volume-parameters-well">
         <div class="row clearfix" id="volume-fees-row">
-            {% for graph in data['calculation_parameters'] %}
+            {% for graph in data['network'] %}
+            {% if 'Uncalculated' in graph|string %}{% else %}
             <div class="col-md-6 column" id="volume-fees-chart">
                 <div class="panel panel-primary" id="volume-fees-panel">
                     <div class="panel-heading">
@@ -210,6 +211,7 @@
                 </div>
 
             </div>
+            {% endif %}
             {% endfor %}
             
 
@@ -266,6 +268,7 @@
             </div>
             
         {% for graph in data['network'] %}
+        {% if 'Uncalculated' in graph|string %}{% else %}
             <div class="col-md-12 column" id="volume-fees-chart">
                 <div class="panel panel-primary" id="volume-fees-panel">
                     <div class="panel-heading">
@@ -274,10 +277,11 @@
                         </h3>
                     </div>
                     <div class="panel-body">
-<iframe src="/pies.html?group={{ data['group'] }}&graph={{ graph }}" width="100%" frameBorder=0 height="180px"></iframe>
+<iframe src="./pies.html?group={{ data['group'] }}&graph={{ graph }}" width="100%" frameBorder=0 height="180px"></iframe>
                     </div>
                 </div>
             </div>
+            {% endif %}
             {% endfor %}
             
 
@@ -295,7 +299,7 @@
 
     <div class="well" id="volume-signals-well">
         <div class="row clearfix" id="volume-fees-row">
-            <div class="col-md-9 column" id="volume-fees-chart">
+            <div class="col-md-12 column" id="volume-fees-chart">
                 <div class="panel panel-primary" id="volume-fees-panel">
                     <div class="panel-heading">
                         <h3 class="panel-title">
@@ -303,20 +307,7 @@
                         </h3>
                     </div>
                     <div class="panel-body">
-<iframe src="/charts.html?group={{ data['group'] }}" width="100%" frameBorder=0 height="600px"></iframe>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 column">
-                <div class="panel panel-primary" id="volume-fees-summary-panel">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
-                        Summary
-                        </h3>
-                    </div>
-                    <div class="panel-body">
-                            The charts show the distribution of signals across the different locations.
-
+<iframe src="./charts.html?group={{ data['group'] }}" width="100%" frameBorder=0 height="600px"></iframe>
                     </div>
                 </div>
             </div>
@@ -334,7 +325,7 @@
 
     <div class="well" id="volume-signals-well">
         <div class="row clearfix" id="volume-fees-row">
-            <div class="col-md-9 column" id="volume-fees-chart">
+            <div class="col-md-12 column" id="volume-fees-chart">
                 <div class="panel panel-primary" id="volume-fees-panel">
                     <div class="panel-heading">
                         <h3 class="panel-title">
@@ -342,22 +333,11 @@
                         </h3>
                     </div>
                     <div class="panel-body">
-<iframe src="/time_charts.html?group={{ data['group'] }}" width="100%" frameBorder=0 height="600px"></iframe>
+<iframe src="./time_charts.html?group={{ data['group'] }}" width="100%" frameBorder=0 height="600px"></iframe>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3 column">
-                <div class="panel panel-primary" id="volume-fees-summary-panel">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
-                        Summary
-                        </h3>
-                    </div>
-                    <div class="panel-body">
-                            The charts show the variation in the signal of a given router and location.
-                    </div>
-                </div>
-            </div>
+
         </div>
     </div>
 
@@ -382,7 +362,7 @@ $(document).ready(function(){
           showLoaderOnConfirm: true,
         },
         function(){
-                $.post("/parameters", 
+                $.post("./parameters", 
                     JSON.stringify({ 
                         {% for parameter in data['calculation_parameters'][graph] %}
                         "{{ parameter }}":$('#{{ parameter }}{{ graph }}').val(),
@@ -411,7 +391,7 @@ $(document).ready(function(){
           showLoaderOnConfirm: true,
         },
         function(){
-                $.get("/calculate", 
+                $.get("./calculate", 
                     { 
                         "group":"{{ data['group'] }}",
                     },
@@ -436,7 +416,7 @@ $(document).ready(function(){
           showLoaderOnConfirm: true,
         },
         function(){
-                $.get("/calculateBest", 
+                $.get("./calculateBest", 
                     { 
                         "group":"{{ data['group'] }}",
                     },
@@ -466,7 +446,7 @@ $(document).ready(function(){
         },
         function(isConfirm){
             if (isConfirm) {
-                $.get("/delete", 
+                $.get("./delete", 
                     { 
                         "group":"{{ data['group'] }}",
                         "location":placeToDelete
@@ -523,7 +503,7 @@ $(document).ready(function(){
                     return false
                   }
                   
-                    $.get("/editname", 
+                    $.get("./editname", 
                         { 
                             "group":"{{ data['group'] }}",
                             "location":place,
@@ -560,7 +540,7 @@ $(document).ready(function(){
           showLoaderOnConfirm: true,
         },
         function(){
-                $.get("/revaluate", 
+                $.get("./revaluate", 
                     { 
                         "group":"{{ data['group'] }}",
                         "data":"real"
@@ -586,7 +566,7 @@ $(document).ready(function(){
           showLoaderOnConfirm: true,
         },
         function(){
-                $.get("/revaluate", 
+                $.get("./revaluate", 
                     { 
                         "group":"{{ data['group'] }}",
                         "data":"simulated"
@@ -613,15 +593,6 @@ $(document).ready(function(){
 
 
 <hr>
-		<!-- Footer -->
-        <footer>
-            <div class="row">
-                <div class="col-lg-12">
-                    <p>Copyright &copy; Zackary N. Scholl, Stefan Safranek, 2014-2015</p>
-                </div>
-            </div>
-            <!-- /.row -->
-        </footer>
 
 
 	</div>

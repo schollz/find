@@ -240,6 +240,13 @@ document.getElementById('wifiOn').setAttribute('style','display:none;');
 
 app.initialize();
 
+document.addEventListener('pause',function() {
+    // EXIT IF NOT DOING FINGERPRINTING
+    if (id == null) {
+    showConfirm();
+    }
+});
+
 
 document.addEventListener('deviceready', function () {
     // Android customization

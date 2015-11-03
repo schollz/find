@@ -11,6 +11,7 @@ import time
 import copy
 import json
 import os
+from glob import glob
 from datetime import timedelta
 from functools import update_wrapper
 from libraries.mldatabase import *
@@ -270,7 +271,7 @@ def dashboard_json():
         data = dashboard_data(group)
         if len(message)>0:
             data['message'] = message
-        return jsonify(data)
+        return jsonify(json.loads(json.dumps(data)))
 
 def dashboard_data(group):
     """GET /dashboard.html?group=GROUP
@@ -945,7 +946,8 @@ def get_pies():
     data = {}
     if request.method == 'GET':
         group = request.args.get('group').lower()
-        data = makePies(group)
+        graph = int(request.args.get('graph'))
+        data =makePies(group,graph)
     return jsonify(results=data)
 
 
@@ -983,10 +985,17 @@ Inner workings
 """
 
 def cleanDBs():
-    group = 'find'
-    db = mlDB(group)
-    db.archiveTrack()
-    db.close()
+    logger = logging.getLogger('routing-cleanDBs')
+    for name in glob('data/*.db'):
+        group = name.split('data/')[1].split('.db')[0]
+        logger.info('Archiving ' + group)
+        try:    
+            db = mlDB(group)
+            db.archiveTrack()
+            db.close()
+        except:
+            logger.error('Could not archive ' + group)
+
 
 
 
