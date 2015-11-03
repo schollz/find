@@ -61,6 +61,7 @@ else:
 GENERATE_UNIT_TESTS = False 
 UPLOAD_FOLDER = 'data/'
 ALLOWED_EXTENSIONS = set(['gpx'])
+AVAILABLE_DBS = []
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -993,6 +994,7 @@ def cleanDBs():
             db = mlDB(group)
             db.archiveTrack()
             db.close()
+            AVAILABLE_DBS.append(group)
         except:
             logger.error('Could not archive ' + group)
 
@@ -1024,6 +1026,7 @@ def launch():
     builtins.PARAMETERS = {}
     builtins.CURRENT_LOCATIONS = {}
     cleanDBs()
+    print('Available groups are: ' + ','.join(AVAILABLE_DBS))
 
 # Schedules job_function to be run once each hour
 scheduler = BackgroundScheduler()
@@ -1040,5 +1043,5 @@ if __name__ == "__main__":
     """
     conf = getOptions()
     logger = logging.getLogger('routing-main')
-    app.run(host=conf['address'], port=conf['port'],debug=True)
+    app.run(host=conf['address'], port=conf['port'],debug=False)
     # app.run()

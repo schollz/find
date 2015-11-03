@@ -1,4 +1,3 @@
-Test
 **The Framework for Internal Navigation and Discovery** (*FIND*) allows you to use your smartphone or laptop to determine your position within your home or office. You can easily use this system in place of motion sensors as its resoltion will allow your phone to distinguish whether you are in the living room or the kitchen or bedroom etc. Simply put, FIND will allow you to replace tons of motion sensors with a single smartphone. The position information can then be used in a variety of ways including home automation, way-finding, tracking, among a few!
 
 <blockquote>Simply put, FIND will allow you to replace <em>tons</em> of motion sensors with a <em>single</em> smartphone!</blockquote>
@@ -60,7 +59,7 @@ More detailed documentation can be found in the [FIND Guide](http://internalposi
 
 </center><br>
 
-# Server setup
+# Setup
 
 Installation is very simple. Simply download the latest source code and install:
 
@@ -75,98 +74,46 @@ If you want to use an public address you can also use that. Note: if you are
 using a reverse proxy you can also set the `external address`, but if
 not, you can just leave that blank.
 
-To run **FIND** simple use:
+To run **FIND** simply use:
 
     python3 server.py
 
+To actually use the system you will need a fingerprinting device. The easiest thing to do is to use [our app from Google Play](https://play.google.com/store/apps/details?id=com.hcp.find&hl=en).
 
-# App
+# Using FIND
 
-To use the system, you will need a fingerprinting device. The easiest thing to do is to use [our app from Google Play](https://play.google.com/store/apps/details?id=com.hcp.find&hl=en). 
+## 1. Fingerprint locations
 
-# Notes
+First [download the app from the Google Play store](https://play.google.com/store/apps/details?id=com.hcp.find) or use Python on your laptop.
 
-## Backup/restore database
+![Guide to starting app](http://www.internalpositioning.com/guide/img/guide_app_guide_1.png)
 
-### Backup
+To begin fingerprinting, stand in a location and enter the location name into the app. Then hit the "learn" button in the app. Then simply press ```ON```. The app will then run at the specified interval, even in the background. To stop the fingerprinting you have to press ```OFF``` and to stop the program entirely you have to press ```EXIT```.
 
-```
-sqlite3 find.db .sch > schema
-sqlite3 find.db .dump > dump
-grep -v -f schema dump > data
-```
+## 2. Analyze fingerprints
 
-### Restore
+Now that you have learned several fingerprints, open a web browser and
+navigate to the dashboard page at `http://address:port/dashboard.html`.
+This dashboard page contains all the information about the learned
+fingerprints and the analysis. More information about the dashboard page
+can be found on the [API documentation](/api/#webpages).
 
-```
-sqlite3 find.db < data
-```
+![Guide to analyzing fingerprints](http://www.internalpositioning.com/guide/img/guide_dashboard.png)
 
-### Copy to new repository
+The dashboard has many options and edits that you can do. For now, the only thing you need to do is press the button ```Calculate All and Find Parameters``` which will automatically optimize the parameters and generate the dataset you need for tracking.
 
-```
-rsync -avrP --files-from essential_files ./ ~/find
-```
+## 3. Track locations
 
-## Style guide
+![Guide to analyzing fingerprints](http://www.internalpositioning.com/guide/img/guide_tracking.png)
 
+Now to do tracking you simply go back to the app and click the "track" button and then hit ```ON```. To see your positions, you can watch the app or see more detailed information in the webpage at `http://address:port/map.html`
 
-To ensure uniform style in coding and documentation, please take a look
-at the following notes on style. Please try to follow these the best you
-can when submitting pull requests.
+## Tip of the iceberg
 
-PDF of the latest style guide can be found
-[here](http://yperevoznikov.com/wp-content/uploads/2014/09/PEP8-python-styles-guide.pdf). Try to follow it the best you can. Use
-[autopep8](https://pypi.python.org/pypi/autopep8/) for fixing anything
-you missed. General style takeaways:
+![Tip of the iceberg](http://www.internalpositioning.com/guide/img/iceberg.png)
 
-- **Use 4 spaces per indentation level**, *not tabs!* 
-- **Indent continued lines more often, and appropriately!** 
-- **Use leading underscore for non-public methods and instance variables**, 
-- Use “**if X is not Y**”, do not use “if not X is Y”.
+There are lots of other features available which you can start investigating when you get used to the app and server. Some things to check out:
 
-Module headers should be something like:
-
-```python
-"""The name of the module
-Short summary that makes sense on its own to describe what this module does.
-
-Longer more detailed summary
-"""
-
-import built-in-modules
-import third-part-modules
-import your-own modules
-
-__author__ = "YOUR NAME"
-__copyright__ = "Copyright 2015, FIND"
-__credits__ = ["YOUR NAME", "HIS/HER NAME"]
-__license__ = "MIT"
-__version__ = "1.0.1"
-__maintainer__ = "YOUR NAME"
-__email__ = "your@email"
-__status__ = "Development"
-
-
-CODE-GOES-HERE
-```
-
-Function comments should have doc strings as well:
-
-```python
-def complex(real=0.0, imag=0.0):
-    """Form a complex number.
-
-    Keyword arguments:
-    real -- the real part (default 0.0)
-    imag -- the imaginary part (default 0.0)
-    """
-    if imag == 0.0 and real == 0.0:
-        return complex_zero
-```
-
-If you decided to include more packages, be sure to add them in a virtualenv and add them to `requirements.txt` using:
-
-```bash
-pip freeze > requirements.txt
-```
+- [Build your own app](http://www.internalpositioning.com/guide/deploy/#building-android-app) with internal positioning builtin.
+- [Use the RESTFUL API](http://www.internalpositioning.com/guide/api/#routes) for your own applications, like home automation.
+- [Deploy the server at home](http://www.internalpositioning.com/guide/deploy/#server-setup).
