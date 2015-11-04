@@ -20,6 +20,7 @@ from libraries.priors import *
 from libraries.posteriors import *
 from libraries.analysis import *
 from libraries.configuration import *
+from libraries.livestats import *
 
 from apscheduler.schedulers.background import BackgroundScheduler
 
@@ -37,7 +38,7 @@ logging.basicConfig(
     format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
     datefmt='%m-%d %H:%M:%S',
     handlers=[
-        logging.StreamHandler()])
+        logging.StreamHandler(), logging.FileHandler('server.log')])
 
 
 
@@ -62,6 +63,8 @@ GENERATE_UNIT_TESTS = False
 UPLOAD_FOLDER = 'data/'
 ALLOWED_EXTENSIONS = set(['gpx'])
 AVAILABLE_DBS = []
+
+
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -438,7 +441,7 @@ Routes to handle interaction with the databases
 
 
 '''
-@app.route('/upload_gpx_file', methods=['GET', 'POST'])
+#@app.route('/upload_gpx_file', methods=['GET', 'POST'])
 def upload_file():
     message = 'Error uploading file.'
     if request.method == 'POST':
@@ -451,7 +454,7 @@ def upload_file():
             message = 'Wrong format. Needs to be GPX format.'
     return redirect(url_for('.mapping_data',message=message))
 
-@app.route('/upload_gpx_text', methods=['GET', 'POST'])
+#@app.route('/upload_gpx_text', methods=['GET', 'POST'])
 def upload_gpx_text():
     message = 'Error uploading text.'
     if request.method == 'POST':
@@ -687,7 +690,7 @@ def calculating_best():
         
         absentee = [1e-6]
         usefulness = [-1,0,1]
-        mixinVals = [0.25,0.5,0.75]
+        mixinVals = [0.05,0.25,0.5,0.75,0.95]
         
         bestAccuracy = {}
         for graph in range(num_graphs):
@@ -950,6 +953,16 @@ def get_pies():
         graph = int(request.args.get('graph'))
         data =makePies(group,graph)
     return jsonify(results=data)
+
+
+@app.route('/server.json', methods=['POST', 'GET'])
+@crossdomain(origin='*')
+def get_server_info():
+    """GET /server.json?
+
+    Returns a JSON with the status of the server
+    """
+    return jsonify(getServerStats())
 
 
 @app.route('/network.json', methods=['POST', 'GET'])

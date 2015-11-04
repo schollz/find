@@ -16,6 +16,8 @@ from collections import OrderedDict
 from libraries.mldatabase import *
 from libraries.posteriors import *
 
+builtins.GETLOCATIONS_CACHE = {}
+
 def erfcc(x):
     """Complementary error function."""
     z = abs(x)
@@ -74,17 +76,28 @@ def getUserLocations(user,group):
     return data
 
 def getAllLocations(group):
+    if group not in builtins.GETLOCATIONS_CACHE:
+        builtins.GETLOCATIONS_CACHE[group] = {}
     db = mlDB(group)
     rows = db.executeSqlCommand('select distinct user_id from track')
     data = {}
     for row in rows:
         data[row[0]] = {}
     for user in data:
+        if user not in builtins.GETLOCATIONS_CACHE[group]:
+            builtins.GETLOCATIONS_CACHE[group][user] = {}
+            builtins.GETLOCATIONS_CACHE[group][user]['time'] = 'none'
+
         rows = db.executeSqlCommand("select timestamp,location_uuid from track where user_id like '%s' order by id desc limit 1" % user)
         for row in rows:
             timestamp = row[0]
             data[user]['time'] = time.strftime("%a, %d %b %Y %H:%M:%S", time.localtime(int(row[0])/1000))
             data[user]['location'] = row[1]
+
+        if data[user]['time'] == builtins.GETLOCATIONS_CACHE[group][user]['time']:
+            data[user] = copy.deepcopy(builtins.GETLOCATIONS_CACHE[group][user])
+            continue
+
         fingerprint = db.retrieveFingerprint('track',timestamp)
         fingerprint['group'] = group
         guesses = processTrackingFingerprint(fingerprint, toSave = False, testing = True)
@@ -111,6 +124,7 @@ def getAllLocations(group):
                 pcts.append(str(foo[key]))
         data[user]['pcts'] = '[' + ','.join(pcts) + ']'
         data[user]['labels'] = '["' + '" ,"'.join(labels) + '"]'
+        builtins.GETLOCATIONS_CACHE[group][user] = copy.deepcopy(data[user])
     db.close() 
     return data
 
