@@ -150,9 +150,11 @@ function TrackWifiOn(){
         userfind =  document.getElementById("userfind").value.toLowerCase();
         groupfind =  document.getElementById("groupfind").value.toLowerCase();
         locationfind =  document.getElementById("locationfind").value.toLowerCase();
+        seconds =  document.getElementById("seconds").value.toLowerCase();
         window.localStorage.setItem('userfind',userfind);
         window.localStorage.setItem('groupfind',groupfind);
         window.localStorage.setItem('locationfind',locationfind);
+        window.localStorage.setItem('seconds',seconds);
         window.localStorage.setItem('ML',document.getElementById("ML").value);
         var frequency = parseFloat(document.getElementById("seconds").value) * 1000;
         id = navigator.wifi.watchAccessPoints(successCallback, errorCallback, {"frequency":frequency});
@@ -284,4 +286,10 @@ if (test == null || test.length < 1) {
     document.getElementById("ML").value  = 'http://finddemo.duckdns.org';
 } else {
     document.getElementById("ML").value  = test;
+}
+test = window.localStorage.getItem('seconds');
+if (test == null || test.length < 1) {
+    document.getElementById("seconds").value  = '2.0';
+} else {
+    document.getElementById("seconds").value  = test;
 }
