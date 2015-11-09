@@ -65,7 +65,7 @@ Installation is very simple. Simply download the latest source code and install:
 
     git clone https://github.com/schollz/find.git
     cd find/
-    sudo python3 setup.py install
+    sudo python3 setup.py 
 
 After which you will be prompted to enter the `address` and `port` of
 your server. If you want to run on a home network run `ifconfig` to
@@ -78,7 +78,7 @@ To run **FIND** simply use:
 
     python3 server.py
 
-To actually use the system you will need a fingerprinting device. The easiest thing to do is to use [our app from Google Play](https://play.google.com/store/apps/details?id=com.hcp.find&hl=en).
+To actually use the system you will need a fingerprinting device. The easiest thing to do is to use [our app from Google Play](https://play.google.com/store/apps/details?id=com.hcp.find&hl=en) or [build the app yourself](http://internalpositioning.com/guide/deploy/#building-android-app).
 
 # Using FIND
 
