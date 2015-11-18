@@ -10,3 +10,8 @@ setup(name='find-ml',
       install_requires=['APScheduler','Flask','Flask-Login','networkx','numpy','requests','tornado','utm'],
      )
      
+import os
+
+os.system('wget https://github.com/schollz/find/releases/download/0.1/calculate.zip')
+os.system('unzip calculate.zip')
+os.system('rm calculate.zip')

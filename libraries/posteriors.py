@@ -330,7 +330,7 @@ def calculatePosterior(data,dataOrig,graph):
                 f.write(str(P_B_A) + '\n')
                 f.write(str(P_B_notA) + '\n')
     if len(builtins.BEST_METHOD) < 1:
-        for (dir, _, files) in os.walk("libraries/calculate"):
+        for (dir, _, files) in os.walk("calculate"):
             for f in files:
                 path = os.path.join(dir, f)
                 if 'src' not in path and 'build.py' not in path:            
