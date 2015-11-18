@@ -9,8 +9,59 @@ More detailed documentation can be found in the [FIND Guide](http://internalposi
 
 # Requirements
 
-- Cygwin + Windows (tested), Unix (tested), or Mac (untested but should be funcational)
-- Python3
+To use this system you need to have the following
+
+- Linux / Mac / Cygwin (Windows). Windows is not yet supported (but will be soon)
+- Python3 installed
+
+# Setup
+
+Installation is very simple. Simply download the latest source code and install:
+
+    git clone https://github.com/schollz/find.git
+    cd find/
+    sudo python3 setup.py 
+
+After which you will be prompted to enter the `address` and `port` of
+your server. If you want to run on a home network run `ifconfig` to
+check your address (it will be something like `192.168.X.Y` usually).
+If you want to use an public address you can also use that. Note: if you are
+using a reverse proxy you can also set the `external address`, but if
+not, you can just leave that blank.
+
+To run **FIND** simply use:
+
+    python3 server.py
+
+To actually use the system you will need a fingerprinting device. The easiest thing to do is to use [our app from Google Play](https://play.google.com/store/apps/details?id=com.hcp.find&hl=en) or [build the app yourself](http://internalpositioning.com/guide/deploy/#building-android-app). Alternatively, you don't have to build an app at all and can simply use your laptop via the [the fingerprinting program](https://github.com/schollz/find/blob/master/computer/fingerprinting.py), more details [here](http://internalpositioning.com/guide/deploy/#laptop-computer).
+
+# Using FIND
+
+## 1. Fingerprint locations
+
+First [download the app from the Google Play store](https://play.google.com/store/apps/details?id=com.hcp.find) or use Python on your laptop.
+
+![Guide to starting app](http://www.internalpositioning.com/guide/img/guide_app_guide_1.png)
+
+To begin fingerprinting, stand in a location and enter the location name into the app. Then hit the "learn" button in the app. Then simply press ```ON```. The app will then run at the specified interval, even in the background. To stop the fingerprinting you have to press ```OFF``` and to stop the program entirely you have to press ```EXIT```.
+
+## 2. Analyze fingerprints
+
+Now that you have learned several fingerprints, open a web browser and
+navigate to the dashboard page at `http://address:port/dashboard.html`.
+This dashboard page contains all the information about the learned
+fingerprints and the analysis. More information about the dashboard page
+can be found on the [API documentation](/api/#webpages).
+
+![Guide to analyzing fingerprints](http://www.internalpositioning.com/guide/img/guide_dashboard.png)
+
+The dashboard has many options and edits that you can do. For now, the only thing you need to do is press the button ```Calculate All and Find Parameters``` which will automatically optimize the parameters and generate the dataset you need for tracking.
+
+## 3. Track locations
+
+![Guide to analyzing fingerprints](http://www.internalpositioning.com/guide/img/guide_tracking.png)
+
+Now to do tracking you simply go back to the app and click the "track" button and then hit ```ON```. To see your positions, you can watch the app or see more detailed information in the webpage at `http://address:port/map.html`
 
 # Screenshots
 
@@ -64,54 +115,6 @@ More detailed documentation can be found in the [FIND Guide](http://internalposi
 
 </center><br>
 
-# Setup
-
-Installation is very simple. Simply download the latest source code and install:
-
-    git clone https://github.com/schollz/find.git
-    cd find/
-    sudo python3 setup.py 
-
-After which you will be prompted to enter the `address` and `port` of
-your server. If you want to run on a home network run `ifconfig` to
-check your address (it will be something like `192.168.X.Y` usually).
-If you want to use an public address you can also use that. Note: if you are
-using a reverse proxy you can also set the `external address`, but if
-not, you can just leave that blank.
-
-To run **FIND** simply use:
-
-    python3 server.py
-
-To actually use the system you will need a fingerprinting device. The easiest thing to do is to use [our app from Google Play](https://play.google.com/store/apps/details?id=com.hcp.find&hl=en) or [build the app yourself](http://internalpositioning.com/guide/deploy/#building-android-app).
-
-# Using FIND
-
-## 1. Fingerprint locations
-
-First [download the app from the Google Play store](https://play.google.com/store/apps/details?id=com.hcp.find) or use Python on your laptop.
-
-![Guide to starting app](http://www.internalpositioning.com/guide/img/guide_app_guide_1.png)
-
-To begin fingerprinting, stand in a location and enter the location name into the app. Then hit the "learn" button in the app. Then simply press ```ON```. The app will then run at the specified interval, even in the background. To stop the fingerprinting you have to press ```OFF``` and to stop the program entirely you have to press ```EXIT```.
-
-## 2. Analyze fingerprints
-
-Now that you have learned several fingerprints, open a web browser and
-navigate to the dashboard page at `http://address:port/dashboard.html`.
-This dashboard page contains all the information about the learned
-fingerprints and the analysis. More information about the dashboard page
-can be found on the [API documentation](/api/#webpages).
-
-![Guide to analyzing fingerprints](http://www.internalpositioning.com/guide/img/guide_dashboard.png)
-
-The dashboard has many options and edits that you can do. For now, the only thing you need to do is press the button ```Calculate All and Find Parameters``` which will automatically optimize the parameters and generate the dataset you need for tracking.
-
-## 3. Track locations
-
-![Guide to analyzing fingerprints](http://www.internalpositioning.com/guide/img/guide_tracking.png)
-
-Now to do tracking you simply go back to the app and click the "track" button and then hit ```ON```. To see your positions, you can watch the app or see more detailed information in the webpage at `http://address:port/map.html`
 
 ## Tip of the iceberg
 
