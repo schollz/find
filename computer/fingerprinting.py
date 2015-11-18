@@ -24,6 +24,7 @@ Submits a POST request to the specified server with a scanned fingerprint of the
 
 """
 
+import shlex
 import subprocess
 import json
 import time
@@ -116,8 +117,6 @@ def fingerprint():
 		data = {'username': conf['user'],'group':conf['group'],'location':conf['location'],'time': round(time.time()*1000), 'wifi-fingerprint':[]}
 
 		print("Scanning...")
-		linux = True
-		windows = False
 		try:
 			proc = subprocess.Popen(["iwlist wlan0 scan | grep 'Address\|Signal'"], stdout=subprocess.PIPE, shell=True)
 			(out, err) = proc.communicate()
@@ -134,34 +133,45 @@ def fingerprint():
 					signal = line.split('level=',1)[1].strip().split('dB')[0].split('/')[0]
 					data['wifi-fingerprint'].append({'mac':macAddress,'rssi':int(signal)})
 		except:
-			try:
-				print("Scanning...")
-				proc = subprocess.Popen(["netsh wlan show network mode=bssid"], stdout=subprocess.PIPE, shell=True)
-				(out, err) = proc.communicate()
-				if len(out) == 0:
-					raise ValueError('Not in linux')
-				print("Collecting...")
-				macAddress = ""
-				signal = ""
-				for line in out.split("\n"):
-					if "BSSID" in line:
-						macAddress = line.split(':',1)[1].strip()
-					if "Signal" in line:
-						signal = line.split(':',1)[1].split('%')[0].strip()
-						data['wifi-fingerprint'].append({'mac':macAddress,'rssi':int(signal)})
-			except:
-				print('Sorry, this system is not supported yet (or maybe you do not have a WiFi card?)')
-				sys.exit(-1)
+			print("Scanning...")
 
+			proc = subprocess.Popen(shlex.split("netsh wlan show network mode=bssid"), stdout=subprocess.PIPE, shell=True)
+			(out, err) = proc.communicate()
+			out = out.decode('utf-8')
+			print(out)
+			print('continuing')
+			if len(out) == 0:
+				raise ValueError('Not in windows')
+			print("Collecting...")
+			macAddress = ""
+			signal = ""
+			for line in out.split("\n"):
+				if "BSSID" in line:
+					macAddress = line.split(':',1)[1].strip()
+				if "Signal" in line:
+					signal = line.split(':',1)[1].split('%')[0].strip()
+					data['wifi-fingerprint'].append({'mac':macAddress,'rssi':int(signal)})
 
 		print("Submitting...")
+		newData = {}
+		newData['token'] = '9c3eaa3fff1717'
+		newData['address'] = 1
+		newData['wifi'] = []
+		ss = ""
+		for dat in data['wifi-fingerprint']:
+			newData['wifi'].append({'bssid':dat['mac'],'signal':dat['rssi']})
+			ss += dat['mac'].lower() + ',' + str(dat['rssi']) + ','
+		print(ss[:-1])
+
+		#print(json.dumps(newData,indent=2))
 		try:
-			print(json.dumps(data))
+
 			r = requests.post(url, data=json.dumps(data))
-			print(r.json())
+			#print(r.json())
 		except:
-			print("error submitting fingerprint")
-			print(json.dumps(data))
+			pass
+			#print("error submitting fingerprint")
+			#print(json.dumps(data))
 
 if __name__ == "__main__":
     """Main subroutine

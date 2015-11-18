@@ -329,17 +329,45 @@ def calculatePosterior(data,dataOrig,graph):
                 f.write(str(in_useful) + '\n')
                 f.write(str(P_B_A) + '\n')
                 f.write(str(P_B_notA) + '\n')
+    if len(builtins.BEST_METHOD) < 1:
+        for (dir, _, files) in os.walk("libraries/calculate"):
+            for f in files:
+                path = os.path.join(dir, f)
+                if 'src' not in path and 'build.py' not in path:            
+                    try:
+                        logger.debug('trying ' + path)
+                        subprocess.call(shlex.split('./' + path + ' ' + fileName))
+                        with open(fileName + '.dumped','r') as f:
+                            lineI = 0
+                            for line in f:
+                                lineI += 1
+                                if lineI == 1:
+                                    P_bayes = json.loads(line)
+                                else:
+                                    P_bayes2 = json.loads(line)
+                        os.system('rm ' + fileName + ' & rm ' + fileName + '.dumped')
+                        builtins.BEST_METHOD = './' + path
+                    except OSError:
+                        logger.debug(path + ' failed')
+                        builtins.BEST_METHOD = ''
+                if len(builtins.BEST_METHOD)>0:
+                    break
+            if len(builtins.BEST_METHOD)>0:
+                break
+    else:
+        logger.debug('using ' + builtins.BEST_METHOD)
+        subprocess.call(shlex.split(builtins.BEST_METHOD + ' ' + fileName))
+        with open(fileName + '.dumped','r') as f:
+            lineI = 0
+            for line in f:
+                lineI += 1
+                if lineI == 1:
+                    P_bayes = json.loads(line)
+                else:
+                    P_bayes2 = json.loads(line)
+        os.system('rm ' + fileName + ' & rm ' + fileName + '.dumped')
+    print("MODIFIED ROUTINE TOOK " + str(time.time()-t1) + " ")
 
-    os.system('./special ' + fileName)
-    with open(fileName + '.dumped','r') as f:
-        lineI = 0
-        for line in f:
-            lineI += 1
-            if lineI == 1:
-                P_bayes = json.loads(line)
-            else:
-                P_bayes2 = json.loads(line)
-    os.system('rm ' + fileName + ' & rm ' + fileName + '.dumped')
 
     #logger.debug('Skipped ' + str(skipped) + ' and used ' + str(used))
     #print(sorted(P_bayes.items(), key=lambda x: x[1],reverse=True))
