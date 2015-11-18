@@ -11,6 +11,7 @@ import hashlib
 import os
 import subprocess
 import numpy as np
+import shlex
 from uuid import uuid4
 from utm import from_latlon
 import xml.etree.ElementTree as ET
@@ -19,6 +20,7 @@ from libraries.mldatabase import *
 builtins.POSTERIOR_VARIABLES = {}
 builtins.fingerprint_cache = {}
 builtins.fingerprint_count = {}
+builtins.BEST_METHOD = ""
 
 def getGPX(group,location):
     if location == None:
