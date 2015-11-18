@@ -1001,7 +1001,8 @@ Inner workings
 def cleanDBs():
     logger = logging.getLogger('routing-cleanDBs')
     for name in glob('data/*.db'):
-        group = name.split('data/')[1].split('.db')[0]
+        print(name)
+        group = name.split('data')[1][1:].split('.db')[0]
         logger.info('Archiving ' + group)
         try:    
             db = mlDB(group)
