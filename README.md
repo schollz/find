@@ -7,6 +7,11 @@ and a fingerprinting device. The fingerprinting device (computer or android app)
 
 More detailed documentation can be found in the [FIND Guide](http://internalpositioning.com/guide/).
 
+# Requirements
+
+- Cygwin + Windows (tested), Unix (tested), or Mac (untested but should be funcational)
+- Python3
+
 # Screenshots
 
 ## Sign-in
