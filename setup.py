@@ -2,7 +2,7 @@ from setuptools import setup
 from libraries.configuration import *
 
 setup(name='find-ml',
-      version='0.2',
+      version='0.21',
       description='Framework for Internal Navigation and Discovery',
       author='Zack',
       author_email='zack@hypercubeplatforms.com',
