@@ -11,7 +11,33 @@ setup(name='find-ml',
      )
      
 import os
+import shutil
+import stat
+import urllib.request
+import zipfile,os.path
 
-os.system('wget https://github.com/schollz/find/releases/download/0.1/calculate.zip')
-os.system('unzip calculate.zip')
-os.system('rm calculate.zip')
+if os.path.isdir("calculate"):
+	shutil.rmtree('calculate')
+
+if not os.path.isdir("calculate"):
+
+    # Download the file from `url` and save it locally under `file_name`:
+    print('Downloading the calculation binaries...')
+    with urllib.request.urlopen('https://github.com/schollz/find/releases/download/0.1/calculate.zip') as response, open('calculate.zip', 'wb') as out_file:
+        shutil.copyfileobj(response, out_file)
+
+
+    def unzip(source_filename, dest_dir):
+        with zipfile.ZipFile(source_filename) as zf:
+            zf.extractall(dest_dir)
+
+
+    print('Unzipping the calculation binaries...')
+    unzip('calculate.zip','./')
+    for (dir, _, files) in os.walk("calculate"):
+        for f in files:
+            path = os.path.join(dir, f)
+            st = os.stat(path)
+            os.chmod(path, st.st_mode | 0o111)
+    print('Removing the zipfile')
+    os.remove('calculate.zip')
