@@ -1,14 +1,16 @@
 [![Join the chat at https://gitter.im/schollz/find](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Reactive-Extensions/RxJS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Version 0.21prealpha](https://img.shields.io/badge/version-0.21prealpha-brightgreen.svg)](http://internalpositioning.com/guide/development/)
 
-
-**The Framework for Internal Navigation and Discovery** (*FIND*) allows you to use your smartphone or laptop to determine your position within your home or office. You can easily use this system in place of motion sensors as its resoltion will allow your phone to distinguish whether you are in the living room or the kitchen or bedroom etc. Simply put, FIND will allow you to replace tons of motion sensors with a single smartphone. The position information can then be used in a variety of ways including home automation, way-finding, tracking, among a few!
+**The Framework for Internal Navigation and Discovery** (*FIND*) allows you to use your smartphone or laptop to determine your position within your home or office. You can easily use this system in place of motion sensors as its resoltion will allow your phone to distinguish whether you are in the living room or the kitchen or bedroom etc. The position information can then be used in a variety of ways including home automation, way-finding, tracking, among a few!
 
 <blockquote>Simply put, FIND will allow you to replace <em>tons</em> of motion sensors with a <em>single</em> smartphone!</blockquote>
 
 The system is built on two main components - a server
 and a fingerprinting device. The fingerprinting device (computer or android app) sends the specified data to the machine learning server which stores the fingerprints and analyzes them. It then returns the result to the device and stores the result on the server for accessing via a web browser or triggering via hooks.
 
-More detailed documentation can be found in the [FIND Guide](http://internalpositioning.com/guide/).
+More information? Check out [our splash page overview](http://internalpositioning.com), the [FAQ](http://internalpositioning.com/guide/faq/), and the [API](http://internalpositioning.com/guide/api/).
+
+
 
 # Requirements
 
@@ -18,7 +20,9 @@ To use this system you need to have the following
 - Python3 installed
 - Either WiFi capable laptop or Android smartphone
 
-# Setup
+# Server setup
+
+*Note: you don't have to setup a server at all. If you'd like, you can use [our demo server](http://finddemo.duckdns.org) - simply [follow the quickstart guide](http://internalpositioning.com/guide/getting-started/) to get going.*
 
 Installation is very simple. Simply download the latest source code and install:
 
