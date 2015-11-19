@@ -11,8 +11,9 @@ More detailed documentation can be found in the [FIND Guide](http://internalposi
 
 To use this system you need to have the following
 
-- Linux / Mac / Cygwin (Windows). Windows is not yet supported (but will be soon)
+- Linux / Mac / Cygwin (Windows). Windows is not yet supported (but will be soon). Raspberry Pi is supported!
 - Python3 installed
+- Either WiFi capable laptop or Android smartphone
 
 # Setup
 
@@ -35,33 +36,68 @@ To run **FIND** simply use:
 
 To actually use the system you will need a fingerprinting device. The easiest thing to do is to use [our app from Google Play](https://play.google.com/store/apps/details?id=com.hcp.find&hl=en) or [build the app yourself](http://internalpositioning.com/guide/deploy/#building-android-app). Alternatively, you don't have to build an app at all and can simply use your laptop via the [the fingerprinting program](https://github.com/schollz/find/blob/master/computer/fingerprinting.py), more details [here](http://internalpositioning.com/guide/deploy/#laptop-computer).
 
+
 # Using FIND
 
 ## 1. Fingerprint locations
 
-First [download the app from the Google Play store](https://play.google.com/store/apps/details?id=com.hcp.find) or use Python on your laptop.
+### If you want to use the app...
+
+First [download the app from the Google Play store](https://play.google.com/store/apps/details?id=com.hcp.find). 
 
 ![Guide to starting app](http://www.internalpositioning.com/guide/img/guide_app_guide_1.png)
 
 To begin fingerprinting, stand in a location and enter the location name into the app. Then hit the "learn" button in the app. Then simply press ```ON```. The app will then run at the specified interval, even in the background. To stop the fingerprinting you have to press ```OFF``` and to stop the program entirely you have to press ```EXIT```.
 
+
+### If you want to use a laptop...
+
+Any computer with a WiFi card or laptops will be able to use FIND as well. Its simple to get started. If you cloned the repository, goto ```computer/``` to find ```fingerprinting.py```. If you haven't cloned the repository, you can simply [download the fingerprinting.py script]([the fingerprinting program](https://github.com/schollz/find/blob/master/computer/fingerprinting.py)).
+
+To fingerprint locations simply use
+
+```bash
+python3 fingerprinting.py -l "name of location" -u "user name" -g "your group" -s "server" -p "port" -c 10 -r learn
+```
+
+which will send 10 fingerprints to the server. If you are using the demo server, simply set "server" to "finddemo.duckdns.org" and do not include the port. If you are running locally you probably want "server" to be "localhost" and port to be whatever you specified. The name of "your group" can be whatever you want.
+
+Repeat this process for a few locations.
+
+
 ## 2. Analyze fingerprints
 
 Now that you have learned several fingerprints, open a web browser and
-navigate to the dashboard page at `http://address:port/dashboard.html`.
-This dashboard page contains all the information about the learned
-fingerprints and the analysis. More information about the dashboard page
-can be found on the [API documentation](/api/#webpages).
+navigate to the dashboard page at `http://address:port/` or [http://finddemo.duckdns.org](http://finddemo.duckdns.org) if you are using the demo server. Login with the name of your group that you specified in the app or in the script.
 
-![Guide to analyzing fingerprints](http://www.internalpositioning.com/guide/img/guide_dashboard.png)
+Once you login you'll be able to access the "Dashboard." This dashboard page contains all the information about the learned fingerprints and the analysis. More information about the dashboard page can be found on the [API documentation](/api/#webpages).
 
 The dashboard has many options and edits that you can do. For now, the only thing you need to do is press the button ```Calculate All and Find Parameters``` which will automatically optimize the parameters and generate the dataset you need for tracking.
 
+![Guide to analyzing fingerprints with app](http://www.internalpositioning.com/guide/img/guide_dashboard.png)
+
 ## 3. Track locations
+
+To see your current position classification, simply hit "Classifications" from the webpage that you visited to see the dashboard. This classifications are automatically updated as new information is available from the app/laptop. Sending the tracking information is very easy:
+
+### If you want to use the app...
+
+
+Simply go back to the app and click the "track" button and then hit ```ON```. Now you are tracking!
 
 ![Guide to analyzing fingerprints](http://www.internalpositioning.com/guide/img/guide_tracking.png)
 
-Now to do tracking you simply go back to the app and click the "track" button and then hit ```ON```. To see your positions, you can watch the app or see more detailed information in the webpage at `http://address:port/map.html`
+
+### If you want to use a laptop...
+
+To track locations simply use
+
+```bash
+python3 fingerprinting.py -u "user name" -g "your group" -s "server" -p "port" -c 1000 -r track
+```
+
+which will run 1000 times.
+
 
 # Screenshots
 
