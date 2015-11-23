@@ -132,12 +132,12 @@ def get_network_data(conf):
     if operating_system == 'Linux':
 
         for line in out.splitlines():
-            line = str(line)
+            line = line.decode('utf-8')
             if "Address" in line:
                 macAddress = line.split(':', 1)[1].strip().lower().split("'")[0]
             if "Signal" in line:
                 signal = line.split('level=', 1)[1].strip().split('dB')[0].split('/')[0]
-        data['wifi-fingerprint'].append({'mac': macAddress, 'rssi': int(signal)})
+                data['wifi-fingerprint'].append({'mac': macAddress, 'rssi': int(signal)})
 
     elif operating_system == 'Darwin':
 
@@ -147,7 +147,7 @@ def get_network_data(conf):
                 macAddress = line.split(': ', 1)[1].strip("'")
             if "agrCtlRSSI" in line:
                 signal = int(line.split(': ', 1)[1].strip("'"))
-        data['wifi-fingerprint'].append({'mac': macAddress, 'rssi': int(signal)})
+                data['wifi-fingerprint'].append({'mac': macAddress, 'rssi': int(signal)})
 
     elif operating_system == 'Windows':
 
@@ -156,7 +156,7 @@ def get_network_data(conf):
                 macAddress = line.split(':', 1)[1].strip()
             if "Signal" in line:
                 signal = line.split(':', 1)[1].split('%')[0].strip()
-        data['wifi-fingerprint'].append({'mac': macAddress, 'rssi': int(signal)})
+                data['wifi-fingerprint'].append({'mac': macAddress, 'rssi': int(signal)})
 
     print("Submitting...")
 
