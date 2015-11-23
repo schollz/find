@@ -35,19 +35,20 @@ import platform
 __author__ = "Zack"
 __copyright__ = "Copyright 2014-2015, FIND"
 __credits__ = ["Zack", "Stefan"]
-__version__ = "0.3"
+__version__ = "0.4"
 __email__ = "zack@hypercubeplatforms.com"
 __status__ = "Development"
 
 
 def get_network_call(operating_system):
+    print(operating_system)
     cmd = ''
     if operating_system == 'Darwin':
         cmd = "/System/Library/PrivateFrameworks/Apple80211.framework/" + \
               "Versions/Current/Resources/airport -I en0"
     elif operating_system == 'Linux':
         cmd = r"iwlist wlan0 scan | grep 'Address\|Signal'"
-    elif operating_system == 'Windows':
+    elif operating_system == 'Windows' or 'CYGWIN' in operating_system:
         cmd = "netsh wlan show network mode=bssid"
     return cmd
 
@@ -149,9 +150,11 @@ def get_network_data(conf):
                 signal = int(line.split(': ', 1)[1].strip("'"))
                 data['wifi-fingerprint'].append({'mac': macAddress, 'rssi': int(signal)})
 
-    elif operating_system == 'Windows':
-
+    elif operating_system == 'Windows' or 'CYGWIN' in operating_system:
+        
+        out = out.decode('utf-8')
         for line in out.split("\n"):
+            print(line)
             if "BSSID" in line:
                 macAddress = line.split(':', 1)[1].strip()
             if "Signal" in line:
