@@ -151,8 +151,8 @@ def get_network_data(conf):
                 data['wifi-fingerprint'].append({'mac': macAddress, 'rssi': int(signal)})
 
     elif operating_system == 'Windows' or 'CYGWIN' in operating_system:
-        
-        out = out.decode('utf-8')
+        if 'CYGWIN' in operating_system:
+            out = out.decode('utf-8')
         for line in out.split("\n"):
             print(line)
             if "BSSID" in line:
