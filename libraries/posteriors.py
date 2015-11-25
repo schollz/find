@@ -357,7 +357,7 @@ def calculatePosterior(data,dataOrig,graph):
             if len(builtins.BEST_METHOD)>0:
                 break
     else:
-        logger.debug('using ' + builtins.BEST_METHOD)
+        #logger.debug('using ' + builtins.BEST_METHOD)
         subprocess.call(shlex.split(builtins.BEST_METHOD + ' ' + fileName))
         with open(fileName + '.dumped','r') as f:
             lineI = 0
@@ -368,7 +368,7 @@ def calculatePosterior(data,dataOrig,graph):
                 else:
                     P_bayes2 = json.loads(line)
         os.system('rm ' + fileName + ' & rm ' + fileName + '.dumped')
-    print("MODIFIED ROUTINE TOOK " + str(time.time()-t1) + " ")
+    #print("MODIFIED ROUTINE TOOK " + str(time.time()-t1) + " ")
 
 
     #logger.debug('Skipped ' + str(skipped) + ' and used ' + str(used))
