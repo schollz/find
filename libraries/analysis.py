@@ -76,6 +76,7 @@ def getUserLocations(user,group):
     return data
 
 def getAllLocations(group):
+    logger = logging.getLogger('analysis.getAllLocations')
     if group not in builtins.GETLOCATIONS_CACHE:
         builtins.GETLOCATIONS_CACHE[group] = {}
     db = mlDB(group)
@@ -88,17 +89,27 @@ def getAllLocations(group):
             builtins.GETLOCATIONS_CACHE[group][user] = {}
             builtins.GETLOCATIONS_CACHE[group][user]['time'] = 'none'
 
-        rows = db.executeSqlCommand("select timestamp,location_uuid from track where user_id like '%s' order by id desc limit 1" % user)
-        for row in rows:
-            timestamp = row[0]
-            data[user]['time'] = time.strftime("%a, %d %b %Y %H:%M:%S", time.localtime(int(row[0])/1000))
-            data[user]['location'] = row[1]
+        if group in builtins.fingerprint_cache and user in builtins.fingerprint_cache[group]:
+            fingerprint = copy.deepcopy(builtins.fingerprint_cache[group][user][0])
+            data[user]['time'] = time.strftime("%a, %d %b %Y %H:%M:%S", time.localtime(int(fingerprint['time'])/1000))
+            data[user]['location'] = fingerprint['location']
+            if data[user]['time'] == builtins.GETLOCATIONS_CACHE[group][user]['time']:
+                data[user] = copy.deepcopy(builtins.GETLOCATIONS_CACHE[group][user])
+                continue
+        else:
+            rows = db.executeSqlCommand("select timestamp,location_uuid from track where user_id like '%s' order by id desc limit 1" % user)
+            for row in rows:
+                timestamp = row[0]
+                data[user]['time'] = time.strftime("%a, %d %b %Y %H:%M:%S", time.localtime(int(row[0])/1000))
+                data[user]['location'] = row[1]
 
-        if data[user]['time'] == builtins.GETLOCATIONS_CACHE[group][user]['time']:
-            data[user] = copy.deepcopy(builtins.GETLOCATIONS_CACHE[group][user])
-            continue
+            if data[user]['time'] == builtins.GETLOCATIONS_CACHE[group][user]['time']:
+                data[user] = copy.deepcopy(builtins.GETLOCATIONS_CACHE[group][user])
+                continue
 
-        fingerprint = db.retrieveFingerprint('track',timestamp)
+            fingerprint = db.retrieveFingerprint('track',timestamp)
+            logger.debug('Using database location for ' + user)
+
         fingerprint['group'] = group
         guesses = processTrackingFingerprint(fingerprint, toSave = False, testing = True)
         data[user]['guesses'] = {}
