@@ -403,4 +403,6 @@ def normalizeDict(d):
     d2 = copy.deepcopy(d)
     for key in d.keys():
         d2[key] = (d[key]-mean)/sd
+        if np.isnan(d2[key]):
+            d2[key] = 0
     return d2
