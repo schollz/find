@@ -8,7 +8,7 @@
 </center>
 
 
-**The Framework for Internal Navigation and Discovery** (*FIND*) allows you to use your smartphone or laptop to determine your position within your home or office. You can easily use this system in place of motion sensors as its resoltion will allow your phone to distinguish whether you are in the living room, the kitchen or the bedroom, etc. The position information can then be used in a variety of ways including home automation, way-finding, or tracking!
+**The Framework for Internal Navigation and Discovery** (*FIND*) allows you to use your smartphone or laptop to determine your position within your home or office. You can easily use this system in place of motion sensors as its resolution will allow your phone to distinguish whether you are in the living room, the kitchen or the bedroom, etc. The position information can then be used in a variety of ways including home automation, way-finding, or tracking!
 
 <blockquote>Simply put, FIND will allow you to replace <em>tons</em> of motion sensors with a <em>single</em> smartphone!</blockquote>
 
@@ -26,6 +26,7 @@ To use this system you need to have the following
 - Linux / Mac / Cygwin (Windows). Windows is not yet supported (but will be soon). Raspberry Pi is supported!
 - Python3 installed
 - Either WiFi capable laptop or Android smartphone
+- (Optional) Android Studio installed ([in case you want to build the app yourself](http://internalpositioning.com/guide/deploy/#building-android-app))
 
 # Server setup
 
