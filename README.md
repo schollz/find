@@ -7,9 +7,9 @@
 
 </center>
 
-- [Requirements](#)
-- [Server setup](#)
-- [Using FIND](#)
+- [Requirements](#requirements)
+- [Server setup](#server-setup)
+- [Using FIND](#using-find)
 	- [1. Fingerprint locations](#)
 	- [2. Analyze fingerprints](#)
 	- [3. Track locations](#)
