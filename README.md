@@ -11,13 +11,9 @@
 - [Server setup](#server-setup)
 - [Using FIND](#using-find)
 	- [1. Fingerprint locations](#1-fingerprint-locations)
-	- [2. Analyze fingerprints](#)
-	- [3. Track locations](#)
+	- [2. Analyze fingerprints](#2-analyze-fingerprints)
+	- [3. Track locations](#3-track-locations)
 - [Screenshots](#screenshots)
-	- [Sign-in](#)
-	- [Monitor location in realtime](#)
-	- [Visualize accuracy and errors](#)
-	- [Visualize raw data](#)
 - [Contact us](#contact-us)
 
 
