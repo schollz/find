@@ -10,15 +10,15 @@
 - [Requirements](#requirements)
 - [Server setup](#server-setup)
 - [Using FIND](#using-find)
-	- [1. Fingerprint locations](#)
+	- [1. Fingerprint locations](#1-fingerprint-locations)
 	- [2. Analyze fingerprints](#)
 	- [3. Track locations](#)
-- [Screenshots](#)
+- [Screenshots](#screenshots)
 	- [Sign-in](#)
 	- [Monitor location in realtime](#)
 	- [Visualize accuracy and errors](#)
 	- [Visualize raw data](#)
-- [Contact us](#)
+- [Contact us](#contact-us)
 
 
 **The Framework for Internal Navigation and Discovery** (*FIND*) allows you to use your smartphone or laptop to determine your position within your home or office. You can easily use this system in place of motion sensors as its resolution will allow your phone to distinguish whether you are in the living room, the kitchen or the bedroom, etc. The position information can then be used in a variety of ways including home automation, way-finding, or tracking!
