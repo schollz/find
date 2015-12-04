@@ -88,7 +88,7 @@ Options:
     --continue,-c number of times to run (default: 10)
     """
 
-    conf = {'server': 'localhost', 'port': 8888, 'route': 'track',
+    conf = {'server': 'localhost', 'port': 0, 'route': 'track',
             'group': 'find', 'user': 'unknown', 'location': 'unknown', 'continue': 10}
     if len(sys.argv) < 2:
         print(help_text)

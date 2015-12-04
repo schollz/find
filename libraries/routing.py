@@ -21,6 +21,7 @@ from libraries.posteriors import *
 from libraries.analysis import *
 from libraries.configuration import *
 from libraries.livestats import *
+import datetime
 
 from apscheduler.schedulers.background import BackgroundScheduler
 
@@ -1035,7 +1036,7 @@ def launch():
         builtins.DATABASE_PATH_PREFIX = os.path.join(os.environ.get('HOME'),'app-root/data/')
     else:
         builtins.DATABASE_PATH_PREFIX = 'data/'
-    builtins.START_TIME = time.time()
+    builtins.START_TIME = datetime.datetime.now().isoformat()
     builtins.PARAMETERS = {}
     builtins.CURRENT_LOCATIONS = {}
     cleanDBs()

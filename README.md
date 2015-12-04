@@ -72,12 +72,12 @@ Any computer with a WiFi card or laptops will be able to use FIND as well. Its s
 To fingerprint locations simply use
 
 ```bash
-python3 fingerprinting.py -l "name of location" -u "user name" -g "your group" -s "server" -p "port" -c 10 -r learn
+python3 fingerprinting.py -l "some location" -u "some user" -g "some group" -s "localhost" -p 8888 -c 10 -r learn
 ```
 
-which will send 10 fingerprints to the server. If you are using the demo server, simply set "server" to "finddemo.duckdns.org" and do not include the port. If you are running locally you probably want "server" to be "localhost" and port to be whatever you specified. The name of "your group" can be whatever you want.
+which will send 10 fingerprints to the server located at ```localhost:8888``` of "some location" for "some user" in "some group." If you are using the demo server, simply set "server" to ```finddemo.duckdns.org``` and do not include the port. If you are running locally you probably want "server" to be "localhost" and port to be whatever you specified. The name of "your group" can be whatever you want.
 
-Repeat this process for a few locations.
+Repeat this process for a few different locations, making sure to change "some location" to whatever location you are currently located.
 
 
 ## 2. Analyze fingerprints
@@ -183,3 +183,4 @@ There are lots of other features available which you can start investigating whe
 * Email: [zack@hypercubeplatforms.com](zack@hypercubeplatforms.com)
 * Gitter: [Join room](https://gitter.im/schollz/find)
 * Github Issues: [Open an issue](https://github.com/schollz/find/issues/new)
+* Subscribe: [Get latest updates](http://hypercubeplatforms.us10.list-manage1.com/subscribe?u=885d1826479b36238603d935c&id=dfc8e534c4)

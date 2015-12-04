@@ -6,6 +6,25 @@ import platform
 import multiprocessing
 import json
 import time
+import datetime
+import urllib
+import re
+
+
+
+def get_ip_address():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(("8.8.8.8", 80))
+    return s.getsockname()[0]
+
+
+def get_external_ip():
+    site = urllib.request.urlopen("http://checkip.dyndns.org/").read()
+    grab = re.findall('([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)', site.decode("utf-8"))
+    address = grab[0]
+    return address
+
+
 
 if os.name != "nt":
     import fcntl
@@ -83,7 +102,16 @@ def getServerStats():
     builtins.SERVER_STATS['up']['warnings'] = warnings
     builtins.SERVER_STATS['up']['errors'] = errors
 
-    return builtins.SERVER_STATS
+    results = {
+        "internal_ip": get_ip_address(),
+        "external_ip": get_external_ip(),
+        "status": "static",
+        "port": conf['port'],
+        "registered": builtins.START_TIME,
+        "num_cores": multiprocessing.cpu_count()
+    }
+
+    return results
 
 
 
