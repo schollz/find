@@ -294,7 +294,7 @@ def makeStats(group):
     db = mlDB(group)
     a = {}
     a['table_data'] = db.databaseStats()
-    a['uptime'] = round(time.time() - builtins.START_TIME)
+    a['uptime'] = builtins.START_TIME
     connected_components_locs = db.getResource('connected_components_locs')
     connected_components = db.getResource('connected_components')
     if connected_components_locs == None:
