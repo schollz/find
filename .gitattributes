@@ -1,2 +1,1 @@
-libraries/static/*.js linguist-vendored
-libraries/static/*.css linguist-vendored
+libraries/static/* linguist-vendored
