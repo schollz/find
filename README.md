@@ -1,7 +1,7 @@
-[![Join the chat at https://gitter.im/schollz/find](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/schollz/find?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Version 0.21prealpha](https://img.shields.io/badge/version-0.21prealpha-brightgreen.svg)](http://internalpositioning.com/guide/development/)
+[![Join the chat at https://gitter.im/schollz/find](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/schollz/find?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Version 0.21prealpha](https://img.shields.io/badge/version-0.21prealpha-brightgreen.svg)](https://www.internalpositioning.com/guide/development/)
 <center>
 
-![Image](http://internalpositioning.com/guide/img/wifi-marker-darkgrey-small.png)
+![Image](https://www.internalpositioning.com/guide/img/wifi-marker-darkgrey-small.png)
 
 </center>
 
@@ -20,17 +20,17 @@
 
 The system is built on two main components - a server and a fingerprinting device. The fingerprinting device (computer or android app) sends the specified data to the machine learning server which stores the fingerprints and analyzes them. It then returns the result to the device and stores the result on the server for accessing via a web browser or triggering via hooks.
 
-More information? Check out [our splash page overview](http://internalpositioning.com), the [FAQ](http://internalpositioning.com/guide/faq/), and the [API](http://internalpositioning.com/guide/api/).
+More information? Check out [our splash page overview](http://www.internalpositioning.com/), the [FAQ](https://www.internalpositioning.com/guide/faq/), and the [API](http://www.internalpositioning.com/guide/api/).
 
 # Requirements
 To use this system you need to have the following
 - Linux / Mac / Cygwin (Windows). Windows is not yet supported (but will be soon). Raspberry Pi is supported!
 - Python3 installed
 - Either WiFi capable laptop or Android smartphone
-- (Optional) Android Studio installed ([in case you want to build the app yourself](http://internalpositioning.com/guide/deploy/#building-android-app))
+- (Optional) Android Studio installed ([in case you want to build the app yourself](https://www.internalpositioning.com/guide/deploy/#building-android-app))
 
 # Server setup
-_Note: you don't have to setup a server at all. If you'd like, you can use [our demo server](http://finddemo.duckdns.org) - simply [follow the quickstart guide](http://internalpositioning.com/guide/getting-started/) to get going._
+_Note: you don't have to setup a server at all. If you'd like, you can use [our demo server](http://finddemo.duckdns.org) - simply [follow the quickstart guide](https://www.internalpositioning.com/guide/getting-started/) to get going._
 
 Installation is very simple. Simply download the latest source code:
 
@@ -56,7 +56,7 @@ To run **FIND** simply use:
 python3 server.py
 ```
 
-To actually use the system you will need a fingerprinting device. The easiest thing to do is to use [our app from Google Play](https://play.google.com/store/apps/details?id=com.hcp.find&hl=en) or [build the app yourself](http://internalpositioning.com/guide/deploy/#building-android-app). Alternatively, you don't have to build an app at all and can simply use your laptop via the [the fingerprinting program](https://github.com/schollz/find/blob/master/computer/fingerprinting.py), more details [here](http://internalpositioning.com/guide/deploy/#laptop-computer).
+To actually use the system you will need a fingerprinting device. The easiest thing to do is to use [our app from Google Play](https://play.google.com/store/apps/details?id=com.hcp.find&hl=en) or [build the app yourself](https://www.internalpositioning.com/guide/deploy/#building-android-app). Alternatively, you don't have to build an app at all and can simply use your laptop via the [the fingerprinting program](https://github.com/schollz/find/blob/master/computer/fingerprinting.py), more details [here](https://www.internalpositioning.com/guide/deploy/#laptop-computer).
 
 # Using FIND
 ## 1. Fingerprint locations
@@ -110,40 +110,40 @@ which will run 1000 times.
 ## Sign-in
 <center>
 
-![Screenshot of the signin](http://internalpositioning.com/guide/img/signin1.png)
+![Screenshot of the signin](https://www.internalpositioning.com/guide/img/signin1.png)
 
 </center>
 
 <br>
 <center>
 
-![Landing](http://internalpositioning.com/guide/img/landing2.png) _Screenshot of the landing page_
+![Landing](https://www.internalpositioning.com/guide/img/landing2.png) _Screenshot of the landing page_
 
 </center><br>
 
 ## Monitor location in realtime
 <center>
 
-![Screenshot of the classifications page](http://internalpositioning.com/guide/img/classifications1.png)
+![Screenshot of the classifications page](https://www.internalpositioning.com/guide/img/classifications1.png)
 
 </center><br>
 
 ## Visualize accuracy and errors
 <center>
 
-![Charts show a clear diagnostics of the accuracy for each room](http://internalpositioning.com/guide/img/stats1.png)
+![Charts show a clear diagnostics of the accuracy for each room](https://www.internalpositioning.com/guide/img/stats1.png)
 
 </center><br>
 <center>
 
-![Pie charts lets you visualize the classification errors](http://internalpositioning.com/guide/img/pies1.png)
+![Pie charts lets you visualize the classification errors](https://www.internalpositioning.com/guide/img/pies1.png)
 
 </center><br>
 
 ## Visualize raw data
 <center>
 
-![In-depth analysis of the raw fingerprint data](http://internalpositioning.com/guide/img/signals1.png)
+![In-depth analysis of the raw fingerprint data](https://www.internalpositioning.com/guide/img/signals1.png)
 
 </center><br>
 
