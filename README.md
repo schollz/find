@@ -61,7 +61,7 @@ To actually use the system you will need a fingerprinting device. The easiest th
 # Using FIND
 ## 1. Fingerprint locations
 ### If you want to use the app...
-First [download the app from the Google Play store](https://play.google.com/store/apps/details?id=com.hcp.find). _Note: Important note - as of 04/04/2015 one of the app dependencies is no longer on NPM. The app will be rewritten in the coming weeks, but until then its not usable. Sorry!_
+First [download the app from the Google Play store](https://play.google.com/store/apps/details?id=com.hcp.find).
 
 ![Guide to starting app](http://www.internalpositioning.com/guide/img/guide_app_guide_1.png)
 
