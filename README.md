@@ -5,6 +5,9 @@ Any computer with a WiFi card can use FIND using a client program that generates
 # Install
 
 ```bash
+git clone https://github.com/schollz/find.git
+cd find
+git checkout fingerprint 
 go get ./...
 go build
 ```
