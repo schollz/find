@@ -20,8 +20,8 @@ The system is built on two main components - a server and a fingerprinting devic
 
 # Requirements
 To use this system you need to have the following:
-- A device (laptop/Raspberry Pi/Android smartphone) that has access to WiFi
-- (Optional) A computer (OS X/Windows/Linux) to run the server. If you don't have this, use [ours](https://ml.internalpositioning.com).
+- (Optional) Server: A computer (OS X/Windows/Linux) to run the server. If you don't have this, use [ours](https://ml.internalpositioning.com).
+- Client(s): device (laptop/Raspberry Pi/Android smartphone) that has access to WiFi
 
 
 # Setup
