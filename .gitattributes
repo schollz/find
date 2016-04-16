@@ -1,2 +1,2 @@
-libraries/static/* linguist-vendored
+static/* linguist-vendored
 testing/* linguist-vendored
