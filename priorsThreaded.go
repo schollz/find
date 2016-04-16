@@ -239,7 +239,7 @@ func optimizePriorsThreadedNot(group string) {
 
 	// loop through these parameters
 	mixins := []float64{0.1, 0.3, 0.5, 0.7, 0.9}
-	cutoff := 0.005
+	cutoff := 0.05
 
 	//                 network      id      loc    value
 	PBayes1 := make(map[string]map[string]map[string]float64)

@@ -76,7 +76,7 @@ func getPositionBreakdown(group string, user string) UserPositionJSON {
 func calculate(c *gin.Context) {
 	group := c.DefaultQuery("group", "noneasdf")
 	if group != "noneasdf" {
-		optimizePriorsThreaded(strings.ToLower(group))
+		optimizePriorsThreadedNot(strings.ToLower(group))
 		c.JSON(http.StatusOK, gin.H{"message": "Parameters optimized.", "success": true})
 	} else {
 		c.JSON(http.StatusOK, gin.H{"success": false, "message": "Error parsing request"})
