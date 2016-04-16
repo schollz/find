@@ -1,4 +1,5 @@
-# ![Image](https://www.internalpositioning.com/guide/img/wifi-marker-darkgrey-small.png) FIND
+# <img src="https://www.internalpositioning.com/guide/img/wifi-marker-darkgrey-small.png" width="30px" /> FIND
+
 
 [![Join the chat at https://gitter.im/schollz/find](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/schollz/find?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Version 2.0](https://img.shields.io/badge/version-2.0-brightgreen.svg)](https://www.internalpositioning.com/guide/development/)
 [![Go Report Card](https://goreportcard.com/badge/github.com/schollz/gofind)](https://goreportcard.com/report/github.com/schollz/gofind)
@@ -14,7 +15,8 @@ The system is built on two main components - a server and a fingerprinting devic
 
 - SSL support
 - Compression to keep DBs small
-- [Fast]() (20-200x faster than the [previous Python version]())
+- [Fast](https://github.com/schollz/find/blob/master/BENCHMARKS.md) (20-200x faster than the [previous Python version](https://github.com/schollz/find/tree/python3))
+- Mixes two machine learning algorithms for best classifications
 
 # Requirements
 To use this system you need to have the following:
@@ -28,7 +30,7 @@ To use this system you need to have the following:
 
 _Note:_ You are welcome to skip this step and use [our server](https://ml.internalpositioning.com), just make sure to point the server address to https://ml.internalpositioning.com.
 
-```bash
+```
 $ git clone https://github.com/schollz/gofind.git
 $ cd gofind
 $ go get ./...
@@ -72,9 +74,9 @@ $ ./gofind
 
 The client gathers WiFi fingerprints and sends them to the server.
 
-If you want to use an Android device,  [download our app](https://play.google.com/store/apps/details?id=com.hcp.find), or [build the app yourself]().
+If you want to use an Android device,  [download our app](https://play.google.com/store/apps/details?id=com.hcp.find), or [build the app yourself](https://github.com/schollz/find/tree/master/android).
 
-If you want to use a computer (laptop/Raspberry Pi/etc.), [download our client](), or [build it yourself]().
+If you want to use a computer (laptop/Raspberry Pi/etc.), [download our client](https://github.com/schollz/find/releases), or [build it yourself](https://github.com/schollz/find/tree/master/android).
 
 # Usage
 
@@ -82,19 +84,18 @@ If you want to use a computer (laptop/Raspberry Pi/etc.), [download our client](
 
 When you start up the app you will be asked for a username (enter whatever you want) and you'll be assigned a unique group name. Then you'll see the following:
 
-![App1](https://i.imgur.com/bGVVQeW.png  | width=50)
 
-Simply click "Learn" and you'll be prompted for a location name.
+<center>
+<img src="https://i.imgur.com/bGVVQeW.png" width="200px" />
+<img src="https://i.imgur.com/cqab0bl.png" width="200px" />
+</center>
 
-![App2](https://i.imgur.com/cqab0bl.png | width=50)
+Simply click "Learn" and you'll be prompted for a location name. After you enter a location, the app will connect to the server and then submit fingerprints. After you've learned some locations, just hit "Track" and you'll see your calculated location.
 
-After you enter a location, the app will connect to the server and then submit fingerprints.
-
-![App3](https://i.imgur.com/kwwLVGL.png | width=50)
-
-After you've learned some locations, just hit "Track" and you'll see your calculated location.
-
-![App4](https://i.imgur.com/3mMV7e7.png | width=50)
+<center>
+<img src="https://i.imgur.com/kwwLVGL.png" width="200px" />
+<img src="https://i.imgur.com/3mMV7e7.png" width="200px" />
+</center>
 
 To see more detailed information, goto [the server](https://ml.internalpositioning.com) and login with your group name
 
@@ -113,25 +114,28 @@ and then to track your location use
 ./fingerprint
 ```
 
-There are other options, you can learn more by [looking at the README](). To see more detailed information, goto [the server](https://ml.internalpositioning.com) and login with your group name
+There are other options, you can learn more by [looking at the README](https://github.com/schollz/find/tree/master/fingerprint). To see more detailed information, goto [the server](https://ml.internalpositioning.com) and login with your group name
 
 ## Server
 
 You can see statistics about your fingeprints by logging on to the server and signing in with your group name.
 
-![stats](https://i.imgur.com/HSGVyDb.jpg | width=50)
+<center>
+<img src="https://i.imgur.com/HSGVyDb.png" width="300px" />
+<img src="https://i.imgur.com/IAn5Hss.png" width="300px" />
+</center>
 
-You can see fingerprints of individual places by clicking on them
 
-![places](https://i.imgur.com/3l5UPub.jpg | width=50)
+You can see fingerprints of individual places by clicking on them, and then you can click on mac addresses to see there statistics across rooms.
 
-and then you can click on mac addresses to see there statistics across rooms
+<center>
+<img src="https://i.imgur.com/3l5UPub.png" width="400px" />
+</center>
+<center>
+<img src="https://i.imgur.com/Udi3xrn.png" width="400px" />
+</center>
 
-![macs](https://i.imgur.com/Udi3xrn.jpg | width=50)
 
-The server also reveals realtime tracking
-
-![realtime](https://i.imgur.com/IAn5Hss.jpg | width=50)
 
 
 # Acknowledgements

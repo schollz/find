@@ -1,4 +1,6 @@
-# Source code for making the appIcon
+# Source code for making the app
+
+You don't need to build this, you can [use ours](https://play.google.com/store/apps/details?id=com.hcp.find).
 
 ## Requirements
 
@@ -6,7 +8,7 @@
 sudo npm install -g cordova
 ```
 
-## Install 
+## Install
 ```
 cordova create find com.hcp.find Find
 cd find
