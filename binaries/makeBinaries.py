@@ -26,10 +26,10 @@ linux    arm
 linux    ppc64
 windows    amd64"""
 
-arches = """windows    amd64"""
-# linux    amd64
-# darwin    amd64
-# linux    arm"""
+arches = """windows    amd64
+linux    amd64
+darwin    amd64
+linux    arm"""
 
 arches = arches.split("\n")
 version = "2.0"
