@@ -10,6 +10,9 @@ sudo npm install -g cordova
 
 ## Install
 ```
+git clone https://github.com/schollz/find.git
+cd find
+git checkout android
 cordova create find com.hcp.find Find
 cd find
 cordova platform add android
