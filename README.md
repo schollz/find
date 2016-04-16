@@ -82,19 +82,19 @@ If you want to use a computer (laptop/Raspberry Pi/etc.), [download our client](
 
 When you start up the app you will be asked for a username (enter whatever you want) and you'll be assigned a unique group name. Then you'll see the following:
 
-![App1](https://i.imgur.com/bGVVQeW.png =100x)
+![App1](https://i.imgur.com/bGVVQeW.png  | width=50)
 
 Simply click "Learn" and you'll be prompted for a location name.
 
-![App2](https://i.imgur.com/cqab0bl.png)
+![App2](https://i.imgur.com/cqab0bl.png | width=50)
 
 After you enter a location, the app will connect to the server and then submit fingerprints.
 
-![App3](https://i.imgur.com/kwwLVGL.png)
+![App3](https://i.imgur.com/kwwLVGL.png | width=50)
 
 After you've learned some locations, just hit "Track" and you'll see your calculated location.
 
-![App4](https://i.imgur.com/3mMV7e7.png)
+![App4](https://i.imgur.com/3mMV7e7.png | width=50)
 
 To see more detailed information, goto [the server](https://ml.internalpositioning.com) and login with your group name
 
@@ -119,19 +119,19 @@ There are other options, you can learn more by [looking at the README](). To see
 
 You can see statistics about your fingeprints by logging on to the server and signing in with your group name.
 
-![stats](https://i.imgur.com/HSGVyDb.jpg)
+![stats](https://i.imgur.com/HSGVyDb.jpg | width=50)
 
 You can see fingerprints of individual places by clicking on them
 
-![places](https://i.imgur.com/3l5UPub.jpg)
+![places](https://i.imgur.com/3l5UPub.jpg | width=50)
 
 and then you can click on mac addresses to see there statistics across rooms
 
-![macs](https://i.imgur.com/Udi3xrn.jpg)
+![macs](https://i.imgur.com/Udi3xrn.jpg | width=50)
 
 The server also reveals realtime tracking
 
-![realtime](https://i.imgur.com/IAn5Hss.jpg)
+![realtime](https://i.imgur.com/IAn5Hss.jpg | width=50)
 
 
 # Acknowledgements
