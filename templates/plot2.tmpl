@@ -1,0 +1,76 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<script type="text/javascript">
+	window.onload = function () {
+		var chart = new CanvasJS.Chart("chartContainer",
+		{
+
+			title:{
+				text: "{{ .Title }}",
+				fontSize: 30
+			},
+                        animationEnabled: true,
+			axisX:{
+
+				gridColor: "Silver",
+				tickColor: "silver",
+
+			},
+
+                toolTip:{
+                  shared:false
+                },
+			theme: "theme2",
+			axisY: {
+				gridColor: "Silver",
+				tickColor: "silver",
+				minimum: 0,
+			 maximum: 0.3
+			},
+			legend:{
+				verticalAlign: "center",
+				horizontalAlign: "right"
+			},
+			data: [
+
+{{ range .Data.Macs }}
+{
+  type: "line",
+  showInLegend: {{ $.Legend }},
+  name: "{{ .Name }}",
+	toolTipContent: "<a href ='/explore/{{ $.Group }}/{{ $.Network }}/{{ .Name }}'> {name}</a>",
+  lineThickness: 2,
+  dataPoints: [
+{{ range $index, $element := .Points }} { x: {{ index $.Rssi $index }}, y: {{ $element }} },
+{{ end }}
+  ]
+},
+{{ end }}
+
+			],
+          legend:{
+            cursor:"pointer",
+            itemclick:function(e){
+              if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+              	e.dataSeries.visible = false;
+              }
+              else{
+                e.dataSeries.visible = true;
+              }
+              chart.render();
+            }
+          }
+		});
+
+chart.render();
+}
+</script>
+<script type="text/javascript" src="/static/js/canvasjs.min.js"></script>
+</head>
+<body>
+	<div id="chartContainer" style="height: 400px; width: 100%;">
+	</div>
+</body>
+</html>

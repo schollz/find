@@ -1,0 +1,31 @@
+<html>
+<head>
+  <!-- Latest compiled and minified plotly.js JavaScript -->
+  <script type="text/javascript" src="/static/js/plotly-latest.min.js"></script>
+</head>
+
+<body>
+
+  <div id="myDiv" style="width: 1000px; height: 600px;"><!-- Plotly chart will be drawn inside this DIV --></div>
+
+
+  <script>
+    {{ range $index, $element := .Datas }}
+  var trace{{ index $.IndexNames $index }} = {
+    x: {{ $.RssiRange }},
+    y: {{ $element }},
+    mode: 'lines',
+    name: "{{ index $.Names $index }}"
+  };
+  {{ end }}
+
+  var data = [  {{ range $index, $element := .Datas }} trace{{ index $.IndexNames $index }}, {{end}}];
+  var layout = {
+  autosize: true,
+  width: 1000,
+  height: 600,
+};
+  Plotly.newPlot('myDiv', data, layout);
+  </script>
+</body>
+</html>
