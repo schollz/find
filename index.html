@@ -36,13 +36,9 @@
 
   <style type="text/css">
         button {
-            -moz-box-shadow:inset 0px 1px 0px 0px #caefab;
+/*            -moz-box-shadow:inset 0px 1px 0px 0px #caefab;
             -webkit-box-shadow:inset 0px 1px 0px 0px #caefab;
-            box-shadow:inset 0px 1px 0px 0px #caefab;
-            background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #77d42a), color-stop(1, #5cb811) );
-            background:-moz-linear-gradient( center top, #77d42a 5%, #5cb811 100% );
-            filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#77d42a', endColorstr='#5cb811');
-            background-color:#77d42a;
+            box-shadow:inset 0px 1px 0px 0px #caefab;*/
             -webkit-border-top-left-radius:10px;
             -moz-border-radius-topleft:10px;
             border-top-left-radius:10px;
@@ -71,13 +67,21 @@
             text-transform:none;
             text-decoration:none;
             text-align:center;
-            text-shadow:1px 1px 0px #aade7c;
+/*            text-shadow:1px 1px 0px #aade7c;*/
         }
-        button:active {
-            background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #5cb811), color-stop(1, #77d42a) );
-            background:-moz-linear-gradient( center top, #5cb811 5%, #77d42a 100% );
-            filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#5cb811', endColorstr='#77d42a');
-            background-color:#5cb811;
+        button .inactive {
+             background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #77d42a), color-stop(1, #5cb811) );
+            background:-moz-linear-gradient( center top, #77d42a 5%, #5cb811 100% );
+            filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#77d42a', endColorstr='#5cb811');
+            background-color:#77d42a;
+        }
+        .active {
+/*            background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #b81a11), color-stop(1, #cf1d13) );
+            background:-moz-linear-gradient( center top, #b81a11 5%, #cf1d13 100% );
+            filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#b81a11', endColorstr='#cf1d13');
+*/            background-color:#b81a11;
+            color:#E4E4E4;
+/*            text-shadow:1px 1px 0px #db8c88;*/
         }
         button .hint {
             font-size:10px;
@@ -203,8 +207,179 @@ h1 {
     animation:fade 3000ms infinite;
     -webkit-animation:fade 3000ms infinite;
 }
+
+.red
+{
+    background-color:red;
+}
         </style>
 
+
+<style>
+#ballsWaveG{
+    position:relative;
+    width:125px;
+    height:29px;
+    margin:auto;
+}
+
+.ballsWaveG{
+    position:absolute;
+    top:0;
+    background-color:rgb(0,0,0);
+    width:16px;
+    height:16px;
+    animation-name:ballsWaveG;
+        -o-animation-name:ballsWaveG;
+        -ms-animation-name:ballsWaveG;
+        -webkit-animation-name:ballsWaveG;
+        -moz-animation-name:ballsWaveG;
+    animation-duration:1.5s;
+        -o-animation-duration:1.5s;
+        -ms-animation-duration:1.5s;
+        -webkit-animation-duration:1.5s;
+        -moz-animation-duration:1.5s;
+    animation-iteration-count:infinite;
+        -o-animation-iteration-count:infinite;
+        -ms-animation-iteration-count:infinite;
+        -webkit-animation-iteration-count:infinite;
+        -moz-animation-iteration-count:infinite;
+    animation-direction:normal;
+        -o-animation-direction:normal;
+        -ms-animation-direction:normal;
+        -webkit-animation-direction:normal;
+        -moz-animation-direction:normal;
+    border-radius:8px;
+        -o-border-radius:8px;
+        -ms-border-radius:8px;
+        -webkit-border-radius:8px;
+        -moz-border-radius:8px;
+}
+
+#ballsWaveG_1{
+    left:0;
+    animation-delay:0.6s;
+        -o-animation-delay:0.6s;
+        -ms-animation-delay:0.6s;
+        -webkit-animation-delay:0.6s;
+        -moz-animation-delay:0.6s;
+}
+
+#ballsWaveG_2{
+    left:16px;
+    animation-delay:0.75s;
+        -o-animation-delay:0.75s;
+        -ms-animation-delay:0.75s;
+        -webkit-animation-delay:0.75s;
+        -moz-animation-delay:0.75s;
+}
+
+#ballsWaveG_3{
+    left:31px;
+    animation-delay:0.9s;
+        -o-animation-delay:0.9s;
+        -ms-animation-delay:0.9s;
+        -webkit-animation-delay:0.9s;
+        -moz-animation-delay:0.9s;
+}
+
+#ballsWaveG_4{
+    left:47px;
+    animation-delay:1.05s;
+        -o-animation-delay:1.05s;
+        -ms-animation-delay:1.05s;
+        -webkit-animation-delay:1.05s;
+        -moz-animation-delay:1.05s;
+}
+
+#ballsWaveG_5{
+    left:62px;
+    animation-delay:1.2s;
+        -o-animation-delay:1.2s;
+        -ms-animation-delay:1.2s;
+        -webkit-animation-delay:1.2s;
+        -moz-animation-delay:1.2s;
+}
+
+#ballsWaveG_6{
+    left:78px;
+    animation-delay:1.35s;
+        -o-animation-delay:1.35s;
+        -ms-animation-delay:1.35s;
+        -webkit-animation-delay:1.35s;
+        -moz-animation-delay:1.35s;
+}
+
+#ballsWaveG_7{
+    left:94px;
+    animation-delay:1.5s;
+        -o-animation-delay:1.5s;
+        -ms-animation-delay:1.5s;
+        -webkit-animation-delay:1.5s;
+        -moz-animation-delay:1.5s;
+}
+
+#ballsWaveG_8{
+    left:109px;
+    animation-delay:1.64s;
+        -o-animation-delay:1.64s;
+        -ms-animation-delay:1.64s;
+        -webkit-animation-delay:1.64s;
+        -moz-animation-delay:1.64s;
+}
+
+
+
+@keyframes ballsWaveG{
+    0%{
+        background-color:rgb(0,0,0);
+    }
+
+    100%{
+        background-color:rgb(255,255,255);
+    }
+}
+
+@-o-keyframes ballsWaveG{
+    0%{
+        background-color:rgb(0,0,0);
+    }
+
+    100%{
+        background-color:rgb(255,255,255);
+    }
+}
+
+@-ms-keyframes ballsWaveG{
+    0%{
+        background-color:rgb(0,0,0);
+    }
+
+    100%{
+        background-color:rgb(255,255,255);
+    }
+}
+
+@-webkit-keyframes ballsWaveG{
+    0%{
+        background-color:rgb(0,0,0);
+    }
+
+    100%{
+        background-color:rgb(255,255,255);
+    }
+}
+
+@-moz-keyframes ballsWaveG{
+    0%{
+        background-color:rgb(0,0,0);
+    }
+
+    100%{
+        background-color:rgb(255,255,255);
+    }
+}
+</style>
     </head>
     <body onload="onLoad()">
     <script>
@@ -213,6 +388,7 @@ h1 {
         $('button#changeuser').toggle();
         $('button#changegroup').toggle();
         $('button#changeserver').toggle();
+        $('div#ballsWaveG').hide();
     	document.addEventListener("deviceready", main, false);
     	if(! window.plugins) main();
     }
@@ -221,15 +397,28 @@ h1 {
             <h1>FIND v0.5</h1>
             <h2 id='user'>loading...</h2>
 <!--             <p><button id='openwifi'>Open Wifi</button> <button id='closewifi'>Close Wifi</button></p>
- -->        <p><button id='learn' onclick='learn();'>Learn</button><br/></p>
-            <p><button id='track' onclick='scanAndSend(null);'>Track</button><br/></p>
-            <p><button id='stop' onclick='stopScanning();'>Stop</button></p>
-            <p><button id='options' onclick="$('button#changeserver').toggle('Drop');$('button#dashboard').toggle('Drop');$('button#changeuser').toggle('Drop'); $('button#changegroup').toggle('Drop');$('button#learn').toggle('Drop');$('button#stop').toggle('Drop');$('button#track').toggle('Drop');">Options</button></p>
-            <p><button id='dashboard' onclick='openDashboard();'>Dashboard</button></p>
-            <p><button id='changeuser' onclick='setData("username","user1");'>Change Username</button></p>
-            <p><button id='changegroup' onclick='setData("group",makeid());'>Change group</button></p>
-            <p><button id='changeserver' onclick='setData("server","https://ml.internalpositioning.com");'>Change server</button></p>
-            <p><button id='exit' onclick='navigator.app.exitApp();'>Exit</button></p>
+ -->        <p><button class="inactive" id='learn' onclick='learn();'>Learn</button><br/></p>
+            <p><button class="inactive" id='track' onclick='track();'>Track</button><br/></p>
+<!--             <p><button class="inactive" id='stop' onclick='stopScanning();'>Stop</button></p>
+ -->            
+            <p><button class="inactive" id='options' onclick="$('button#changeserver').toggle('Drop');$('button#dashboard').toggle('Drop');$('button#changeuser').toggle('Drop'); $('button#changegroup').toggle('Drop');$('button#learn').toggle('Drop');$('button#stop').toggle('Drop');$('button#track').toggle('Drop');">Options</button></p>
+            <p><button class="inactive" id='dashboard' onclick='openDashboard();'>Dashboard</button></p>
+            <p><button class="inactive" id='changeuser' onclick='setData("username","user1");'>Change Username</button></p>
+            <p><button class="inactive" id='changegroup' onclick='setData("group",makeid());'>Change group</button></p>
+            <p><button class="inactive" id='changeserver' onclick='setData("server","https://ml.internalpositioning.com");'>Change server</button></p>
+            <p><button class="inactive" id='exit' onclick='navigator.app.exitApp();'>Exit</button></p>
+
+<div id="ballsWaveG">
+    <div id="ballsWaveG_1" class="ballsWaveG"></div>
+    <div id="ballsWaveG_2" class="ballsWaveG"></div>
+    <div id="ballsWaveG_3" class="ballsWaveG"></div>
+    <div id="ballsWaveG_4" class="ballsWaveG"></div>
+    <div id="ballsWaveG_5" class="ballsWaveG"></div>
+    <div id="ballsWaveG_6" class="ballsWaveG"></div>
+    <div id="ballsWaveG_7" class="ballsWaveG"></div>
+    <div id="ballsWaveG_8" class="ballsWaveG"></div>
+</div>
+
             <div id='scanning'></div>
             <div id='sending'></div>
             <div id='result'></div>

@@ -6,7 +6,8 @@ var press;
 var groupname;
 var username;
 var servername;
-
+var learning = false;
+var tracking = false;
 
 function toTitleCase(str)
 {
@@ -63,16 +64,43 @@ function ipIntToString(ip) {
 
 
 function learn() {
-	console.log('button#scanwifi');
-	if (toggle==true) {
-		navigator.notification.prompt(
-		    'Please enter location name',  // message
-		    scanAndSend,                  // callback to invoke
-		    'Learn location',            // title
-		    ['Ok','Exit'],             // buttonLabels
-		    'office'                 // defaultText
-		);	
-		toggle = false;
+	if (learning == false) {
+		$('div#ballsWaveG').show();
+		$('button#learn').toggleClass('active');
+		$('button#learn').html('Stop learning');
+		console.log('button#scanwifi');
+		if (toggle==true) {
+			navigator.notification.prompt(
+			    'Please enter location name',  // message
+			    scanAndSend,                  // callback to invoke
+			    'Learn location',            // title
+			    ['Ok','Exit'],             // buttonLabels
+			    'office'                 // defaultText
+			);	
+			toggle = false;
+		}		
+		learning = true;
+	} else {
+		$('button#learn').toggleClass('active');
+		$('button#learn').html('Learn');
+		setTimeout(stopScanning, 100);
+		learning = false;
+	}
+}
+
+
+function track() {
+	if (tracking == false) {
+		$('div#ballsWaveG').show();
+		$('button#track').toggleClass('active');
+		$('button#track').html('Stop tracking');
+		scanAndSend(null);
+		tracking = true;
+	} else {
+		$('button#track').toggleClass('active');
+		$('button#track').html('Track');
+		setTimeout(stopScanning, 100);
+		tracking = false;
 	}
 }
 
@@ -143,10 +171,14 @@ function sendFingerprint() {
 		   success: function(data) {
 		   	var d = new Date();
 			var n = d.toString();
-		     $('div#result').html( n + "<br>" + data["message"] );
+			if (learning == true || tracking == true) {
+		     $('div#result').html( n + "<br><strong>" + data["message"] +"</strong>");
+			}
 		   },
 		   error: function(e) {
+		   	if (learning == true || tracking == true) {
 		     $('div#result').html('Error: ' + e.message);
+		   	}
 		   }
 		});
 					
@@ -179,6 +211,7 @@ function stopScanning() {
 	$('div#scanning').html("Not scanning");
 	$('div#result').html("");
 	$('div#sending').html("");
+	$('div#ballsWaveG').hide();
 
 	clearInterval(scanningInterval);
     if (cordova.plugins.backgroundMode.isEnabled() == true) {
