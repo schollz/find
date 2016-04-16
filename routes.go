@@ -10,7 +10,6 @@ import (
 	"sort"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -73,6 +72,12 @@ func slashLogout(c *gin.Context) {
 
 func slashDashboard(c *gin.Context) {
 	group := c.Param("group")
+	if _, err := os.Stat(path.Join(RuntimeArgs.SourcePath, group+".db")); os.IsNotExist(err) {
+		c.HTML(http.StatusOK, "login.tmpl", gin.H{
+			"ErrorMessage": "First download the app or CLI program to insert some fingerprints.",
+		})
+		return
+	}
 	ps, _ := openParameters(group)
 	users := getUsers(group)
 	people := make(map[string]UserPositionJSON)
@@ -115,14 +120,23 @@ func slashDashboard(c *gin.Context) {
 
 func slashLocation(c *gin.Context) {
 	group := c.Param("group")
+	if _, err := os.Stat(path.Join(RuntimeArgs.SourcePath, group+".db")); os.IsNotExist(err) {
+		c.JSON(http.StatusOK, gin.H{"success": "false", "message": "First download the app or CLI program to insert some fingerprints."})
+		return
+	}
 	user := c.Param("user")
 	userJSON := getPositionBreakdown(group, user)
 	c.JSON(http.StatusOK, userJSON)
 }
 
 func slashExplore(c *gin.Context) {
-	defer timeTrack(time.Now(), "Loading JSON")
 	group := c.Param("group")
+	if _, err := os.Stat(path.Join(RuntimeArgs.SourcePath, group+".db")); os.IsNotExist(err) {
+		c.HTML(http.StatusOK, "login.tmpl", gin.H{
+			"ErrorMessage": "First download the app or CLI program to insert some fingerprints.",
+		})
+		return
+	}
 	network := c.Param("network")
 	location := c.Param("location")
 	ps, _ := openParameters(group)
@@ -157,8 +171,14 @@ func slashExplore(c *gin.Context) {
 }
 
 func slashExplore2(c *gin.Context) {
-	defer timeTrack(time.Now(), "Loading JSON")
 	group := c.Param("group")
+	if _, err := os.Stat(path.Join(RuntimeArgs.SourcePath, group+".db")); os.IsNotExist(err) {
+		c.HTML(http.StatusOK, "login.tmpl", gin.H{
+			"ErrorMessage": "First download the app or CLI program to insert some fingerprints.",
+		})
+		return
+	}
+
 	network := c.Param("network")
 	location := c.Param("location")
 	ps, _ := openParameters(group)
@@ -215,6 +235,13 @@ func slashExplore2(c *gin.Context) {
 
 func slashPie(c *gin.Context) {
 	group := c.Param("group")
+	if _, err := os.Stat(path.Join(RuntimeArgs.SourcePath, group+".db")); os.IsNotExist(err) {
+		c.HTML(http.StatusOK, "login.tmpl", gin.H{
+			"ErrorMessage": "First download the app or CLI program to insert some fingerprints.",
+		})
+		return
+	}
+
 	network := c.Param("network")
 	location := c.Param("location")
 	ps, _ := openParameters(group)
