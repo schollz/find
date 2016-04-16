@@ -1,9 +1,12 @@
 [![Join the chat at https://gitter.im/schollz/find](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/schollz/find?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Version 0.21prealpha](https://img.shields.io/badge/version-0.21prealpha-brightgreen.svg)](https://www.internalpositioning.com/guide/development/)
 <center>
 
-![Image](https://www.internalpositioning.com/guide/img/wifi-marker-darkgrey-small.png)
+![Image](https://www.internalpositioning.com/guide/img/wifi-marker-darkgrey-small.png
+)
 
 </center>
+
+*Note for past users, the codebase has been completely rewritten in Golang so [things are ~100x faster](https://github.com/schollz/find/blob/master/BENCHMARKS.md#python-vs-go), smarter, and more secure. The [Python3 version will stay available](https://github.com/schollz/find/tree/python3), but it is no longer supported. Development will now be focused on the [Golang version](https://github.com/schollz/find/tree/master).*
 
 - [Requirements](#requirements)
 - [Server setup](#server-setup)
