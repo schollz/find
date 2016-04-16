@@ -142,7 +142,7 @@ func optimizePriorsThreaded(group string) {
 				for key := range PBayes1[n][id] {
 					locs = append(locs, key)
 					bayes1 = append(bayes1, PBayes1[n][id][key])
-					bayes2 = append(bayes2, PBayes1[n][id][key])
+					bayes2 = append(bayes2, PBayes2[n][id][key])
 				}
 				trueLoc := fingerprintsInMemory[id].Location
 				chanJobs <- jobA{n: n,
@@ -188,7 +188,7 @@ func optimizePriorsThreaded(group string) {
 				}
 			}
 			average = average / float64(it)
-			// fmt.Println(mixin, average, a)
+			// fmt.Println(mixin, average)
 			if average > bestResult[n] {
 				bestResult[n] = average
 				bestMixin[n] = mixin
