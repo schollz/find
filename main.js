@@ -8,6 +8,7 @@ var username;
 var servername;
 var learning = false;
 var tracking = false;
+var inoptions = false;
 
 function toTitleCase(str)
 {
@@ -62,8 +63,23 @@ function ipIntToString(ip) {
 	return str;
 }
 
+function options() {
+	$('button#changeserver').toggle('Drop');$('button#dashboard').toggle('Drop');$('button#changeuser').toggle('Drop'); $('button#changegroup').toggle('Drop');$('button#learn').toggle('Drop');$('button#stop').toggle('Drop');$('button#track').toggle('Drop');$('button#options').toggleClass('active');
+	if (inoptions == false) {
+inoptions = true;
+$('button#options').html('Go back');
+} else {
+	inoptions = false;
+	$('button#options').html('Options');
+
+}
+
+}
 
 function learn() {
+	if (tracking==true) {
+		track();
+	}
 	if (learning == false) {
 		$('div#ballsWaveG').show();
 		$('button#learn').toggleClass('active');
@@ -81,15 +97,18 @@ function learn() {
 		}		
 		learning = true;
 	} else {
+		learning = false;
 		$('button#learn').toggleClass('active');
 		$('button#learn').html('Learn');
-		setTimeout(stopScanning, 100);
-		learning = false;
+		stopScanning();
 	}
 }
 
 
 function track() {
+	if (learning==true) {
+		learn();
+	}
 	if (tracking == false) {
 		$('div#ballsWaveG').show();
 		$('button#track').toggleClass('active');
@@ -97,10 +116,10 @@ function track() {
 		scanAndSend(null);
 		tracking = true;
 	} else {
+		tracking = false;
 		$('button#track').toggleClass('active');
 		$('button#track').html('Track');
-		setTimeout(stopScanning, 100);
-		tracking = false;
+		stopScanning();
 	}
 }
 

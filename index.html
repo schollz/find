@@ -401,9 +401,9 @@ h1 {
             <p><button class="inactive" id='track' onclick='track();'>Track</button><br/></p>
 <!--             <p><button class="inactive" id='stop' onclick='stopScanning();'>Stop</button></p>
  -->            
-            <p><button class="inactive" id='options' onclick="$('button#changeserver').toggle('Drop');$('button#dashboard').toggle('Drop');$('button#changeuser').toggle('Drop'); $('button#changegroup').toggle('Drop');$('button#learn').toggle('Drop');$('button#stop').toggle('Drop');$('button#track').toggle('Drop');">Options</button></p>
+            <p><button class="inactive" id='options' onclick="options();">Options</button></p>
             <p><button class="inactive" id='dashboard' onclick='openDashboard();'>Dashboard</button></p>
-            <p><button class="inactive" id='changeuser' onclick='setData("username","user1");'>Change Username</button></p>
+            <p><button class="inactive" id='changeuser' onclick='setData("username","user1");'>Change user</button></p>
             <p><button class="inactive" id='changegroup' onclick='setData("group",makeid());'>Change group</button></p>
             <p><button class="inactive" id='changeserver' onclick='setData("server","https://ml.internalpositioning.com");'>Change server</button></p>
             <p><button class="inactive" id='exit' onclick='navigator.app.exitApp();'>Exit</button></p>
