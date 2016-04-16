@@ -74,9 +74,9 @@ $ ./gofind
 
 The client gathers WiFi fingerprints and sends them to the server.
 
-If you want to use an Android device,  [download our app](https://play.google.com/store/apps/details?id=com.hcp.find), or [build the app yourself](https://github.com/schollz/find/tree/master/android).
+If you want to use an Android device,  [download our app](https://play.google.com/store/apps/details?id=com.hcp.find), or [build the app yourself](https://github.com/schollz/find/tree/android).
 
-If you want to use a computer (laptop/Raspberry Pi/etc.), [download our client](https://github.com/schollz/find/releases), or [build it yourself](https://github.com/schollz/find/tree/master/android).
+If you want to use a computer (laptop/Raspberry Pi/etc.), [download our client](https://github.com/schollz/find/releases), or [build it yourself](https://github.com/schollz/find/tree/android).
 
 # Usage
 
@@ -114,7 +114,7 @@ and then to track your location use
 ./fingerprint
 ```
 
-There are other options, you can learn more by [looking at the README](https://github.com/schollz/find/tree/master/fingerprint). To see more detailed information, goto [the server](https://ml.internalpositioning.com) and login with your group name
+There are other options, you can learn more by [looking at the README]https://github.com/schollz/find/tree/fingerprint). To see more detailed information, goto [the server](https://ml.internalpositioning.com) and login with your group name
 
 ## Server
 
