@@ -31,6 +31,9 @@
                       <a class="page-scroll" href="#{{ p[1] }}">{% if 'About' == p[0] %}<i class="fa fa-question-circle fa-fw"></i>&nbsp; {% endif %}{% if 'Features' == p[0] %}<i class="fa fa-book fa-fw"></i>&nbsp;{% endif %}{% if 'Contact' == p[0] %}<i class="fa fa-phone fa-fw"></i>&nbsp; {% endif %}{% if 'Get Started' == p[0] %}<i class="fa fa-bolt fa-fw"></i>&nbsp;{% endif %}{% if 'Blog' == p[0] %}<i class="fa fa-newspaper-o fa-fw"></i>&nbsp; {% endif %}  {{ p[0] }} </a>
                     </li>
                   {% endfor %}
+                  <li>
+                    <a class="page-scroll" href="https://github.com/schollz/find"><i class="fa fa-code-fork fa-fw"></i>&nbsp; Source </a>
+                  </li>
 
                 {% else %}
                   <!-- Blog, Post, Tag pages-->
@@ -38,7 +41,7 @@
                     {% if page.section-type == "blog" and p[0] == "Blog" %}
                       <!-- Blog button in blog.html doesn't refresh the page -->
                       <li>
-                        <a class="page-scroll" href="#blog"><i class="fa fa-newspaper-o fa-fw"></i>&nbsp;  {{ p[0] }} </a>
+                        <a class="page-scroll" href="/blog/index.html"><i class="fa fa-newspaper-o fa-fw"></i>&nbsp;  {{ p[0] }} </a>
                       </li>
                     {% elsif p[0] == "Blog" %}
                       <li>
@@ -48,7 +51,7 @@
                       <li>
                         <a class="page-scroll" href="{{site.baseurl}}/index.html#{{ p[1] }}">{% if 'About' == p[0] %}<i class="fa fa-question-circle fa-fw"></i>&nbsp; {% endif %}{% if 'Features' == p[0] %}<i class="fa fa-book fa-fw"></i>&nbsp;{% endif %}{% if 'Contact' == p[0] %}<i class="fa fa-phone fa-fw"></i>&nbsp; {% endif %}{% if 'Get Started' == p[0] %}<i class="fa fa-bolt fa-fw"></i>&nbsp;{% endif %}{% if 'Blog' == p[0] %}<i class="fa fa-newspaper-o fa-fw"></i>&nbsp; {% endif %}  {{ p[0] }} </a>
                       </li>
-                      
+
                     {% endif %}
                   {% endfor %}
                 {% endif %}
