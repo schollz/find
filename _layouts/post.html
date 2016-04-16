@@ -1,0 +1,53 @@
+
+<!-- Post Layout Start -->
+
+<!DOCTYPE html>
+<html lang="{{ site.lang }}">
+
+  {% include head.html %}
+
+  <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+
+    {% include navigation.html %}
+
+    <section id="{{ page.title }}" class="container content-section text-left">
+      <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+
+          <h1><strong>{{ page.title }}</strong></h1>
+          <h4><strong>{{ page.date | date_to_string }}</strong>
+            <small> . {{ page.category }} . <a href="{{site.baseurl}}{{page.url }}#disqus_thread">Comments</a>
+            {% for tag in page.tags %}
+              <a href="{{site.baseurl}}/tags/{{tag}}.html">#{{ tag }}</a>
+            {% endfor %}
+            </small>
+          </h4>
+
+<span style="text-align:left">
+        {{ page.content | markdownify }}
+</span>
+
+          {% include share.html %}
+
+          {% include comments.html %}
+
+        </div>
+      </div>
+    </section>
+
+    <section id="{{ page.title }}" class="container content-section text-left">
+      <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+          {% include social-buttons.html %}
+        </div>
+      </div>
+    </section>
+
+    {% include footer.html %}
+
+    {% include js.html %}
+
+  </body>
+</html>
+
+<!-- Post Layout End -->

@@ -1,0 +1,60 @@
+
+<!-- Navigation Start -->
+
+<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
+                <i class="fa fa-bars"></i>
+            </button>
+            {% if page.section-type == "index" %}
+              <a class="navbar-brand page-scroll" href="#page-top">
+            {% else %}
+              <a class="navbar-brand page-scroll" href="{{site.baseurl}}/index.html#page-top">
+            {% endif %}
+            <div>{% if site.black-favicon %}<img src="{{site.baseurl}}{{ site.black-favicon }}" alt="">  {% endif %}{{ site.title }}</div>
+          </a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
+            <ul class="nav navbar-nav">
+                <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+                <li class="hidden">
+                    <a href="#page-top"></a>
+                </li>
+
+                {% if page.section-type == "index" %}
+
+                  <!-- Scroll to section for each page in index -->
+                  {% for p in site.pages_list %}
+                    <li>
+                      <a class="page-scroll" href="#{{ p[1] }}">{% if 'About' == p[0] %}<i class="fa fa-question-circle fa-fw"></i>&nbsp; {% endif %}{% if 'Features' == p[0] %}<i class="fa fa-book fa-fw"></i>&nbsp;{% endif %}{% if 'Contact' == p[0] %}<i class="fa fa-phone fa-fw"></i>&nbsp; {% endif %}{% if 'Get Started' == p[0] %}<i class="fa fa-bolt fa-fw"></i>&nbsp;{% endif %}{% if 'Blog' == p[0] %}<i class="fa fa-newspaper-o fa-fw"></i>&nbsp; {% endif %}  {{ p[0] }} </a>
+                    </li>
+                  {% endfor %}
+
+                {% else %}
+                  <!-- Blog, Post, Tag pages-->
+                  {% for p in site.pages_list %}
+                    {% if page.section-type == "blog" and p[0] == "Blog" %}
+                      <!-- Blog button in blog.html doesn't refresh the page -->
+                      <li>
+                        <a class="page-scroll" href="#blog"><i class="fa fa-newspaper-o fa-fw"></i>&nbsp;  {{ p[0] }} </a>
+                      </li>
+                    {% elsif p[0] == "Blog" %}
+                      <li>
+                        <a class="page-scroll" href="{{site.baseurl}}/blog/index.html"><i class="fa fa-newspaper-o fa-fw"></i>&nbsp;  {{ p[0] }} </a>
+                      </li>
+                    {% else %}
+                      <li>
+                        <a class="page-scroll" href="{{site.baseurl}}/index.html#{{ p[1] }}">{% if 'About' == p[0] %}<i class="fa fa-question-circle fa-fw"></i>&nbsp; {% endif %}{% if 'Features' == p[0] %}<i class="fa fa-book fa-fw"></i>&nbsp;{% endif %}{% if 'Contact' == p[0] %}<i class="fa fa-phone fa-fw"></i>&nbsp; {% endif %}{% if 'Get Started' == p[0] %}<i class="fa fa-bolt fa-fw"></i>&nbsp;{% endif %}{% if 'Blog' == p[0] %}<i class="fa fa-newspaper-o fa-fw"></i>&nbsp; {% endif %}  {{ p[0] }} </a>
+                      </li>
+                      
+                    {% endif %}
+                  {% endfor %}
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Navigation End -->

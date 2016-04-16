@@ -1,0 +1,60 @@
+
+<!-- Index Layout Start -->
+
+<!DOCTYPE html>
+<html lang="{{ site.lang }}">
+
+  {% include head.html %}
+
+  <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+
+    {% include navigation.html %}
+
+    {% include header.html %}
+
+    {% for p in site.pages_list %}
+
+{% for page in site.pages %}
+
+  {% if page.section-type == "about" and p[1] == "about" %}
+
+    {% include about.html %}
+
+  {% elsif page.section-type == "getstarted"  and p[0] == "Get Started"  %}
+
+    {% include get-started.html %}
+
+  {% elsif page.section-type == "features"  and p[1] == "features" %}
+
+    {% include features.html %}  
+
+  {% elsif page.section-type == "pricing" and p[1] == "pricing" %}
+
+    {% include pricing.html %}
+
+  {% elsif page.section-type == "career" and p[1] == "career" %}
+
+    {% include career.html %}
+
+  {% elsif page.section-type == "latest-post"  and p[1] == "blog"  %}
+
+    {% include latest-post.html %}
+
+  {% elsif page.section-type == "contact" and p[1] == "contact" %}
+
+    {% include contact.html %}
+
+  {% endif %}
+
+{% endfor %}
+
+    {% endfor %}
+
+    {% include footer.html %}
+
+    {% include js.html %}
+
+  </body>
+</html>
+
+<!-- Index Layout End -->

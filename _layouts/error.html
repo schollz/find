@@ -1,0 +1,36 @@
+
+<!-- 404 Layout Start -->
+
+<!DOCTYPE html>
+<html lang="{{ site.lang }}">
+
+  {% include head.html %}
+
+  <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+
+    {% include navigation.html %}
+
+    <section id="{{ page.title }}" class="container content-section text-center">
+      <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+
+          <h1><strong>{{ page.title }}</strong></h1>
+
+          {{ page.content | markdownify }}
+
+          <img class="img-responsive center-block" src="{{site.baseurl}}{{ site.404-img }}" alt="">
+
+          {% include social-buttons.html %}
+
+        </div>
+      </div>
+    </section>
+
+    {% include footer.html %}
+
+    {% include js.html %}
+
+  </body>
+</html>
+
+<!-- 404 Layout End -->

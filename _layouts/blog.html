@@ -1,0 +1,45 @@
+
+<!-- Blog Layout Start -->
+
+<!DOCTYPE html>
+<html lang="{{ site.lang }}">
+
+  {% include head.html %}
+
+  <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+
+    {% include navigation.html %}
+
+    <section id="{{ page.title }}" class="container content-section text-left">
+      <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+<span style="text-align:left">
+        {{ page.content | markdownify }}
+</span>
+
+        {% for post in paginator.posts %}
+          <h4 align="left"><strong>{{ post.date | date_to_string }}</strong> <small>. {{ post.category }} .</small> <a href="{{site.baseurl}}{{post.url}}"> <strong>{{ post.title }} </strong> </a> <small><a href="{{site.baseurl}}{{post.url}}#disqus_thread">Comments</a></small></h4>
+        {% endfor %}
+
+        {% include pagination.html %}
+
+        </div>
+      </div>
+    </section>
+
+    <section id="{{ page.title }}" class="container content-section text-left">
+      <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+          {% include social-buttons.html %}
+        </div>
+      </div>
+    </section>
+
+    {% include footer.html %}
+
+    {% include js.html %}
+
+  </body>
+</html>
+
+<!-- Blog Layout End -->

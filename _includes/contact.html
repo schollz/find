@@ -1,0 +1,41 @@
+
+<!-- Contact Start -->
+
+<section id="{{ page.title }}" class="container content-section text-center">
+
+<div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+
+          {{ page.content | markdownify }}
+
+          {% if site.email %}
+            {% if site.email contains '@' %}
+              {% assign newemail = site.email | split: '@' %}
+                <p>
+                <script>
+                  function join_at_email(user, domain){
+                  return (user && domain)?(user + "@" + domain):"";
+                  }
+                  document.write('<a href="mailto:'
+                  + join_at_email( "{{ newemail[0] }}", "{{ newemail[1] }}" )
+                  + '">'
+                  + join_at_email( "{{ newemail[0] }}", "{{ newemail[1] }}" )
+                  + '</a>'
+                  );
+                  </script>
+                </p>
+            {% else %}
+              <p><a href="mailto:{{ site.email }}">{{ site.email }}</a></p>
+            {% endif %}
+          {% endif %}
+
+          {% include social-buttons.html %}
+
+        </div>
+
+
+
+    </div>
+</section>
+
+<!-- Contact End -->

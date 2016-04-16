@@ -1,0 +1,26 @@
+
+<!-- Latest Post Preview Start -->
+
+<section id="{{ page.title }}" class="container content-section text-center">
+    <div class="row">
+      <div class="col-lg-10 col-lg-offset-1">
+
+        {{ page.content | markdownify }}
+
+        {% assign post = site.posts.first %}
+        <h4> <strong> {{ post.date | date_to_string }} </strong>
+          <small>. {{ post.category }} .</small>
+          <strong> <a href="{{site.baseurl}}{{ post.url }}">{{post.title}} </a> </strong>
+          <small> <a href="{{site.baseurl}}{{post.url}}#disqus_thread">Comments</a></small>
+        </h4>
+<span style="text-align:left">
+        {{ post.content | truncatewords: site.post-preview-words | strip_html | markdownify }}
+</span>
+
+        <a href="{{site.baseurl}}/blog/index.html"><h4><strong>View more posts</strong></h4></a>
+
+      </div>
+    </div>
+</section>
+
+<!-- Latest Post Preview End -->

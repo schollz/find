@@ -1,0 +1,132 @@
+
+# Site settings
+
+url: ""
+
+# If you're hosting your site at a Project repository on GitHub pages
+# (https://yourusername.github.io/repository-name)
+# and NOT your user repository (https://yourusername.github.io)
+# then add in the baseurl here, like this: "/repository-name"
+
+baseurl: ""
+
+google-tracking-id: "UA-60006442-1"
+
+# Forces https everywhere in your website, except when you serve it locally
+
+force-https: False
+
+#############
+# HTML Head #
+#############
+
+author: "Zack Scholl and Stefan Safranek"
+lang: "en"
+title: "FIND"
+favicon: "/img/favicon-home.ico"
+description: "A simple framework for effective internal positioning and local georeferencing."
+keywords: "internal, gis, gps, local, positioning, location, information, technology, smartphone"
+
+################
+# Intro layout #
+################
+
+black-favicon: "/img/favicon-home.ico"
+background-img: "../img/intro-bg.gif"
+#me-img: "/img/wifi-marker-darkgrey-small.png"
+
+##############################
+# Dynamic Text on the header #
+##############################
+
+dynamic-typing: True
+shuffle: True	# Shuffle the lines.
+loop: True
+loop-count:	False # Set False for infinite loop, or set any number for finite loop.
+type-speed:	50		# Default 10
+start-delay: 200	# Default 200
+delete-delay: 10000	# Default 5000
+lines:			# You can add HTML Tags in the Text
+  - text: "Find yourself."
+  - text: "Where are you now?"
+
+########
+# Blog #
+########
+
+post-preview-words: 96
+
+paginate: 5
+
+fb-share: True
+twitter-share: True
+reddit-share: True
+disqus-shortname: ""
+
+###############
+# Life Events #
+###############
+
+events:
+  - image: "/img/career/spidertocat.png"
+    date: "September 2013 - Today"
+    description: "Saving the neighborhood!"
+  - image: "/img/career/baracktocat.jpg"
+    date: "September 2007 - August 2013"
+    description: "Started coding"
+
+# First image of the Career timeline
+career-img: "/img/career/default.png"
+
+##################
+# Contact layout #
+##################
+
+email: "zack@hypercubeplatforms.com"
+
+##################
+# Social Buttons #
+##################
+
+social:
+  - title: "facebook"
+    url: "https://facebook.com/hypercubeplatforms"
+  - title: "twitter"
+    url: "https://twitter.com/hypercubeplatforms"
+  - title: "github"
+    url: "https://github.com/schollz/find"
+  - title: "rss"
+    url: "/feed.xml"
+
+############
+# 404 page #
+############
+
+404-img: "/img/labtocat.png"
+
+################################################################################
+
+# Tread carefully if you want to change the variables below this point!
+
+# Navigation bar links
+# Blog link in the blog and post pages will point to the blog.html#blog
+# In the default page it will point to the preview of the last post
+
+pages_list:
+  About: 'about'
+  Get Started: 'get-started'
+  Features: 'features'
+  Blog: 'blog'
+  Contact: 'contact'
+
+# Pagination path
+paginate_path: "blog/page:num"
+
+# Enable minification SASS
+sass:
+  style: compressed
+
+# Exclusion list from the generated _site
+exclude: ["Rakefile", "LICENSE", "readme.markdown", "vendor"]
+
+gems: [jekyll-paginate]

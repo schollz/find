@@ -1,0 +1,29 @@
+
+<!-- Share Buttons Start -->
+
+<div>
+
+  {% if site.fb-share %}
+    <div style="float:left; padding: 0 5px; vertical-align:top">
+      <div class="fb-share-button" data-href="{{site.url}}{{site.baseurl}}{{page.url}}" data-layout="button_count"></div>
+    </div>
+  {% endif %}
+
+  {% if site.twitter-share %}
+    <div style="float:left; padding: 0 5px; vertical-align:top">
+      <a href="https://twitter.com/share" class="twitter-share-button" data-url="{{site.url}}{{ site.baseurl}}{{page.url}}" data-text="{{page.title}} {% for tag in page.tags%}#{{ tag }} {% endfor %}"></a>
+  </div>
+  {% endif %}
+
+  {% if site.reddit-share %}
+    <div style="float:left; padding: 0 5px; vertical-align:top">
+      <script type="text/javascript">reddit_newwindow='1'</script>
+      <script type="text/javascript">reddit_title='{{page.title}}'</script>
+      <script type="text/javascript">reddit_url='{{site.url}}{{site.baseurl}}{{page.url}}'</script>
+      <script type="text/javascript" src="//www.redditstatic.com/button/button1.js"></script>
+    </div>
+  {% endif %}
+
+</div>
+
+<!-- Share Buttons End -->
