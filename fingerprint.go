@@ -58,10 +58,18 @@ func cleanFingerprint(res *Fingerprint) {
 	res.Group = strings.ToLower(res.Group)
 	res.Location = strings.ToLower(res.Location)
 	res.Username = strings.ToLower(res.Username)
+	deleteIndex := -1
 	for r := range res.WifiFingerprint {
 		if res.WifiFingerprint[r].Rssi >= 0 {
 			res.WifiFingerprint[r].Rssi = int(res.WifiFingerprint[r].Rssi/2) - 100
 		}
+		if res.WifiFingerprint[r].Mac == "00:00:00:00:00:00" {
+			deleteIndex = r
+		}
+	}
+	if deleteIndex > -1 {
+		res.WifiFingerprint[deleteIndex] = res.WifiFingerprint[len(res.WifiFingerprint)-1]
+		res.WifiFingerprint = res.WifiFingerprint[:len(res.WifiFingerprint)-1]
 	}
 }
 
