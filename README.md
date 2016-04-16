@@ -23,6 +23,7 @@ The system is built on two main components - a server and a fingerprinting devic
 - Bug free (yeah, um...probably not. Please [submit an issue](https://github.com/schollz/find/issues) when you find one).
 
 # Requirements
+
 To use this system you need to have the following:
 - (Optional) Server: A computer (OS X/Windows/Linux) to run the server. If you don't have this, use [ours](https://ml.internalpositioning.com).
 - Client(s): device (laptop/Raspberry Pi/Android smartphone) that has access to WiFi
@@ -33,6 +34,8 @@ To use this system you need to have the following:
 ## 1. Server (optional)
 
 _Note:_ You are welcome to skip this step and use [our server](https://ml.internalpositioning.com), just make sure to point the server address to https://ml.internalpositioning.com. You can also [download the server](https://github.com/schollz/find/releases/tag/v2.0) to run by yourself. Or you can build the server using:
+
+First [install Go](https://golang.org/dl/) if you haven't already. FIND is tested on Go version 1.5+.
 
 ```
 $ git clone https://github.com/schollz/find.git
