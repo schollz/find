@@ -26,8 +26,8 @@ linux    arm
 linux    ppc64
 windows    amd64"""
 
-arches = """linux    amd64"""
-# linux    arm"""
+arches = """linux    amd64
+linux    arm"""
 
 arches = arches.split("\n")
 version = "0.1"
@@ -48,14 +48,14 @@ for arch in arches:
     exe = ""
     if "windows" in goos:
         exe = ".exe"
-    cmd1  = 'env GOOS=%(goos)s GOARCH=%(goarch)s go build -o builds/fingerprint-%(version)s-%(goos)s-%(goarch)s%(exe)s -v *.go' % {'goos':goos,'goarch':goarch,'exe':exe,'version':version}
-    cmd2 = 'zip fingerprint-%(version)s-%(goos)s-%(goarch)s.zip fingerprint-%(version)s-%(goos)s-%(goarch)s%(exe)s' % {'goos':goos,'goarch':goarch,'exe':exe,'version':version}
+    cmd1  = 'env GOOS=%(goos)s GOARCH=%(goarch)s go build -o builds/fingerprint%(exe)s -v *.go' % {'goos':goos,'goarch':goarch,'exe':exe,'version':version}
+    cmd2 = 'zip fingerprint-%(version)s-%(goos)s-%(goarch)s.zip fingerprint%(exe)s' % {'goos':goos,'goarch':goarch,'exe':exe,'version':version}
     print(cmd1)
     os.system(cmd1)
     os.chdir("builds")
     print(cmd2)
     os.system(cmd2)
-    cmd3 = 'rm fingerprint-%(version)s-%(goos)s-%(goarch)s%(exe)s' % {'goos':goos,'goarch':goarch,'exe':exe,'version':version}
+    cmd3 = 'rm fingerprint%(exe)s' % {'goos':goos,'goarch':goarch,'exe':exe,'version':version}
     print(cmd3)
     os.system(cmd3)
     os.chdir("../")

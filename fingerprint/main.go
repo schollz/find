@@ -50,7 +50,7 @@ func processOutput(out []byte) ([]WifiData, error) {
 				continue
 			}
 			if line[0:3] == "BSS" {
-				wTemp.Mac = strings.Split(line, " ")[1]
+				wTemp.Mac = strings.Split(strings.Replace(line, "(", " (", -1), " ")[1]
 			}
 			if strings.Contains(line, "signal") && strings.Contains(line, "dBm") {
 				val, _ := strconv.ParseFloat(strings.Split(line, " ")[1], 10)
@@ -195,7 +195,7 @@ func main() {
 		// fmt.Println("response Headers:", resp.Header)
 		body, _ := ioutil.ReadAll(resp.Body)
 		log.Println("response:", string(body))
-		if strings.Contains(string(body), `"success":true`) == false {
+		if strings.Contains(string(body), `"success":true`) == false && strings.Contains(string(body), `"success"`) == true {
 			log.Fatal("Something wrong with server")
 		}
 	}
