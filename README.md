@@ -1,149 +1,44 @@
-# <img src="https://www.internalpositioning.com/guide/img/wifi-marker-darkgrey-small.png" width="30px" /> FIND
+# Source code for making the app
 
+You don't need to build this, you can [use ours](https://play.google.com/store/apps/details?id=com.hcp.find).
 
-[![Join the chat at https://gitter.im/schollz/find](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/schollz/find?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Version 2.0](https://img.shields.io/badge/version-2.0-brightgreen.svg)](https://www.internalpositioning.com/guide/development/)
-[![Go Report Card](https://goreportcard.com/badge/github.com/schollz/gofind)](https://goreportcard.com/report/github.com/schollz/gofind) ![Coverage](https://img.shields.io/badge/coverage-21%25-orange.svg) [![Donate](https://img.shields.io/badge/donate-$1-brown.svg)](https://www.paypal.me/ZackScholl/1.00)
-
-
-**The Framework for Internal Navigation and Discovery** (_FIND_) allows you to use your (Android) smartphone or laptop to determine your position within your home or office. You can easily use this system in place of motion sensors as its resolution will allow your phone to distinguish whether you are in the living room, the kitchen or the bedroom, etc. The position information can then be used in a variety of ways including home automation, way-finding, or tracking!
-<blockquote>Simply put, FIND will allow you to replace <em>tons</em> of motion sensors with a <em>single</em> smartphone!</blockquote>
-
-The system is built on two main components - a server and a fingerprinting device. The fingerprinting device (computer or android app) sends the specified data to the machine learning server which stores the fingerprints and analyzes them. It then returns the result to the device and stores the result on the server for accessing via a web browser or triggering via hooks.
-
-
-# Features
-
-- SSL support
-- Compression to keep DBs small
-- [Fast](https://github.com/schollz/find/blob/master/BENCHMARKS.md) (20-200x faster than the [previous Python version](https://github.com/schollz/find/tree/python3))
-- Mixes two machine learning algorithms for best classifications
-
-# Requirements
-To use this system you need to have the following:
-- (Optional) Server: A computer (OS X/Windows/Linux) to run the server. If you don't have this, use [ours](https://ml.internalpositioning.com).
-- Client(s): device (laptop/Raspberry Pi/Android smartphone) that has access to WiFi
-
-
-# Setup
-
-## 1. Server (optional)
-
-_Note:_ You are welcome to skip this step and use [our server](https://ml.internalpositioning.com), just make sure to point the server address to https://ml.internalpositioning.com.
+## Requirements
 
 ```
-$ git clone https://github.com/schollz/gofind.git
-$ cd gofind
-$ go get ./...
-$ go build
-$ ./gofind
------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----
-               ,_   .  ._. _.  .
-           , _-\','|~\~      ~/      ;-'_   _-'     ,;_;_,    ~~-
-  /~~-\_/-'~'--' \~~| ',    ,'      /  / ~|-_\_/~/~      ~~--~~~~'--_
-  /              ,/'-/~ '\ ,' _  , '|,'|~                   ._/-, /~
-  ~/-'~\_,       '-,| '|. '   ~  ,\ /'~                /    /_  /~
-.-~      '|        '',\~|\       _\~     ,_  ,               /|
-          '\        /'~          |_/~\\,-,~  \ "         ,_,/ |
-           |       /            ._-~'\_ _~|              \ ) /
-            \   __-\           '/      ~ |\  \_          /  ~
-  .,         '\ |,  ~-_      - |          \\_' ~|  /\  \~ ,
-               ~-_'  _;       '\           '-,   \,' /\/  |
-                 '\_,~'\_       \_ _,       /'    '  |, /|'
-                   /     \_       ~ |      /         \  ~'; -,_.
-                   |       ~\        |    |  ,        '-_, ,; ~ ~\
-                    \,      /        \    / /|            ,-, ,   -,
-                     |    ,/          |  |' |/          ,-   ~ \   '.
-                    ,|   ,/           \ ,/              \       |
-                    /    |             ~                 -~~-, /   _
-                    |  ,-'                                    ~    /
-                    / ,'                                      ~
-                    ',|  ~
-                      ~'
------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----
-   _________  _____
-  / __/  _/ |/ / _ \  ______ _____  _____ ____
- / _/_/ //    / // / (_-< -_) __/ |/ / -_) __/
-/_/ /___/_/|_/____/ /___|__/_/  |___/\__/_/
-
-(version 2.X) is up and running on http://192.168.1.2:8003
------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----
-
+sudo npm install -g cordova
 ```
 
-## 2. Client
-
-The client gathers WiFi fingerprints and sends them to the server.
-
-If you want to use an Android device,  [download our app](https://play.google.com/store/apps/details?id=com.hcp.find), or [build the app yourself](https://github.com/schollz/find/tree/master/android).
-
-If you want to use a computer (laptop/Raspberry Pi/etc.), [download our client](https://github.com/schollz/find/releases), or [build it yourself](https://github.com/schollz/find/tree/master/android).
-
-# Usage
-
-## App
-
-When you start up the app you will be asked for a username (enter whatever you want) and you'll be assigned a unique group name. Then you'll see the following:
+## Install
+```
+cordova create find com.hcp.find Find
+cd find
+cordova platform add android
+cordova plugin add https://github.com/schollz/cordova-plugin-wifi.git
+cordova plugin add cordova-plugin-whitelist
+cordova plugin add https://github.com/schollz/cordova-plugin-background-mode.git
+cordova plugin add cordova-plugin-dialogs
 
 
-<center>
-<img src="https://i.imgur.com/bGVVQeW.png" width="200px" />
-<img src="https://i.imgur.com/cqab0bl.png" width="200px" />
-</center>
+cp ../appIcon.png platforms/android/res/drawable-hdpi/icon.png
+cp ../appIcon.png platforms/android/res/drawable-mdpi/icon.png
+cp ../appIcon.png platforms/android/res/drawable-ldpi/icon.png
+cp ../appIcon.png platforms/android/res/drawable-xhdpi/icon.png
 
-Simply click "Learn" and you'll be prompted for a location name. After you enter a location, the app will connect to the server and then submit fingerprints. After you've learned some locations, just hit "Track" and you'll see your calculated location.
+cp ../index.html platforms/android/assets/www/ && cp ../jquery-1.9.js platforms/android/assets/www/ && cp ../main.js platforms/android/assets/www/
 
-<center>
-<img src="https://i.imgur.com/kwwLVGL.png" width="200px" />
-<img src="https://i.imgur.com/3mMV7e7.png" width="200px" />
-</center>
+./platforms/android/cordova/run --device
 
-To see more detailed information, goto [the server](https://ml.internalpositioning.com) and login with your group name
-
-
-## Client program
-
-To start learning locations simply use
-
-```bash
-./fingerprint -e
+./platforms/android/cordova/build
+./platforms/android/cordova/run --device
+cp /home/phi/Downloads/cord/find/platforms/android/build/outputs/apk/android-debug.apk ~/Dropbox/android-debug.apk
 ```
 
-and then to track your location use
 
-```bash
-./fingerprint
+To build actual app:
+
 ```
-
-There are other options, you can learn more by [looking at the README](https://github.com/schollz/find/tree/master/fingerprint). To see more detailed information, goto [the server](https://ml.internalpositioning.com) and login with your group name
-
-## Server
-
-You can see statistics about your fingeprints by logging on to the server and signing in with your group name.
-
-<center>
-<img src="https://i.imgur.com/HSGVyDb.png" width="300px" />
-<img src="https://i.imgur.com/IAn5Hss.png" width="300px" />
-</center>
-
-
-You can see fingerprints of individual places by clicking on them, and then you can click on mac addresses to see there statistics across rooms.
-
-<center>
-<img src="https://i.imgur.com/3l5UPub.png" width="400px" />
-</center>
-<center>
-<img src="https://i.imgur.com/Udi3xrn.png" width="400px" />
-</center>
-
-
-
-
-# Acknowledgements
-
-Thanks to [patorjk](http://patorjk.com/software/taag/) and [asciiworld](http://www.asciiworld.com/) for the ASCII art.
-
-[Imgur](https://imgur.com/a/yjvci) for [hosting](https://imgur.com/a/3yGjV) images
-
-# Donate
-
-Like this? Help me keep it alive [by donating $5](https://www.paypal.me/ZackScholl/5.00) to [pay for server costs](http://rpiai.com/donate/).
+Open Android Studio
+Import Project Gradle find->platforms->android
+Change version code and version name in android/manifests/AndroidManifest.xml
+Build signed APK using keystore Dropbox/keystore/alskasldfk.jks
+```
