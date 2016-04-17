@@ -11,7 +11,6 @@ import (
 	"os"
 	"os/exec"
 	"runtime"
-	"strconv"
 	"strings"
 	"time"
 
@@ -40,57 +39,40 @@ func getInput(prompt string) string {
 	return strings.ToLower(strings.TrimSpace(text))
 }
 
-func processOutput(out []byte) ([]WifiData, error) {
-	w := []WifiData{}
-	wTemp := WifiData{Mac: "none", Rssi: 0}
-	if runtime.GOOS == "linux" {
-
-		for _, line := range strings.Split(string(out), "\n") {
-			if len(line) < 3 {
-				continue
-			}
-			if line[0:3] == "BSS" {
-				wTemp.Mac = strings.Split(strings.Replace(line, "(", " (", -1), " ")[1]
-			}
-			if strings.Contains(line, "signal") && strings.Contains(line, "dBm") {
-				val, _ := strconv.ParseFloat(strings.Split(line, " ")[1], 10)
-				wTemp.Rssi = int(val)
-				if wTemp.Mac != "none" && wTemp.Rssi != 0 {
-					w = append(w, wTemp)
-				}
-				wTemp = WifiData{Mac: "none", Rssi: 0}
-			}
-		}
-	} else if runtime.GOOS == "darwin" {
-		for _, line := range strings.Split(string(out), "\n") {
-			// PLEASE HELP
-			fmt.Println(line) // <- this should be parsed to fill out []WifiData{}
-		}
-
-	} else if runtime.GOOS == "windows" {
-		for _, line := range strings.Split(string(out), "\n") {
-			// PLEASE HELP
-			fmt.Println(line) // <- this should be parsed to fill out []WifiData{}
-		}
-
-	}
-	if len(w) == 0 {
-		return w, fmt.Errorf("This operating system is no supported for processing output")
+func processOutput(out string, os string) (data []WifiData, err error) {
+	err = nil
+	data = []WifiData{}
+	if os == "linux" {
+		data = processOutputLinux(out)
 	} else {
-		return w, nil
+		err = fmt.Errorf(os + " system has no known WiFi scanning parser")
 	}
+	return
 }
 
-func getCommand() (string, error) {
-	log.Println("Detected OS: " + runtime.GOOS)
+func getCommand() (command string, err error) {
+	err = nil
+	command = ""
 	if runtime.GOOS == "darwin" {
-		return "/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -I en0", nil
+		command = scanCommandOSX()
 	} else if runtime.GOOS == "linux" {
-		return `/sbin/iw dev wlan0 scan -u`, nil
+		command = scanCommandLinux()
 	} else if runtime.GOOS == "windows" {
-		return "netsh wlan show network mode=bssid", nil
+		command = scanCommandWindows()
+	} else {
+		err = fmt.Errorf(runtime.GOOS + " system has no known WiFi scanning command")
 	}
-	return "none", fmt.Errorf("This operating system is not supported for getting WiFi")
+	return
+}
+
+func scanWifi() (string, error) {
+	command, err := getCommand()
+	if err != nil {
+		return "", err
+	}
+	log.Println("Gathering fingerprint with '" + command + "'")
+	out, err := exec.Command(strings.Split(command, " ")[0], strings.Split(command, " ")[1:]...).Output()
+	return string(out), err
 }
 
 func main() {
@@ -160,44 +142,52 @@ func main() {
 		f.Username = strings.ToLower(c.String("user"))
 	}
 	app.Run(os.Args)
-	command, err := getCommand()
-	if err != nil {
-		log.Fatal(err)
-	}
 
 	for i := 0; i < times; i++ {
-		log.Println("Gathering fingerprint with '" + command + "'")
-		out, err := exec.Command(strings.Split(command, " ")[0], strings.Split(command, " ")[1:]...).Output()
+
+		log.Println("Scanning Wifi")
+		out, err := scanWifi()
 		if err != nil {
 			if strings.Contains(err.Error(), "255") {
-				fmt.Println("\nNeed to run with sudo: `sudo ./fingerprint`\n")
+				fmt.Println("\nNeed to run with sudo: \n\nsudo ./fingerprint")
 			}
-			log.Fatal(err)
+			log.Fatal(string(out), err)
 		}
-		f.WifiFingerprint, err = processOutput(out)
+
+		log.Println("Processing ", len(out), " lines out output")
+		f.WifiFingerprint, err = processOutput(out, runtime.GOOS)
 		if err != nil {
 			log.Fatal(err)
 		}
 
 		log.Println("Sending fingerprint to " + address)
-		b, _ := json.Marshal(f)
-		req, err := http.NewRequest("POST", address, bytes.NewBuffer(b))
-		req.Header.Set("Content-Type", "application/json")
-
-		client := &http.Client{}
-		resp, err := client.Do(req)
+		sendFingerprint(address, f)
 		if err != nil {
-			panic(err)
+			log.Fatal(err)
 		}
-		defer resp.Body.Close()
 
-		// fmt.Println("response Status:", resp.Status)
-		// fmt.Println("response Headers:", resp.Header)
-		body, _ := ioutil.ReadAll(resp.Body)
-		log.Println("response:", string(body))
-		if strings.Contains(string(body), `"success":true`) == false && strings.Contains(string(body), `"success"`) == true {
-			log.Fatal("Something wrong with server")
-		}
 	}
 
+}
+
+func sendFingerprint(address string, f Fingerprint) (string, error) {
+	b, _ := json.Marshal(f)
+	req, err := http.NewRequest("POST", address, bytes.NewBuffer(b))
+	req.Header.Set("Content-Type", "application/json")
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return "", err
+	}
+	defer resp.Body.Close()
+
+	// fmt.Println("response Status:", resp.Status)
+	// fmt.Println("response Headers:", resp.Header)
+	body, _ := ioutil.ReadAll(resp.Body)
+	if strings.Contains(string(body), `"success":true`) == false && strings.Contains(string(body), `"success"`) == true {
+		return "", fmt.Errorf("Something wrong with server")
+	}
+
+	return string(body), nil
 }

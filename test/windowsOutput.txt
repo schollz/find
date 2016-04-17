@@ -1,0 +1,123 @@
+Interface name : Wireless Network Connection
+There are 11 networks currently visible.
+
+SSID 1 : Bijan
+    Network type            : Infrastructure
+    Authentication          : WPA2-Personal
+    Encryption              : CCMP
+    BSSID 1                 : c0:c1:c0:f0:6f:cd
+         Signal             : 16%
+         Radio type         : 802.11g
+         Channel            : 6
+         Basic rates (Mbps) : 1 2 5.5 11
+         Other rates (Mbps) : 6 9 12 18 24 36 48 54
+
+SSID 2 : chemed
+    Network type            : Infrastructure
+    Authentication          : WPA2-Personal
+    Encryption              : CCMP
+    BSSID 1                 : f8:35:dd:0a:da:be
+         Signal             : 38%
+         Radio type         : 802.11n
+         Channel            : 1
+         Basic rates (Mbps) : 1 2 5.5 11
+         Other rates (Mbps) : 6 9 12 18 24 36 48 54
+
+SSID 3 : Remote_Guest
+    Network type            : Infrastructure
+    Authentication          : WPA2-Personal
+    Encryption              : CCMP
+    BSSID 1                 : 00:1a:1e:46:cd:11
+         Signal             : 40%
+         Radio type         : 802.11n
+         Channel            : 1
+         Basic rates (Mbps) : 1 2
+         Other rates (Mbps) : 5.5 6 9 11 12 18 24 36 48 54
+
+SSID 4 : telecommuter
+    Network type            : Infrastructure
+    Authentication          : WPA2-Enterprise
+    Encryption              : CCMP
+    BSSID 1                 : 00:1a:1e:46:cd:10
+         Signal             : 40%
+         Radio type         : 802.11n
+         Channel            : 1
+         Basic rates (Mbps) : 1 2
+         Other rates (Mbps) : 5.5 6 9 11 12 18 24 36 48 54
+
+SSID 5 : angiebat
+    Network type            : Infrastructure
+    Authentication          : WPA2-Personal
+    Encryption              : CCMP
+    BSSID 1                 : 2c:b0:5d:36:e3:b8
+         Signal             : 38%
+         Radio type         : 802.11g
+         Channel            : 1
+         Basic rates (Mbps) : 1 2 5.5 11
+         Other rates (Mbps) : 6 9 12 18 24 36 48 54
+
+SSID 6 : HP-Print-9F-Deskjet 2540 series
+    Network type            : Infrastructure
+    Authentication          : WPA2-Personal
+    Encryption              : CCMP
+    BSSID 1                 : 58:20:b1:21:63:9f
+         Signal             : 76%
+         Radio type         : 802.11g
+         Channel            : 1
+         Basic rates (Mbps) :
+         Other rates (Mbps) : 1 2 5.5 6 9 11 12 18 24 36 48 54
+
+SSID 7 : Wamahahi88
+    Network type            : Infrastructure
+    Authentication          : WPA2-Personal
+    Encryption              : CCMP
+    BSSID 1                 : 98:6b:3d:d7:84:e0
+         Signal             : 18%
+         Radio type         : 802.11n
+         Channel            : 1
+         Basic rates (Mbps) : 1 2 5.5 11
+         Other rates (Mbps) : 6 9 12 18 24 36 48 54
+
+SSID 8 : 18Nascar19
+    Network type            : Infrastructure
+    Authentication          : WPA2-Personal
+    Encryption              : CCMP
+    BSSID 1                 : 80:37:73:87:56:36
+         Signal             : 36%
+         Radio type         : 802.11n
+         Channel            : 11
+         Basic rates (Mbps) : 1 2 5.5 11
+         Other rates (Mbps) : 6 9 12 18 24 36 48 54
+
+SSID 9 : Kalam
+    Network type            : Infrastructure
+    Authentication          : WPA2-Personal
+    Encryption              : CCMP
+    BSSID 1                 : 00:23:69:d4:47:9f
+         Signal             : 36%
+         Radio type         : 802.11g
+         Channel            : 11
+         Basic rates (Mbps) : 1 2 5.5 11
+         Other rates (Mbps) : 6 9 12 18 24 36 48 54
+
+SSID 10 : ToscheStation
+    Network type            : Infrastructure
+    Authentication          : WPA2-Personal
+    Encryption              : CCMP
+    BSSID 1                 : 80:37:73:ba:f7:d8
+         Signal             : 89%
+         Radio type         : 802.11n
+         Channel            : 8
+         Basic rates (Mbps) : 1 2 5.5 11
+         Other rates (Mbps) : 6 9 12 18 24 36 48 54
+
+SSID 11 : ToscheStation_EXT
+    Network type            : Infrastructure
+    Authentication          : WPA2-Personal
+    Encryption              : CCMP
+    BSSID 1                 : a0:63:91:2b:9e:65
+         Signal             : 84%
+         Radio type         : 802.11n
+         Channel            : 8
+         Basic rates (Mbps) : 1 2 5.5 11
+         Other rates (Mbps) : 6 9 12 18 24 36 48 54
