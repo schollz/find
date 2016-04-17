@@ -60,7 +60,7 @@ func cleanFingerprint(res *Fingerprint) {
 	res.Username = strings.ToLower(res.Username)
 	deleteIndex := -1
 	for r := range res.WifiFingerprint {
-		if res.WifiFingerprint[r].Rssi >= 0 {
+		if res.WifiFingerprint[r].Rssi >= 0 { // https://stackoverflow.com/questions/15797920/how-to-convert-wifi-signal-strength-from-quality-percent-to-rssi-dbm
 			res.WifiFingerprint[r].Rssi = int(res.WifiFingerprint[r].Rssi/2) - 100
 		}
 		if res.WifiFingerprint[r].Mac == "00:00:00:00:00:00" {
