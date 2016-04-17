@@ -6,7 +6,7 @@
 [![Join the chat at https://gitter.im/schollz/find](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/schollz/find?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Version 2.0](https://img.shields.io/badge/version-2.0-brightgreen.svg)](https://www.internalpositioning.com/guide/development/)
 [![Go Report Card](https://goreportcard.com/badge/github.com/schollz/find)](https://goreportcard.com/report/github.com/schollz/find) ![Coverage](https://img.shields.io/badge/coverage-21%25-orange.svg) [![Donate](https://img.shields.io/badge/donate-$1-brown.svg)](https://www.paypal.me/ZackScholl/1.00)
 
-<a href="https://www.internalpositioning.com/"><img src="https://www.internalpositioning.com/img/promo1.png"></a>
+<a href="https://www.internalpositioning.com/"><img src="https://www.internalpositioning.com/img/intro-bg.gif"></a>
 
 *FIND is now 100% open-source.*
 
