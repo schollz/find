@@ -157,12 +157,13 @@ func main() {
 		out, err := scanWifi()
 		if err != nil {
 			if strings.Contains(err.Error(), "255") {
-				fmt.Println("\nNeed to run with sudo: \n\nsudo ./fingerprint")
+				fmt.Println("\nNeed to run with sudo: 'sudo ./fingerprint'")
+				fmt.Println("")
 			}
 			log.Fatal(string(out), err)
 		}
 
-		log.Println("Processing ", len(out), " lines out output")
+		log.Println("Processing ", len(strings.Split(out, "\n")), " lines out output")
 		f.WifiFingerprint, err = processOutput(out, runtime.GOOS)
 		if err != nil {
 			log.Fatal(err)
