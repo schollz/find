@@ -52,29 +52,6 @@ Then to run,
 ```
 $ ./find
 -----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----
-               ,_   .  ._. _.  .
-           , _-\','|~\~      ~/      ;-'_   _-'     ,;_;_,    ~~-
-  /~~-\_/-'~'--' \~~| ',    ,'      /  / ~|-_\_/~/~      ~~--~~~~'--_
-  /              ,/'-/~ '\ ,' _  , '|,'|~                   ._/-, /~
-  ~/-'~\_,       '-,| '|. '   ~  ,\ /'~                /    /_  /~
-.-~      '|        '',\~|\       _\~     ,_  ,               /|
-          '\        /'~          |_/~\\,-,~  \ "         ,_,/ |
-           |       /            ._-~'\_ _~|              \ ) /
-            \   __-\           '/      ~ |\  \_          /  ~
-  .,         '\ |,  ~-_      - |          \\_' ~|  /\  \~ ,
-               ~-_'  _;       '\           '-,   \,' /\/  |
-                 '\_,~'\_       \_ _,       /'    '  |, /|'
-                   /     \_       ~ |      /         \  ~'; -,_.
-                   |       ~\        |    |  ,        '-_, ,; ~ ~\
-                    \,      /        \    / /|            ,-, ,   -,
-                     |    ,/          |  |' |/          ,-   ~ \   '.
-                    ,|   ,/           \ ,/              \       |
-                    /    |             ~                 -~~-, /   _
-                    |  ,-'                                    ~    /
-                    / ,'                                      ~
-                    ',|  ~
-                      ~'
------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----
    _________  _____
   / __/  _/ |/ / _ \  ______ _____  _____ ____
  / _/_/ //    / // / (_-< -_) __/ |/ / -_) __/
@@ -103,15 +80,15 @@ When you start up the app you will be asked for a username (enter whatever you w
 
 
 <center>
-<img src="https://i.imgur.com/bGVVQeW.png" width="200px" />
-<img src="https://i.imgur.com/cqab0bl.png" width="200px" />
+<img src="https://i.imgur.com/fbcYom5.png" width="200px" />
+<img src="https://i.imgur.com/Ab9eXIk.png" width="200px" />
 </center>
 
 Simply click "Learn" and you'll be prompted for a location name. After you enter a location, the app will connect to the server and then submit fingerprints. After you've learned some locations, just hit "Track" and you'll see your calculated location.
 
 <center>
-<img src="https://i.imgur.com/kwwLVGL.png" width="200px" />
-<img src="https://i.imgur.com/3mMV7e7.png" width="200px" />
+<img src="https://i.imgur.com/fxNIZyP.png" width="200px" />
+<img src="https://i.imgur.com/TrgPXns.png" width="200px" />
 </center>
 
 To see more detailed information, go to [the server](https://ml.internalpositioning.com) and login with your group name
