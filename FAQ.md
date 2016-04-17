@@ -36,7 +36,7 @@ No, there is no dependency on external resources like Wi-Fi location databases.
 
 ###  Doesn't this already exist?
 
-We believe that our framework rivals and, for the most part, outperforms the currently existing frameworks for indoor geolocation and internal positioning. We certainly do not mean for you to take our word for this claim, though. To this end, we've decided to keep the project open-source so you can test it. We also invite you to make comparisons to current technologies:
+Yes - but currently there is no satisfying solution. Most solutions are not open-source, or they require external hardware (beacons, etc.), or they are expensive, or they just don't work very well. But don't take my word for it, try it yourself. Here are some of the programs I found that are similar:
 
 If you are looking for a more **commercial, large-scale deployable application**, look at these up-and-coming solutions:
 
