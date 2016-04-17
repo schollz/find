@@ -50,7 +50,7 @@ for arch in arches:
     if "windows" in goos:
         exe = ".exe"
     cmd1  = 'env GOOS=%(goos)s GOARCH=%(goarch)s go build -o builds/fingerprint%(exe)s -v *.go' % {'goos':goos,'goarch':goarch,'exe':exe,'version':version}
-    cmd2 = 'zip fingerprint-%(version)s-%(goos)s-%(goarch)s.zip fingerprint%(exe)s' % {'goos':goos,'goarch':goarch,'exe':exe,'version':version}
+    cmd2 = 'zip fingerprint-%(version)s-%(goos)s-%(goarch)s.zip ../LICENSE ../README.md fingerprint%(exe)s' % {'goos':goos,'goarch':goarch,'exe':exe,'version':version}
     print(cmd1)
     os.system(cmd1)
     os.chdir("builds")
