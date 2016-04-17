@@ -51,13 +51,14 @@ for arch in arches:
     if "windows" in goos:
         exe = ".exe"
     cmd1  = 'env GOOS=%(goos)s GOARCH=%(goarch)s go build -o builds/find-%(version)s-%(goos)s-%(goarch)s%(exe)s -v ../*.go' % {'goos':goos,'goarch':goarch,'exe':exe,'version':version}
-    cmd2 = 'zip -r find-%(version)s-%(goos)s-%(goarch)s.zip ./templates/* ./data/.datagoeshere ./static/* find-%(version)s-%(goos)s-%(goarch)s%(exe)s' % {'goos':goos,'goarch':goarch,'exe':exe,'version':version}
+    cmd2 = 'zip -r find-%(version)s-%(goos)s-%(goarch)s.zip LICENSE ./templates/* ./data/.datagoeshere ./static/* find-%(version)s-%(goos)s-%(goarch)s%(exe)s' % {'goos':goos,'goarch':goarch,'exe':exe,'version':version}
     print(cmd1)
     os.system(cmd1)
     os.chdir("builds")
     os.system('cp -r ../../static ./')
     os.system('cp -r ../../templates ./')
     os.system('cp -r ../../data ./')
+    os.system('cp -r ../../LICENSE ./')
     print(cmd2)
     os.system(cmd2)
     cmd3 = 'rm -rf templates && rm -rf static && rm -rf data && rm find-%(version)s-%(goos)s-%(goarch)s%(exe)s' % {'goos':goos,'goarch':goarch,'exe':exe,'version':version}
