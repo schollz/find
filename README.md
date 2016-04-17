@@ -34,12 +34,11 @@ To use this system you need to have the following:
 - Client(s): device (laptop/Raspberry Pi/Android smartphone) that has access to WiFi
 
 
-# Setup
+# Setup (optional)
 
-## 1. Server (optional)
+The tools are prebuilt, so you can skip to the [Usage section](https://github.com/schollz/find#usage) if you just want to try it out.
 
-_Note:_ You are welcome to skip this step and use [our server](https://ml.internalpositioning.com), just make sure to point the server address to https://ml.internalpositioning.com. You can also [download the server](https://github.com/schollz/find/releases/tag/v2.0) to run by yourself. Or you can build the server using:
-
+#### Server
 First [install Go](https://golang.org/dl/) if you haven't already. FIND is tested on Go version 1.5+.
 
 ```
@@ -63,17 +62,19 @@ $ ./find
 
 ```
 
-## 2. Client
+#### Client
 
-The client gathers WiFi fingerprints and sends them to the server.
-
-If you want to use an Android device,  [download our app](https://play.google.com/store/apps/details?id=com.hcp.find), or [build the app yourself](https://github.com/schollz/find/tree/android).
-
-If you want to use a computer (laptop/Raspberry Pi/etc.), [download our client](https://github.com/schollz/find/releases/tag/v0.2client), or [build it yourself](https://github.com/schollz/find/tree/android).
+The client gathers WiFi fingerprints and sends them to the server. There are two clients - one for an Android smartphone, and one for a WiFi-enabled computer. Check out the individual repos to get started on either/both:
+- [FIND app client](https://github.com/schollz/find/tree/android)
+- [FIND program client](https://github.com/schollz/find/tree/android)
 
 # Usage
 
-## Client (for Android smartphones)
+## Gather fingerprint data
+
+To get started using **FIND** you will need one of the client programs. The client programs gather WiFi fingerprints and locations and sends them to a server. There is a client for Android smartphones, and one for WiFi enabled computers.
+
+### Client (for Android smartphones)
 
 *[Sorry iPhone users](https://github.com/schollz/find/blob/master/FAQ.md#can-i-use-an-iphone) but the Apple store prevents apps that access WiFi information, so I will be unable to release a iPhone version.*
 
@@ -97,7 +98,7 @@ Simply click "Learn" and you'll be prompted for a location name. After you enter
 To see more detailed information, go to [the server](https://ml.internalpositioning.com) and login with your group name
 
 
-## Client (for computers)
+### Client (for computers)
 
 *Supports Linux, Windows, Raspberry Pi. Sorry, OS X is not yet supported - [please help me add it](https://github.com/schollz/find/issues/14)!*
 
@@ -115,9 +116,10 @@ and then to track your location use
 
 There are other options, you can learn more by typing `./fingerprint --help`. When you start learning/tracking, you can see more detailed information by logging into [the server](https://ml.internalpositioning.com) and login with your group name.
 
-## Server
+## Analyze fingerprint data
 
-You can see statistics about your fingerprints by logging on to the server and signing in with your group name.
+The server analyzes and helps you decipher the fingerprint data, if you are interested in that. Once you got your client you can see statistics about your fingerprints by logging on to the server and signing in with your group name. If you are using our server, login to [ml.internalpositioning.com](https://ml.internalpositioning.com) with your Group name. Otherwise, use your local version of the server.
+
 
 <center>
 <img src="https://i.imgur.com/HSGVyDb.png" width="300px" />
