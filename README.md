@@ -137,9 +137,9 @@ Please, do! Checkout [the latest issues](https://github.com/schollz/find/issues)
 
 # Acknowledgements
 
-Thanks to [patorjk](http://patorjk.com/software/taag/) and [asciiworld](http://www.asciiworld.com/) for the ASCII art.
+## <img src="https://i.imgur.com/Ze51DJ6.png" width="180px" /> Funding from [Duke University Colab](https://colab.duke.edu/)
 
-[Imgur](https://imgur.com/a/yjvci) for [hosting](https://imgur.com/a/3yGjV) images
+Thanks to [patorjk](http://patorjk.com/software/taag/) and [asciiworld](http://www.asciiworld.com/) for the ASCII art. Thanks to [Imgur](https://imgur.com/a/yjvci) for [hosting](https://imgur.com/a/3yGjV) images
 
 # Donate
 
