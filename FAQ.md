@@ -7,36 +7,13 @@ If you have any questions, please contact us:
 * Gitter: [Join room](https://gitter.im/schollz/find)
 * Github Issues: [Open an issue](https://github.com/schollz/find/issues/new)
 
-###  What's the point of this?
+###  Can I use an iPhone?
 
-**FIND** is a Framework for Internal Navigation and Discovery. Anything that you would do with a motion sensor you can do with FIND. Anything you can do with GPS information you can do with FIND information. Except here you get internal positioning so you could tell apart one table from another in a cafeteria, or one bookshelf from another in a library.
-
-### How does it work?
-
-The basis of this system is to catalog all the fingerprints about the
-Wifi routers in the area (MAC addresses and signal values) and then
-classify them according to their location. A typical set of fingerprints
-froms some locations will look something like this (taken from the
-library at Duke University):
-
-![The distributions in Wifi RSSI signal as interpreted by an Android
-device is shown for each router. Each router is differentiated by color.
-Different locations give different distributions of router signals,
-whether these locations differ by a several meters or the same location
-between floors.](https://www.internalpositioning.com/guide/img/fingerprint_library.png)
-
-### Can it replace motion sensors?
-
-Yes...probably! Replacing motion sensors with FIND has the added benefit of automatically providing *user information* as well as the position/time information. The main disadvantage is that there is time delay of 1-5 seconds to register, so timing applications are not as good.
-
-
-### Does it use a [Wi-Fi location database](https://en.wikipedia.org/wiki/Wi-Fi_positioning_system#Public_Wi-Fi_location_databases)?
-
-No, there is no dependency on external resources like Wi-Fi location databases.
+**No.** We currently do not support iPhone. Unfortunately, the information about the WiFi scanning hast to come from the use of the [`Apple80211` library](https://stackoverflow.com/questions/9684341/iphone-get-a-list-of-all-ssids-without-private-library/9684945#9684945). This is private library which means that [a user would have to jail break their device in order to use it](https://stackoverflow.com/questions/6341547/ios-can-i-manually-associate-wifi-network-with-geographic-location/6341893#6341893). We do not want to distribute an app that would require users to jailbreak their phones, so we will have to avoid developing for iOS until Apple removes this restriction. Sorry!
 
 ###  Doesn't this already exist?
 
-Yes - but currently there is no satisfying solution. Most solutions are not open-source, or they require external hardware (beacons, etc.), or they are expensive, or they just don't work very well. But don't take my word for it, try it yourself. Here are some of the programs I found that are similar:
+**Yes - but not satisfyingly.** Most solutions are not open-source, or they require external hardware (beacons, etc.), or they are expensive, or they just don't work very well. But don't take my word for it, try it yourself. Here are some of the programs I found that are similar:
 
 If you are looking for a more **commercial, large-scale deployable application**, look at these up-and-coming solutions:
 
@@ -64,34 +41,69 @@ If you are looking for a **free single-user, single-home application**, perhaps 
   [Indoor GPS]: https://play.google.com/store/apps/details?id=com.ladiesman217.indoorgps&hl=en
 
 
+###  What's the point of this?
+
+**The point is to eventually incorporate FIND into home automation.** **FIND** can replace motion sensors to provide positional and user-specific information. Anything that you would do with a motion sensor you can do with **FIND**. Anything you can do with GPS information you can do with **FIND** information. Except here you get internal positioning so you could tell apart one table from another in a cafeteria, or one bookshelf from another in a library.
+
+ As Wi-Fi singleboard computers get smaller and smartphones become more ubiquitous there will be more and more oppurtunities to harness WiFi signals into something useful for other applications.
+
+### How does it work?
+
+**The basis of this system is to catalog all the fingerprints about the
+Wifi routers in the area (MAC addresses and signal values) and then
+classify them according to their location.** Take a look at a typical set of fingerprints
+froms some locations will look something like this (taken from the
+library at Duke University):
+
+![Distributions](https://www.internalpositioning.com/guide/img/fingerprint_library.png)
+
+The distributions in Wifi RSSI signal as interpreted by an Android
+device is shown for each router. Each router is differentiated by color.
+Different locations give different distributions of router signals,
+whether these locations differ by a several meters or the same location
+between floors.
+
+**FIND** works by taking these differences between the WiFi data from different places to *classify* a location. Positioning is accomplished by first learning the distributions of WiFi signals for a given location and then classifying it during tracking. Learning only takes ~10 minutes and will last almost indefinitely. The WiFi fingerprints are also the same across all devices so that learning using one device is guaranteed to work across all devices.
+
+### Does the smartphone version use up the battery quickly?
+
+**No.** One important benefit of using WiFi-based technologies as they are relatively cheap sensors in the smartphone/computer. They are cheap in a monetary sense, as well as a power supply sense. Normally, a GPS sensor that is probed every 2 seconds will quickly drain your battery. Probing the WiFi every 2 seconds will take hours to drain your battery and is less taxing than many apps.
+
+### Can it replace motion sensors?
+
+**Yes...probably.** Replacing motion sensors with FIND has the added benefit of automatically providing *user information* as well as the position/time information. The main disadvantage is that there is time delay of 1-5 seconds to register, so timing applications are not as good. It is possible to increase the scan speed to accomplish better timing applications but it will drain the life of the battery faster.
+
+
+### Does it use a [Wi-Fi location database](https://en.wikipedia.org/wiki/Wi-Fi_positioning_system#Public_Wi-Fi_location_databases)?
+
+**No.** There is no dependency on external resources like Wi-Fi location databases. However, these type of databases can add additional information that might be worthwhile to explore to also integrate into **FIND**.
+
+
 ###  Do I need to be on Wifi to submit fingerprints?
 
-No, as long as you have a data connection. You also need to have Wifi enabled, otherwise you have no way of scanning wifi!
+**Yes, unless you have a data connection**. You also need to have Wifi enabled, otherwise you have no way of scanning wifi!
 
 ###  Can I run the server at home on the LAN connection?
 
-Yes! You can setup your own server to host locally.
+**Yes.** You can setup your own server to host locally. Setting up your server can be done by [building the program yourself](https://github.com/schollz/find#setup-optional) or simply [downloading the latest prebuilt version](https://github.com/schollz/find/releases/tag/v2.0) for you OS.
 
 ###  Can I track myself on a map?
 
-Yes, soon!
+**Not yet**. This is something we would like to implement and we are working on. There is more information about our longterm roadmap [here](https://www.internalpositioning.com/).
 
-###  Can I use an iPhone?
-
-No. We currently do not support iPhone. Unfortunately, the information about the WiFi scanning hast to come from the use of the [`Apple80211` library](https://stackoverflow.com/questions/9684341/iphone-get-a-list-of-all-ssids-without-private-library/9684945#9684945). This is private library which means that [a user would have to jail break their device in order to use it](https://stackoverflow.com/questions/6341547/ios-can-i-manually-associate-wifi-network-with-geographic-location/6341893#6341893). We do not want to distribute an app that would require users to jailbreak their phones, so we will have to avoid developing for iOS until Apple removes this restriction. Sorry!
 
 ###  Can I use an Android?
 
-Yes! All Android devices are supported.
+**Yes.** All Android devices are supported. You can [download the app from Google Play](https://play.google.com/store/apps/details?id=com.hcp.find) or [use the source code to build the app yourself](https://github.com/schollz/find/tree/android).
 
 ###  What is the minimum distance that can be resolved?
 
-Less than 10 square feet. This depends highly on the surrounding location. It can be a few meters, possibly less for some locations.
+**It depends.** This system harnesses the available WiFi routers. If you have very few WiFi routers in the vicinity (i.e. <3 in 50 meters) then your resolution will suffer. Otherwise, you can typically get less than 10 square feet in location resolution.
 
 ###  Can you run the server on a Raspberry Pi?
 
-Yes! Its been tested and runs great on a Raspberry Pi model B+.
+*Yes.* Its been tested and runs great on a Raspberry Pi model B+, and model 3. Also, all the releases include [a ARM release for running on a Raspberry pi](https://github.com/schollz/find/releases).
 
 ### Can I help develop?
 
-Yes! We host our code on [Github](https://github.com/schollz/find) and will accept Pull requests and Feature requests.
+**Yes!** We host our code on [Github](https://github.com/schollz/find) and will accept Pull requests and Feature requests.
