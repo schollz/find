@@ -191,7 +191,7 @@ func main() {
 		// set fingerprint things
 		f.Time = time.Now().UnixNano() / 1000000
 		f.Username = strings.ToLower(c.String("user"))
-		verbose = !c.Bool("debug")
+		verbose = !c.Bool("nodebug")
 		setupLogging()
 	}
 	app.Run(os.Args)
@@ -215,7 +215,7 @@ func main() {
 				fmt.Println("\nNeed to run with sudo: 'sudo ./fingerprint'")
 				fmt.Println("")
 			} else {
-				log.Notice("Are you sure this computer has WiFi enabled?")
+				log.Critical("Are you sure this computer has WiFi enabled?")
 			}
 			log.Fatal(string(out), err)
 		}
