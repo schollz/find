@@ -17,6 +17,7 @@
 
 The system is built on two main components - a server and a fingerprinting device. The fingerprinting device (computer or android app) sends the specified data to the machine learning server which stores the fingerprints and analyzes them. It then returns the result to the device and stores the result on the server for accessing via a web browser or triggering via hooks.
 
+More questions? See the [FAQ](https://github.com/schollz/find/blob/master/FAQ.md).
 
 # Features
 
