@@ -73,9 +73,11 @@ If you want to use a computer (laptop/Raspberry Pi/etc.), [download our client](
 
 # Usage
 
-## Client App
+## Client (for Android smartphones)
 
-First [download the latest app](https://play.google.com/store/apps/details?id=com.hcp.find) or [build it yourself](https://github.com/schollz/find/tree/android).
+*[Sorry iPhone users](https://github.com/schollz/find/blob/master/FAQ.md#can-i-use-an-iphone) but the Apple store prevents apps that access WiFi information, so I will be unable to release a iPhone version.*
+
+To get started using FIND on a smartphone, [download the latest app](https://play.google.com/store/apps/details?id=com.hcp.find) or [build it yourself](https://github.com/schollz/find/tree/android).
 
 When you start up the app you will be asked for a username (enter whatever you want) and you'll be assigned a unique group name. Then you'll see the following:
 
@@ -95,9 +97,11 @@ Simply click "Learn" and you'll be prompted for a location name. After you enter
 To see more detailed information, go to [the server](https://ml.internalpositioning.com) and login with your group name
 
 
-## Client CLI program
+## Client (for computers)
 
-Download [the CLI program here](https://github.com/schollz/find/releases/tag/v0.2client) or [build it yourself](https://github.com/schollz/find/tree/fingerprint). To start learning locations simply use
+*Supports Linux, Windows, Raspberry Pi. Sorry, OS X is not yet supported - [please help me add it](https://github.com/schollz/find/issues/14)!*
+
+To get started, download [the program here](https://github.com/schollz/find/releases/tag/v0.2client) or [build it yourself](https://github.com/schollz/find/tree/fingerprint). To start learning locations simply use
 
 ```bash
 ./fingerprint -e
