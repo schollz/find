@@ -23,7 +23,7 @@ library at Duke University):
 device is shown for each router. Each router is differentiated by color.
 Different locations give different distributions of router signals,
 whether these locations differ by a several meters or the same location
-between floors.](http://localhost:8000/img/fingerprint_library.png)
+between floors.](https://www.internalpositioning.com/guide/img/fingerprint_library.png)
 
 ### Can it replace motion sensors?
 
