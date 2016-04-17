@@ -1,7 +1,7 @@
 var scanningInterval;
 var toggle = true;
 var currentLocation = "none";
-var isMovile;
+var isMobile;
 var press;
 var groupname;
 var username;
