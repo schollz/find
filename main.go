@@ -82,7 +82,7 @@ func main() {
 	app := cli.NewApp()
 	app.Name = "fingerprint"
 	app.Usage = "client for sending WiFi fingerprints to a FIND server"
-	app.Version = "0.1"
+	app.Version = "0.2"
 	app.Action = func(c *cli.Context) {
 		println("Hello friend!")
 	}
@@ -143,6 +143,14 @@ func main() {
 	}
 	app.Run(os.Args)
 
+	// Print the current parameters
+	fmt.Println("User: " + f.Username)
+	fmt.Println("Group: " + f.Group)
+	fmt.Println("Server: " + address)
+	if strings.Contains(address, "/learn") {
+		fmt.Println("Location: " + f.Location)
+	}
+
 	for i := 0; i < times; i++ {
 
 		log.Println("Scanning Wifi")
@@ -161,10 +169,11 @@ func main() {
 		}
 
 		log.Println("Sending fingerprint to " + address)
-		sendFingerprint(address, f)
+		response, err := sendFingerprint(address, f)
 		if err != nil {
 			log.Fatal(err)
 		}
+		log.Println("Response: " + response)
 
 	}
 
