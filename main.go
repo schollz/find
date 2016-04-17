@@ -45,6 +45,7 @@ var format2 = logging.MustStringFormatter(
 )
 
 var verbose = true
+var errorsInARow = 0
 
 func getInput(prompt string) string {
 	reader := bufio.NewReader(os.Stdin)
@@ -214,11 +215,20 @@ func main() {
 			if strings.Contains(err.Error(), "255") {
 				fmt.Println("\nNeed to run with sudo: 'sudo ./fingerprint'")
 				fmt.Println("")
+				log.Fatal(string(out), err)
 			} else {
-				log.Critical("Are you sure this computer has WiFi enabled?")
+				errorsInARow++
+				log.Warning("Scan failed, will continue after a rest")
+				time.Sleep(3000 * time.Millisecond)
+				if errorsInARow > 3 {
+					log.Critical("Are you sure this computer has WiFi enabled?")
+					log.Fatal(string(out), err)
+				} else {
+					continue
+				}
 			}
-			log.Fatal(string(out), err)
 		}
+		errorsInARow = 0
 
 		log.Info("Processing", len(strings.Split(out, "\n")), "lines out output")
 		f.WifiFingerprint, err = processOutput(out, runtime.GOOS)
