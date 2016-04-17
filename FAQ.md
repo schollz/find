@@ -9,7 +9,7 @@ If you have any questions, please contact us:
 
 ###  Can I use an iPhone?
 
-**No.** We currently do not support iPhone. Unfortunately, the information about the WiFi scanning hast to come from the use of the [`Apple80211` library](https://stackoverflow.com/questions/9684341/iphone-get-a-list-of-all-ssids-without-private-library/9684945#9684945). This is private library which means that [a user would have to jail break their device in order to use it](https://stackoverflow.com/questions/6341547/ios-can-i-manually-associate-wifi-network-with-geographic-location/6341893#6341893). We do not want to distribute an app that would require users to jailbreak their phones, so we will have to avoid developing for iOS until Apple removes this restriction. Sorry!
+**No.** We currently do not support iPhone. Unfortunately, the information about the WiFi scanning has to come from the use of the [`Apple80211` library](https://stackoverflow.com/questions/9684341/iphone-get-a-list-of-all-ssids-without-private-library/9684945#9684945). This is private library which means that [a user would have to jail break their device in order to use it](https://stackoverflow.com/questions/6341547/ios-can-i-manually-associate-wifi-network-with-geographic-location/6341893#6341893). We do not want to distribute an app that would require users to jailbreak their phones, so we will have to avoid developing for iOS until Apple removes this restriction. Sorry!
 
 ###  Doesn't this already exist?
 
@@ -19,7 +19,7 @@ If you are looking for a more **commercial, large-scale deployable application**
 
 -   [MazeMap Indoor Navigation] - a Norway-based and Cisco-partnered enterprise that takes your CAD floor plans and generates a nice user-interface with similar indoor-positioning capabilities.
 -   [Meridian Kits] - a SF and Portland based company (part of Aruba Networks) that offers specialized App SDK environments for building internal positioning systems into workplaces, businesses and hospitals
--   [MPact Platform] - Motorola is working on a internal positionings system that takes advantage of BlueTooth beacons and Wi-Fi for internal positioning for large applications
+-   [MPact Platform] - Motorola is working on a internal positioning system that takes advantage of BlueTooth beacons and Wi-Fi for internal positioning for large applications
 
 If you are looking for a **free single-user, single-home application**, perhaps you can find solutions with these apps:
 
@@ -45,15 +45,14 @@ If you are looking for a **free single-user, single-home application**, perhaps 
 
 **The point is to eventually incorporate FIND into home automation.** **FIND** can replace motion sensors to provide positional and user-specific information. Anything that you would do with a motion sensor you can do with **FIND**. Anything you can do with GPS information you can do with **FIND** information. Except here you get internal positioning so you could tell apart one table from another in a cafeteria, or one bookshelf from another in a library.
 
- As Wi-Fi singleboard computers get smaller and smartphones become more ubiquitous there will be more and more oppurtunities to harness WiFi signals into something useful for other applications.
+ As Wi-Fi singleboard computers get smaller and smartphones become more ubiquitous there will be more and more opportunities to harness WiFi signals into something useful for other applications.
 
 ### How does it work?
 
 **The basis of this system is to catalog all the fingerprints about the
 Wifi routers in the area (MAC addresses and signal values) and then
 classify them according to their location.** Take a look at a typical set of fingerprints
-froms some locations will look something like this (taken from the
-library at Duke University):
+ (taken from the library at Duke University):
 
 ![Distributions](https://www.internalpositioning.com/guide/img/fingerprint_library.png)
 
