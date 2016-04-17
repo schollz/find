@@ -7,7 +7,7 @@ Any computer with a WiFi card can use FIND using a client program that generates
 ```bash
 git clone https://github.com/schollz/find.git
 cd find
-git checkout fingerprint 
+git checkout fingerprint
 go get ./...
 go build
 ```
@@ -20,19 +20,17 @@ go build
 
 ## Options
 
-```bash
+```
 NAME:
    fingerprint - client for sending WiFi fingerprints to a FIND server
 
 USAGE:
-   compfind [global options] command [command options] [arguments...]
+   find2.exe [global options] command [command options] [arguments...]
 
 VERSION:
-   0.1
+   0.2
 
 COMMANDS:
-   help, h      Shows a list of commands or help for one command
-
 GLOBAL OPTIONS:
    --server, -s "https://ml.internalpositioning.com"    server to connect
    --group, -g "group"                                  group name
@@ -40,6 +38,7 @@ GLOBAL OPTIONS:
    --location, -l "location"                            location (needed for '--learn')
    --continue, -c "3"                                   number of times to run
    --learn, -e                                          need to set if you want to learn location
+   --nodebug, -d                                        turns off debugging
    --help, -h                                           show help
    --version, -v                                        print the version
 ```
