@@ -78,7 +78,7 @@ Yes, soon!
 
 ###  Can I use an iPhone?
 
-No. We currently do not support iPhone, and probably never will because they have locked developers from using the Wifi data.
+No. We currently do not support iPhone. Unfortunately, the information about the WiFi scanning hast to come from the use of the [`Apple80211` library](https://stackoverflow.com/questions/9684341/iphone-get-a-list-of-all-ssids-without-private-library/9684945#9684945). This is private library which means that [a user would have to jail break their device in order to use it](https://stackoverflow.com/questions/6341547/ios-can-i-manually-associate-wifi-network-with-geographic-location/6341893#6341893). We do not want to distribute an app that would require users to jailbreak their phones, so we will have to avoid developing for iOS until Apple removes this restriction. Sorry!
 
 ###  Can I use an Android?
 
