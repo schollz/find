@@ -2,11 +2,9 @@
 venv/
 data/floorplans/
 tilestache/baselayers/temp/
-static/img/
 data/production/
 data/analysis/
 data/images/
-static/d3_charts/charts.json
 documentation/site
 
 __pycache__/
