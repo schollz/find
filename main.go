@@ -214,6 +214,8 @@ func main() {
 			if strings.Contains(err.Error(), "255") {
 				fmt.Println("\nNeed to run with sudo: 'sudo ./fingerprint'")
 				fmt.Println("")
+			} else {
+				log.Notice("Are you sure this computer has WiFi enabled?")
 			}
 			log.Fatal(string(out), err)
 		}
