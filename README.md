@@ -154,6 +154,13 @@ You can see fingerprints of individual places by clicking on them, and then you 
 
 Please, do! Checkout [the latest issues](https://github.com/schollz/find/issues) to see what needs being done, or add your own cool thing.
 
+If you find a bug or need help with something, feel free to contact:
+
+* Email: [zack@hypercubeplatforms.com](mailto:zack@hypercubeplatforms.com)
+* Twitter: [@zack_118](https://twitter.com/intent/tweet?screen_name=zack_118)
+* Gitter: [Join room](https://gitter.im/schollz/find)
+* Github Issues: [Open an issue](https://github.com/schollz/find/issues/new)
+
 # Acknowledgements
 
 <img src="https://i.imgur.com/Ze51DJ6.png" width="180px" /> Funding from [Duke University Colab](https://colab.duke.edu/)
