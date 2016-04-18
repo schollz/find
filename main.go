@@ -65,13 +65,13 @@ func processOutput(out string, os string) (data []WifiData, err error) {
 	return
 }
 
-func getCommand() (command string, err error) {
+func getCommand(i string) (command string, err error) {
 	err = nil
 	command = ""
 	if runtime.GOOS == "darwin" {
 		command = scanCommandOSX()
 	} else if runtime.GOOS == "linux" {
-		command = scanCommandLinux()
+		command = scanCommandLinux(i)
 	} else if runtime.GOOS == "windows" {
 		command = scanCommandWindows()
 	} else {
@@ -80,8 +80,8 @@ func getCommand() (command string, err error) {
 	return
 }
 
-func scanWifi() (string, error) {
-	command, err := getCommand()
+func scanWifi(i string) (string, error) {
+	command, err := getCommand(i)
 	if err != nil {
 		return "", err
 	}
@@ -127,6 +127,7 @@ func main() {
 	var f Fingerprint
 	var times int
 	var address string
+	var wlan_interface string
 	app := cli.NewApp()
 	app.Name = "fingerprint"
 	app.Usage = "client for sending WiFi fingerprints to a FIND server"
@@ -168,9 +169,15 @@ func main() {
 			Name:  "nodebug,d",
 			Usage: "turns off debugging",
 		},
+		cli.StringFlag{
+			Name:  "interface,i",
+			Value: "wlan0",
+			Usage: "WiFi interface to use for scaning",
+		},
 	}
 	app.Action = func(c *cli.Context) {
 		times = c.Int("continue")
+		wlan_interface = c.String("interface")
 		// set group
 		f.Group = strings.ToLower(c.String("group"))
 		if f.Group == "group" {
@@ -210,7 +217,7 @@ func main() {
 	for i := 0; i < times; i++ {
 
 		log.Info("Scanning Wifi")
-		out, err := scanWifi()
+		out, err := scanWifi(wlan_interface)
 		if err != nil {
 			if strings.Contains(err.Error(), "255") {
 				fmt.Println("\nNeed to run with sudo: 'sudo ./fingerprint'")
