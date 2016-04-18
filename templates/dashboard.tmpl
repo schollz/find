@@ -329,8 +329,7 @@ function userLocPolling() {
               if (isConfirm) {
                 var req = $.ajax({
                   method: "DELETE",
-                  url: "/delete",
-                  data: {"group": "{{ .Group }}", "location": placeToDelete}
+                  url: "/location"+ '?' + $.param({"group": "{{ .Group }}", "location": placeToDelete})
                 })
                 req.done(function(data) {
                     console.log(data)
@@ -364,8 +363,7 @@ function userLocPolling() {
               if (isConfirm) {
                 var req = $.ajax({
                   method: "DELETE",
-                  url: "/deleteUser",
-                  data: {"group": "{{ .Group }}", "user": userToDelete}
+                  url: "/user" + '?' + $.param({"group": "{{ .Group }}", "user": userToDelete })
                 })
                 req.done(function(data) {
                     console.log(data)
