@@ -133,7 +133,7 @@ func main() {
 	var address string
 	var wlan_interface string
 	app := cli.NewApp()
-	app.Name = "fingerprint"
+	app.Name = "find"
 	app.Usage = "client for sending WiFi fingerprints to a FIND server"
 	app.Version = "0.2"
 	app.Action = func(c *cli.Context) {

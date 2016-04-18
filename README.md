@@ -15,17 +15,17 @@ go build
 # Usage
 
 ```
-./fingerprint
+./find
 ```
 
 ## Options
 
 ```
 NAME:
-   fingerprint - client for sending WiFi fingerprints to a FIND server
+   find - client for sending WiFi fingerprints to a FIND server
 
 USAGE:
-   find2.exe [global options] command [command options] [arguments...]
+   find [global options] command [command options] [arguments...]
 
 VERSION:
    0.2
@@ -45,7 +45,7 @@ GLOBAL OPTIONS:
 
 # Contributing
 
-Currently seeking pull requests to add OS X and Windows support (see Issues).
+Currently seeking pull requests to add Windows support (see Issues).
 
 # Credits
 
