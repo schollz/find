@@ -14,5 +14,5 @@ func ExampleWindows1() {
 
 func ExampleWindowsNoAdapter() {
 	fmt.Println(processOutput("There is no wireless interface on the system.", "windows"))
-	// Output: [] windows system has no known WiFi scanning parser
+	// Output: [] <nil>
 }
