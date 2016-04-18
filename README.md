@@ -19,7 +19,7 @@
 **The Framework for Internal Navigation and Discovery** (_FIND_) allows you to use your (Android) smartphone or WiFi-enabled computer (laptop or Raspberry Pi or etc.) to determine your position within your home or office. You can easily use this system in place of motion sensors as its resolution will allow your phone to distinguish whether you are in the living room, the kitchen or the bedroom, etc. The position information can then be used in a variety of ways including home automation, way-finding, or tracking!
 <blockquote>Simply put, FIND will allow you to replace <em>tons</em> of motion sensors with a <em>single</em> smartphone!</blockquote>
 
-The system is built on two main components - [a server](https://ml.internalpositioning.com/) and a fingerprinting device. The fingerprinting device ([computer program](https://github.com/schollz/find/releases/tag/v0.2client) or [android app](https://play.google.com/store/apps/details?id=com.hcp.find)) sends the specified data to the machine learning server which stores the fingerprints and analyzes them. It then returns the result to the device and stores the result on the server for accessing via a web browser or triggering via hooks.
+The system is built on two main components - [a server](https://ml.internalpositioning.com/) and a fingerprinting device. The fingerprinting device ([computer program](https://github.com/schollz/find/releases/tag/v0.3client) or [android app](https://play.google.com/store/apps/details?id=com.hcp.find)) sends the specified data to the machine learning server which stores the fingerprints and analyzes them. It then returns the result to the device and stores the result on the server for accessing via a web browser or triggering via hooks.
 
 **FAQ (abbreviated)**:
 - How does it work? [It uses already available WiFi information to classify locations](https://github.com/schollz/find/blob/master/FAQ.md#how-does-it-work).
@@ -115,7 +115,7 @@ To see more detailed information, go to [the server](https://ml.internalposition
 
 *Supports Linux, Windows, Raspberry Pi. Sorry, OS X is not yet supported - [please help me add it](https://github.com/schollz/find/issues/14)!*
 
-To get started, download [the program here](https://github.com/schollz/find/releases/tag/v0.2client) or [build it yourself](https://github.com/schollz/find/tree/fingerprint). To start learning locations simply use
+To get started, download [the program here](https://github.com/schollz/find/releases/tag/v0.3client) or [build it yourself](https://github.com/schollz/find/tree/fingerprint). To start learning locations simply use
 
 ```bash
 ./fingerprint -e
