@@ -32,7 +32,7 @@ windows    amd64
 darwin    amd64"""
 
 arches = arches.split("\n")
-version = "0.2"
+version = "0.3"
 try:
     os.system("rm -rf builds")
 except:
