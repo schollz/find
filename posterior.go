@@ -143,6 +143,9 @@ func normalizeBayes(bayes map[string]float64) map[string]float64 {
 		} else {
 			bayes[key] = (bayes[key] - mean) / sd
 		}
+		if math.IsNaN(bayes[key]) {
+			bayes[key] = 0
+		}
 	}
 	return bayes
 }
