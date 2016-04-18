@@ -1,8 +1,13 @@
 package main
 
-// func ExampleOSX1() {
-// 	dat, _ := ioutil.ReadFile("test/osxOutput.txt")
-// 	results := processOutputOSX(string(dat))
-// 	fmt.Println(results)
-// 	// Output:[{c0:c1:c0:f0:6f:cd -92} {f8:35:dd:0a:da:be -81} {00:1a:1e:46:cd:11 -80} {00:1a:1e:46:cd:10 -80} {2c:b0:5d:36:e3:b8 -81} {58:20:b1:21:63:9f -62} {98:6b:3d:d7:84:e0 -91} {80:37:73:87:56:36 -82} {00:23:69:d4:47:9f -82} {80:37:73:ba:f7:d8 -55} {a0:63:91:2b:9e:65 -58}]
-// }
+import (
+  "fmt"
+  "io/ioutil"
+)
+
+func ExampleOSX1() {
+  dat, _ := ioutil.ReadFile("test/osxOutput.txt")
+  results := processOutputOSX(string(dat))
+  fmt.Println(results)
+  // Output:[{22:86:8c:d5:30:d8 -82} {10:86:8c:d5:30:d8 -81} {00:7f:28:8b:0c:1d -74} {74:44:01:35:46:34 -75} {20:e5:2a:16:79:d4 -73} {4e:7a:8a:1d:7e:cc -70} {e6:89:2c:1a:02:e0 -91} {e8:89:2c:1a:02:e0 -92} {3c:7a:8a:1d:7e:cc -70} {50:6a:03:93:89:e3 -91} {08:86:3b:6d:bc:16 -53} {c0:ff:d4:e6:dd:2b -67} {60:a4:4c:29:8b:44 -88} {08:86:3b:6d:bc:18 -66}]
+}

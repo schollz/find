@@ -1,0 +1,15 @@
+                            SSID BSSID             RSSI CHANNEL HT CC SECURITY (auth/unicast/group)
+                     xfinitywifi 22:86:8c:d5:30:d8 -82  11      Y  US NONE
+                    XFSETUP-30DA 10:86:8c:d5:30:d8 -81  11      Y  US WPA(PSK/AES,TKIP/TKIP) WPA2(PSK/AES,TKIP/TKIP)
+                           RGNWG 00:7f:28:8b:0c:1d -74  11      Y  -- WPA2(PSK/AES,TKIP/TKIP)
+                XFSETUP-30DA_EXT 74:44:01:35:46:34 -75  11      Y  -- WPA(PSK/AES,TKIP/TKIP) WPA2(PSK/AES,TKIP/TKIP)
+                        traviata 20:e5:2a:16:79:d4 -73  11,-1   Y  -- WPA2(PSK/AES/AES)
+                     xfinitywifi 4e:7a:8a:1d:7e:cc -70  6       Y  US NONE
+                     xfinitywifi e6:89:2c:1a:02:e0 -91  6       Y  US NONE
+                       HOME-02E2 e8:89:2c:1a:02:e0 -92  6       Y  US WPA(PSK/TKIP,AES/TKIP) WPA2(PSK/TKIP,AES/TKIP)
+                          threeR 3c:7a:8a:1d:7e:cc -70  6       Y  US WPA(PSK/AES,TKIP/TKIP) WPA2(PSK/AES,TKIP/TKIP)
+                       NETGEAR13 50:6a:03:93:89:e3 -91  1       Y  -- WPA2(PSK/AES/AES)
+                           Ewifi 08:86:3b:6d:bc:16 -53  1       Y  TW WPA(PSK/AES/AES) WPA2(PSK/AES/AES)
+                         namaste c0:ff:d4:e6:dd:2b -67  1       Y  -- WPA2(PSK/AES/AES)
+                  ForzaRoma 5GHz 60:a4:4c:29:8b:44 -88  157,+1  Y  -- WPA2(PSK/AES/AES)
+                          Ewifi5 08:86:3b:6d:bc:18 -66  153,-1  Y  -- WPA(PSK/AES/AES) WPA2(PSK/AES/AES)
