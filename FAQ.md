@@ -1,9 +1,10 @@
 # FAQ
 
 
-If you have any questions, please contact us:
+If you have any questions, please contact:
 
 * Email: [zack@hypercubeplatforms.com](mailto:zack@hypercubeplatforms.com)
+* Twitter: [@zack_1128](https://twitter.com/intent/tweet?screen_name=zack_118)
 * Gitter: [Join room](https://gitter.im/schollz/find)
 * Github Issues: [Open an issue](https://github.com/schollz/find/issues/new)
 
