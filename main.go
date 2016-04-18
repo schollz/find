@@ -59,8 +59,8 @@ func processOutput(out string, os string) (data []WifiData, err error) {
 	data = []WifiData{}
 	if os == "linux" {
 		data = processOutputLinux(out)
-    } else if os == "windows" {
-        data = processOutputWindows(out)
+	} else if os == "windows" {
+		data = processOutputWindows(out)
 	} else {
 		err = fmt.Errorf(os + " system has no known WiFi scanning parser")
 	}
