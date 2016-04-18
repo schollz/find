@@ -17,7 +17,7 @@ func ExampleSendFingerprintServerOnlineLearn() {
 		fmt.Println(err)
 	}
 	fmt.Println(response)
-	// Output: Inserted fingerprint for zack at zakhome floor 2 office
+	// Output: Inserted 22 fingerprints for zack at zakhome floor 2 office
 }
 
 func ExampleSendFingerprintServerOnlineTrack() {
