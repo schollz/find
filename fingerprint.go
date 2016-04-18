@@ -104,7 +104,7 @@ func handleFingerprint(c *gin.Context) {
 			go putFingerprintIntoDatabase(jsonFingerprint, "fingerprints")
 			isLearning[strings.ToLower(jsonFingerprint.Group)] = true
 			Debug.Println("Inserted fingerprint for " + jsonFingerprint.Username + " (" + jsonFingerprint.Group + ") at " + jsonFingerprint.Location)
-			c.JSON(http.StatusOK, gin.H{"message": "Inserted fingerprint for " + jsonFingerprint.Username + " at " + jsonFingerprint.Location, "success": true})
+			c.JSON(http.StatusOK, gin.H{"message": "Inserted " + strconv.Itoa(len(jsonFingerprint.WifiFingerprint)) + " fingerprints for " + jsonFingerprint.Username + " at " + jsonFingerprint.Location, "success": true})
 		} else {
 			trackFingerprint(c)
 		}
