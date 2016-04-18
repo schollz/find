@@ -1,4 +1,4 @@
-# Fingerprint
+# Find
 
 Any computer with a WiFi card can use FIND using a client program that generates fingerprints by scanning the onboard wifi.
 
