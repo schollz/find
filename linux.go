@@ -6,8 +6,8 @@ import (
 	"strings"
 )
 
-func scanCommandLinux() string {
-	return "/sbin/iw dev wlan0 scan -u"
+func scanCommandLinux(i string) string {
+	return "/sbin/iw dev " + i + " scan -u"
 }
 
 func processOutputLinux(out string) []WifiData {
