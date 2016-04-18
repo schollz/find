@@ -2,19 +2,15 @@ package main
 
 import (
 	"fmt"
+	"regexp"
 	"strconv"
 	"strings"
-	"regexp"
 )
 
-func scanCommandOSX() string {
-	return "/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -s"
-}
-
-func processOutputOSX(out string) []WifiData {
-	w     := []WifiData{}
+func processOutputDarwin(out string) ([]WifiData, error) {
+	w := []WifiData{}
 	wTemp := WifiData{Mac: "none", Rssi: 0}
-	re    := regexp.MustCompile("^\\s*.+ ((?:[a-f0-9]{2}:){5}[a-f0-9]{2}) (-?\\d+)")
+	re := regexp.MustCompile("^\\s*.+ ((?:[a-f0-9]{2}:){5}[a-f0-9]{2}) (-?\\d+)")
 
 	for _, line := range strings.Split(out, "\n") {
 		mac_signal := re.FindStringSubmatch(line)
@@ -33,6 +29,7 @@ func processOutputOSX(out string) []WifiData {
 			w = append(w, wTemp)
 		}
 		wTemp = WifiData{Mac: "none", Rssi: 0}
-		}
-	return w
+	}
+
+	return w, nil
 }

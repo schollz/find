@@ -1,36 +1,49 @@
 package main
 
 import (
-	"fmt"
+	"regexp"
 	"strconv"
 	"strings"
 )
 
-func scanCommandLinux(i string) string {
-	return "/sbin/iw dev " + i + " scan -u"
-}
+func processOutputLinux(out string) ([]WifiData, error) {
+	data := []WifiData{}
+	entry := WifiData{}
+	macRegexp := regexp.MustCompile("([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})")
+	rssiRegexp := regexp.MustCompile("signal: ((\\+?)|-)\\d*\\.?\\d* dBm")
+	var err error
 
-func processOutputLinux(out string) []WifiData {
-	w := []WifiData{}
-	wTemp := WifiData{Mac: "none", Rssi: 0}
 	for _, line := range strings.Split(out, "\n") {
-		if len(line) < 3 {
+		macAddress := macRegexp.FindString(line)
+		if macAddress != "" {
+			entry.Mac = macAddress
+		}
+
+		if entry.Mac == "" {
+			// A mac address for the current entry has not been found yet
 			continue
 		}
-		if line[0:3] == "BSS" {
-			wTemp.Mac = strings.Fields(strings.Replace(line, "(", " (", -1))[1]
+
+		rawRssi := rssiRegexp.FindString(line)
+		if rawRssi == "" {
+			// We have a mac address but not a rssi yet
+			continue
 		}
-		if strings.Contains(line, "signal") && strings.Contains(line, "dBm") {
-			val, err := strconv.ParseFloat(strings.Fields(line)[1], 10)
-			if err != nil {
-				fmt.Println(line, val, err)
-			}
-			wTemp.Rssi = int(val)
-			if wTemp.Mac != "none" && wTemp.Rssi != 0 {
-				w = append(w, wTemp)
-			}
-			wTemp = WifiData{Mac: "none", Rssi: 0}
+		components := strings.Split(rawRssi, " ")
+		var signal float64
+
+		// We can safely access element 1 given that the line
+		// was accepted by the rssi regexp that contains 2 spaces
+		signal, err = strconv.ParseFloat(components[1], 10)
+		if err != nil {
+			continue
 		}
+
+		entry.Rssi = int(signal)
+
+		data = append(data, entry)
+		entry.Mac = ""
 	}
-	return w
+
+	return data, err
 }

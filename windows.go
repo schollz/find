@@ -6,11 +6,7 @@ import (
 	"strings"
 )
 
-func scanCommandWindows() string {
-	return "netsh wlan show network mode=bssid"
-}
-
-func processOutputWindows(out string) []WifiData {
+func processOutputWindows(out string) ([]WifiData, error) {
 	w := []WifiData{}
 	wTemp := WifiData{Mac: "none", Rssi: 0}
 	for _, line := range strings.Split(out, "\n") {
@@ -36,5 +32,6 @@ func processOutputWindows(out string) []WifiData {
 			wTemp = WifiData{Mac: "none", Rssi: 0}
 		}
 	}
-	return w
+
+	return w, nil
 }
