@@ -327,7 +327,7 @@ function userLocPolling() {
             },
             function(isConfirm) {
               if (isConfirm) {
-                $.get("/delete", {
+                $.delete("/delete", {
                     "group": "{{ .Group }}",
                     "location": placeToDelete
                   },
@@ -363,7 +363,7 @@ function userLocPolling() {
             },
             function(isConfirm) {
               if (isConfirm) {
-                $.get("/deleteUser", {
+                $.delete("/deleteUser", {
                     "group": "{{ .Group }}",
                     "user": userToDelete
                   },
