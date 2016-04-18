@@ -113,7 +113,7 @@ To see more detailed information, go to [the server](https://ml.internalposition
 
 ### Client (for computers)
 
-*Supports Linux, Windows, Raspberry Pi. Sorry, OS X is not yet supported - [please help me add it](https://github.com/schollz/find/issues/14)!*
+*Supports Linux, Windows, Raspberry Pi, and OS X!*
 
 To get started, download [the program here](https://github.com/schollz/find/releases/tag/v0.3client) or [build it yourself](https://github.com/schollz/find/tree/fingerprint). To start learning locations simply use
 
