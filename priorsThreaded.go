@@ -77,10 +77,10 @@ func optimizePriorsThreaded(group string) {
 		}
 		return nil
 	})
+	db.Close()
 	if err != nil {
 		return
 	}
-	db.Close()
 
 	var ps = *NewFullParameters()
 	getParameters(group, &ps, fingerprintsInMemory, fingerprintsOrdering)
