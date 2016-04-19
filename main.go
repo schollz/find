@@ -153,7 +153,7 @@ func main() {
 		var ok bool
 		osConfig, ok = GetConfiguration(runtime.GOOS, wlan_interface)
 		if !ok {
-			log.Fatal("Your OS is not currently supported")
+			log.Fatal("Your OS '" + runtime.GOOS + "' is not currently supported")
 		}
 
 		// set group
