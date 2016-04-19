@@ -51,7 +51,7 @@ Currently seeking pull requests to add OS X and Windows support (see Issues).
 
 # License
 
-FIND is a Framework for Internal Navigation and Discovery.
+Fingerprint is a CLI client for the Framework for Internal Navigation and Discovery.
 
 Copyright (C) 2015-2016 Zack Scholl
 
