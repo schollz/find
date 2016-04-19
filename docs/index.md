@@ -2,10 +2,11 @@
 [![](https://raw.githubusercontent.com/schollz/find/master/static/splash.gif)](https://www.internalpositioning.com/)
 
 # Fingerprinting
-## `POST` `/track` and `/learn`
+## `POST /learn`
+
 Parses and inserts fingerprints. `time` is optional. `location` is optional for the `/track` route.
 
-### POST
+Requires posting a `WifiFingerprint` JSON:
 
 ```json
 {
@@ -31,56 +32,78 @@ Parses and inserts fingerprints. `time` is optional. `location` is optional for 
 ```json
 {
   "success": true,
-  "message": "Fingerprint inserted."
+  "message": "Inserted X fingerprints for USER at LOCATION."
 }
 ```
 
-### curl
+## `POST /track`
 
-```bash
-curl -H "Content-Type: application/json" -X POST -d 'JSON' http://server/learn
+Parses and inserts fingerprints. `time` is optional. `location` is optional for the `/track` route.
+
+Requires posting a `WifiFingerprint` JSON:
+
+```json
+{
+   "group":"some group",
+   "username":"some user",
+   "location":"some place",
+   "time":12309123,
+   "wififingerprint":[
+      {
+         "mac":"AA:AA:AA:AA:AA:AA",
+         "rssi":-45
+      },
+      {
+         "mac":"BB:BB:BB:BB:BB:BB",
+         "rssi":-55
+      }
+   ]
+}
 ```
 
-## `GET` `/calculate?group=X`
-Recalculates the priors for the database for the `group`.
-
-## `GET` `/location?group=X&user=Y&history=Z`
-Gets the locations. If `user` is not provided it will return locations for all users in the `group`. If `history` is not included, it will return the last location, otherwise it will return the last `Z` locations.
-
-### Response for `/location?group=something&user=user1&history=3`
+### Response
 
 ```json
 {
   "success": true,
-  "message": "Successfully acquired.",
-  "user1":{
-      "time":"Some Date, 2010",
-      "location":"location1",
-      "bayes":{
-        "location1":3.0,
-        "location2":1.0,
-        "location3":2.0,
-        "location4":2.5,
-      },
-      "history":[
-        {
-          "location":"location1",
-          "time":"time1"
-        },
-        {
-          "location":"location1",
-          "time":"time2"
-        },
-        {
-          "location":"location2",
-          "time":"time3"
-        }
-      ]
-    }
+  "message": "Calculated location: LOCATION",
+  "location": "LOCATION"
 }
 ```
 
-# database
+
+## `GET /calculate?group=X`
+Recalculates the priors for the database for the `group`.
+
+
+### Response
+
+```json
+{
+  "message":"Parameters optimized",
+  "success":true
+}
+```
+
+## `GET /location?group=X&user=Y&history=Z`
+Gets the locations. If `user` is not provided it will return locations for all users in the `group`. If `history` is not included, it will return the last location, otherwise it will return the last `Z` locations.
+
+### Response
+
+```json
+{
+    "success":true,
+    "message":"Found X users.",
+    "userX": [
+        {
+            "time": "2016-04-16 08:16:43.123233725 -0400 EDT",
+            "location": "some location",
+            "bayes": {}
+        }
+    ]
+}
+```
+
 
 ## `DELETE` `/username?group=X&user=Y`
 
@@ -95,9 +118,9 @@ Deletes user `Y` in group `X`.
 }
 ```
 
-# Meta
-
 ## `GET` `/status`
+
+Returns status of the server and some information about the computer.
 
 ### Response
 
