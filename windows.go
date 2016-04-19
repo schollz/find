@@ -4,37 +4,35 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"time"
 )
 
 func scanCommandWindows() string {
-	return "netsh wlan show network mode=bssid"
+	return "bin\\windows-wlan-util.exe query"
 }
 
 func processOutputWindows(out string) []WifiData {
 	w := []WifiData{}
-	wTemp := WifiData{Mac: "none", Rssi: 0}
 	for _, line := range strings.Split(out, "\n") {
-		if len(line) < 3 {
+		if strings.HasPrefix(line, "Error") {
 			continue
 		}
 		parts := strings.Fields(line)
-		if parts[0] == "BSSID" {
-			wTemp.Mac = parts[3]
+		if len(line) < 4 {
+			continue
 		}
-		if parts[0] == "Signal" {
-			val, err := strconv.ParseFloat(strings.Replace(parts[2], "%", "", 1), 10)
-			if err != nil {
-				fmt.Println(line, val, err)
-			}
-			if val > 0 {
-				val = (val / 2) - 100
-			}
-			wTemp.Rssi = int(val)
-			if wTemp.Mac != "none" && wTemp.Rssi != 0 {
-				w = append(w, wTemp)
-			}
-			wTemp = WifiData{Mac: "none", Rssi: 0}
+		
+		val, err := strconv.ParseFloat(parts[0], 10)
+		if err != nil {
+			fmt.Println(line, val, err)
+			continue
 		}
+		
+		w = append(w, WifiData{Mac: parts[2], Rssi: int(val)})
 	}
+	
+	// This is probably not the best place for this
+	time.Sleep(10000 * time.Millisecond)
+	
 	return w
 }
