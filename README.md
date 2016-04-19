@@ -177,7 +177,9 @@ Like this? Help me keep it alive [by donating $5](https://www.paypal.me/ZackScho
 
 # License
 
-FIND is a Framework for Internal Navigation and Discovery.
+## FIND
+
+**FIND** is a Framework for Internal Navigation and Discovery.
 
 Copyright (C) 2015-2016 Zack Scholl
 
@@ -192,3 +194,17 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the [GNU Affero Genera
 
 You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see [GNU Affero General Public License here](https://www.gnu.org/licenses/agpl.html).
+
+## CanvasJS
+
+**FIND** uses [CanvasJS](http://canvasjs.com/). Note that you will have to buy the appropriate CanvasJS License if you use this software for commercial purposes. CanvasJS has the following Dual Licensing Model:
+
+### Commercial License
+
+Commercial use of CanvasJS requires you to purchase a license. Without a commercial license you can use it for evaluation purposes only. Please refer to the following link for further details: http://canvasjs.com/.
+
+### Free for Non-Commercial Use
+
+For non-commercial purposes you can use the software for free under Creative Commons Attribution-NonCommercial 3.0 License.
+
+A credit Link is added to the bottom right of the chart which should be preserved. Refer to the following link for further details on the same: http://creativecommons.org/licenses/by-nc/3.0/deed.en_US.
