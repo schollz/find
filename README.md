@@ -51,19 +51,18 @@ Currently seeking pull requests to add OS X and Windows support (see Issues).
 
 # License
 
-FIND is a Framework for Internal Navigation and Discovery.
+Fingerprint is a CLI client for the Framework for Internal Navigation and Discovery.
 
 Copyright (C) 2015-2016 Zack Scholl
 
 This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
+it under the terms of the GNU Affero General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License ([https://github.com/schollz/find/blob/master/LICENSE](https://github.com/schollz/find/blob/master/LICENSE)) for more details.
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the [GNU Affero General Public License](LICENSE) for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see [GNU Affero General Public License here](https://www.gnu.org/licenses/agpl.html).
