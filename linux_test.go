@@ -6,8 +6,10 @@ import (
 	"testing"
 )
 
+var linuxConfig = ScanParsingConfig{linuxFindMac, linuxFindRssi}
+
 func TestLinuxOutEmptyResultWhenEmptyScan(t *testing.T) {
-	data, _ := processOutputLinux("")
+	data, _ := ParseOutput(linuxConfig, "")
 	assert.True(t, len(data) == 0, "Result must be empty")
 }
 
@@ -16,7 +18,7 @@ func TestLinuxOutSkipWhenInvalidMac(t *testing.T) {
 		"signal: dBm\n" +
 		"BSS 11:11:11:aa:bb:cc\n" +
 		"signal: -65.00 dBm"
-	data, _ := processOutputLinux(out)
+	data, _ := ParseOutput(linuxConfig, out)
 
 	expected := []WifiData{
 		WifiData{"11:11:11:aa:bb:cc", -65},
@@ -30,7 +32,7 @@ func TestLinuxOutSkipWhenInvalidSignal(t *testing.T) {
 		"signal: dBm\n" +
 		"BSS 11:11:11:aa:bb:cc\n" +
 		"signal: -65.00 dBm"
-	data, _ := processOutputLinux(out)
+	data, _ := ParseOutput(linuxConfig, out)
 	expected := []WifiData{
 		WifiData{"11:11:11:aa:bb:cc", -65},
 	}
@@ -40,7 +42,7 @@ func TestLinuxOutSkipWhenInvalidSignal(t *testing.T) {
 
 func TestLinuxFullOutput(t *testing.T) {
 	dat, _ := ioutil.ReadFile("test/linuxOutput.txt")
-	data, err := processOutputLinux(string(dat))
+	data, err := ParseOutput(linuxConfig, string(dat))
 
 	expected := []WifiData{
 		WifiData{"80:37:73:ba:f7:dc", -25},
@@ -72,7 +74,7 @@ func TestLinuxFullOutput(t *testing.T) {
 
 func TestPi3FullOutput(t *testing.T) {
 	dat, _ := ioutil.ReadFile("test/pi3Output.txt")
-	data, err := processOutputLinux(string(dat))
+	data, err := ParseOutput(linuxConfig, string(dat))
 
 	expected := []WifiData{
 		{"70:73:cb:bd:9f:b5", -72},

@@ -6,44 +6,32 @@ import (
 	"strings"
 )
 
-func processOutputLinux(out string) ([]WifiData, error) {
-	data := []WifiData{}
-	entry := WifiData{}
-	macRegexp := regexp.MustCompile("([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})")
-	rssiRegexp := regexp.MustCompile("signal: ((\\+?)|-)\\d*\\.?\\d* dBm")
-	var err error
+// Regular expression matching lines of the Wifi signals results
+// of the shape `signal: -56.00 dBm`
+const linuxRssiExpr = "signal: -\\d*\\.?\\d* dBm"
 
-	for _, line := range strings.Split(out, "\n") {
-		macAddress := macRegexp.FindString(line)
-		if macAddress != "" {
-			entry.Mac = macAddress
-		}
+var rssiRegexp = regexp.MustCompile(linuxRssiExpr)
 
-		if entry.Mac == "" {
-			// A mac address for the current entry has not been found yet
-			continue
-		}
+func linuxFindMac(line string) (string, bool) {
+	mac := macRegexp.FindString(line)
 
-		rawRssi := rssiRegexp.FindString(line)
-		if rawRssi == "" {
-			// We have a mac address but not a rssi yet
-			continue
-		}
-		components := strings.Split(rawRssi, " ")
-		var signal float64
+	return mac, (mac != "")
+}
 
-		// We can safely access element 1 given that the line
-		// was accepted by the rssi regexp that contains 2 spaces
-		signal, err = strconv.ParseFloat(components[1], 10)
-		if err != nil {
-			continue
-		}
-
-		entry.Rssi = int(signal)
-
-		data = append(data, entry)
-		entry.Mac = ""
+func linuxFindRssi(line string) (int, bool) {
+	rawRssi := rssiRegexp.FindString(line)
+	if rawRssi == "" {
+		return 0, false
 	}
 
-	return data, err
+	components := strings.Split(rawRssi, " ")
+
+	// We can safely access element 1 given that the line
+	// was accepted by the rssi regexp that contains 2 spaces
+	signal, err := strconv.ParseFloat(components[1], 10)
+	if err != nil {
+		return 0, false
+	}
+
+	return int(signal), (signal <= 0)
 }

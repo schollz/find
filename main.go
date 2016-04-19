@@ -86,13 +86,6 @@ func setupLogging() {
 	} else {
 		logging.SetBackend(backend1Leveled)
 	}
-
-	// log.Info("debug")
-	// log.Info("info")
-	// log.Notice("notice")
-	// log.Warning("warning")
-	// log.Error("err")
-	// log.Critical("crit")
 }
 
 func main() {
@@ -216,7 +209,7 @@ func main() {
 		errorsInARow = 0
 
 		log.Info("Processing", len(strings.Split(out, "\n")), "lines out output")
-		f.WifiFingerprint, err = osConfig.ProcessOutput(out)
+		f.WifiFingerprint, err = ParseOutput(osConfig.ScanConfig, out)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -246,7 +239,11 @@ func sendFingerprint(address string, f Fingerprint) (string, error) {
 
 	// fmt.Println("response Status:", resp.Status)
 	// fmt.Println("response Headers:", resp.Header)
-	body, _ := ioutil.ReadAll(resp.Body)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return "", err
+	}
+
 	if strings.Contains(string(body), `"success":true`) == false && strings.Contains(string(body), `"success"`) == true {
 		return "", fmt.Errorf("Something wrong with server")
 	}

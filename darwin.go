@@ -1,35 +1,32 @@
 package main
 
 import (
-	"fmt"
 	"regexp"
 	"strconv"
 	"strings"
 )
 
-func processOutputDarwin(out string) ([]WifiData, error) {
-	w := []WifiData{}
-	wTemp := WifiData{Mac: "none", Rssi: 0}
-	re := regexp.MustCompile("^\\s*.+ ((?:[a-f0-9]{2}:){5}[a-f0-9]{2}) (-?\\d+)")
+// Regular expression matching lines of the Wifi signals results
+// of the shape `22:86:8c:d5:30:d8 -82`
+const darwinRssiExpr = macExpr + " -\\d+"
 
-	for _, line := range strings.Split(out, "\n") {
-		mac_signal := re.FindStringSubmatch(line)
+var darwinRssiRegexp = regexp.MustCompile(darwinRssiExpr)
 
-		if mac_signal == nil {
-			continue
-		}
+func darwinFindMac(line string) (string, bool) {
+	return linuxFindMac(line)
+}
 
-		wTemp.Mac = mac_signal[1]
-		val, err := strconv.ParseFloat(mac_signal[2], 10) // strings.Replace(mac_signal[2], "%", "", 1)
-		if err != nil {
-			fmt.Println(line, val, err)
-		}
-		wTemp.Rssi = int(val)
-		if wTemp.Mac != "none" && wTemp.Rssi != 0 {
-			w = append(w, wTemp)
-		}
-		wTemp = WifiData{Mac: "none", Rssi: 0}
+func darwinFindRssi(line string) (int, bool) {
+	rawRssi := darwinRssiRegexp.FindString(line)
+	if rawRssi == "" {
+		return 0, false
 	}
 
-	return w, nil
+	components := strings.Split(rawRssi, " ")
+
+	// We can safely access element 1 given that the line
+	// was accepted by the rssi regexp that contains 1 space
+	signal, err := strconv.Atoi(components[1])
+
+	return signal, (err == nil)
 }
