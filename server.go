@@ -20,6 +20,7 @@ var RuntimeArgs struct {
 	ServerCRT  string
 	ServerKey  string
 	SourcePath string
+	Socket     string
 }
 
 // VersionNum keeps track of the version
@@ -111,8 +112,7 @@ Options:`)
 	fmt.Println(string(dat))
 	if RuntimeArgs.Socket != "" {
 		r.RunUnix(RuntimeArgs.Socket)
-	}
-	else if RuntimeArgs.ServerCRT != "" && RuntimeArgs.ServerKey != "" {
+	} else if RuntimeArgs.ServerCRT != "" && RuntimeArgs.ServerKey != "" {
 		fmt.Println("(version " + VersionNum + ") is up and running on https://" + RuntimeArgs.ExternalIP)
 		fmt.Println("-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----")
 		r.RunTLS(RuntimeArgs.Port, RuntimeArgs.ServerCRT, RuntimeArgs.ServerKey)
