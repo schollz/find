@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"math"
 	"path"
@@ -66,6 +67,9 @@ func optimizePriorsThreaded(group string) {
 	}
 	err = db.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte("fingerprints"))
+		if b == nil {
+			return fmt.Errorf("No fingerprint bucket")
+		}
 		c := b.Cursor()
 		for k, v := c.First(); k != nil; k, v = c.Next() {
 			fingerprintsInMemory[string(k)] = loadFingerprint(v)
