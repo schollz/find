@@ -102,8 +102,20 @@ between floors.
 
 ###  Can you run the server on a Raspberry Pi?
 
-*Yes.* Its been tested and runs great on a Raspberry Pi model B+, and model 3. Also, all the releases include [a ARM release for running on a Raspberry pi](https://github.com/schollz/find/releases).
+**Yes.** Its been tested and runs great on a Raspberry Pi model B+, and model 3. Also, all the releases include [a ARM release for running on a Raspberry pi](https://github.com/schollz/find/releases).
+
+### Is there a good minimum time to leave the app to train a location?
+
+### Can it pick up locations between floors?
+
+**Yes.** Yes it will pick up floors no problem. Floors tend to attenuate the signal, so there is a noticeable difference when you are in the same position, but on different floors. For example, check this out [this graphic](https://camo.githubusercontent.com/aa8ce49f332c0d1dcf0baa58c9a1d59672f8ce22/68747470733a2f2f7777772e696e7465726e616c706f736974696f6e696e672e636f6d2f67756964652f696d672f66696e6765727072696e745f6c6962726172792e706e67). Location x54 and location x49 are exactly the same place, but different floors, in a library. The blue signals are much more attenuated in x49 than x54 and thus are distinguished.
+
+### What is a good amount of time to train a location?
+
+**2 to 5 minutes**. Optimally you want to send ~100 pieces of information to the server. It transmits about 20 per minute, so you should give it some time to train well.
 
 ### Can I help develop?
 
 **Yes!** We host our code on [Github](https://github.com/schollz/find) and will accept Pull requests and Feature requests.
+
+
