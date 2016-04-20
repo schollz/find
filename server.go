@@ -21,6 +21,7 @@ var RuntimeArgs struct {
 	ServerKey  string
 	SourcePath string
 	Socket     string
+	Cwd        string
 }
 
 // VersionNum keeps track of the version
@@ -29,6 +30,7 @@ var VersionNum string
 func init() {
 	cwd, _ := os.Getwd()
 	RuntimeArgs.SourcePath = path.Join(cwd, "data")
+	RuntimeArgs.Cwd = cwd
 }
 
 func main() {
@@ -71,8 +73,8 @@ Options:`)
 
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.Default()
-	r.LoadHTMLGlob("templates/*")
-	r.Static("static/", "static/")
+	r.LoadHTMLGlob(path.Join(RuntimeArgs.Cwd, "templates/*"))
+	r.Static("static/", path.Join(RuntimeArgs.Cwd, "static/"))
 	store := sessions.NewCookieStore([]byte("secret"))
 	r.Use(sessions.Sessions("mysession", store))
 
