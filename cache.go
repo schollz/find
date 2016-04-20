@@ -13,7 +13,6 @@ func init() {
 
 func clearCache() {
 	for {
-		Debug.Println("Clearing cache.")
 		isLearning = make(map[string]bool)
 		psCache = make(map[string]FullParameters)
 		usersCache = make(map[string][]string)

@@ -20,7 +20,8 @@
 			},
 
                 toolTip:{
-                  shared:false
+                  shared:false,
+									enabled:true
                 },
 			theme: "theme2",
 			axisY: {
@@ -37,6 +38,8 @@
 
 {{ range .Data.Macs }}
 {
+	mouseover: onMouseover,
+	mouseout: onMouseout,
   type: "line",
   showInLegend: {{ $.Legend }},
   name: "{{ .Name }}",
@@ -65,6 +68,18 @@
 		});
 
 chart.render();
+
+function onMouseout(e){
+     	chart.options.toolTip.enabled = false;
+      chart.render();
+      // document.getElementsByClassName('canvasjs-chart-tooltip')[0].style.display= 'none'; // uncomment this line to hide toolTip on mouseout
+    }
+
+    function onMouseover(e){
+    	 document.getElementsByClassName('canvasjs-chart-tooltip')[0].style.display= 'block'; // uncomment this line to show the hidden toolTip on mouseover
+       chart.options.toolTip.enabled = true;
+       chart.render();
+    }
 }
 </script>
 <script type="text/javascript" src="/static/js/canvasjs.min.js"></script>

@@ -192,7 +192,7 @@ func editName(c *gin.Context) {
 
 		db.Close()
 		numChanges += len(toUpdate)
-		regenerateEverything(group)
+		optimizePriorsThreaded(strings.ToLower(group))
 
 		c.JSON(http.StatusOK, gin.H{"message": "Changed name of " + strconv.Itoa(numChanges) + " things", "success": true})
 	} else {
@@ -285,8 +285,8 @@ func editUserName(c *gin.Context) {
 }
 
 func deleteName(c *gin.Context) {
-	group := c.DefaultQuery("group", "noneasdf")
-	location := c.DefaultQuery("location", "none")
+	group := strings.ToLower(c.DefaultQuery("group", "noneasdf"))
+	location := strings.ToLower(c.DefaultQuery("location", "none"))
 	if group != "noneasdf" {
 		numChanges := 0
 
@@ -311,7 +311,7 @@ func deleteName(c *gin.Context) {
 		})
 
 		db.Close()
-		regenerateEverything(group)
+		optimizePriorsThreaded(strings.ToLower(group))
 
 		c.JSON(http.StatusOK, gin.H{"message": "Changed name of " + strconv.Itoa(numChanges) + " things", "success": true})
 	} else {

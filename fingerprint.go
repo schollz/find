@@ -104,7 +104,7 @@ func handleFingerprint(c *gin.Context) {
 			go putFingerprintIntoDatabase(jsonFingerprint, "fingerprints")
 			isLearning[strings.ToLower(jsonFingerprint.Group)] = true
 			Debug.Println("Inserted fingerprint for " + jsonFingerprint.Username + " (" + jsonFingerprint.Group + ") at " + jsonFingerprint.Location)
-			c.JSON(http.StatusOK, gin.H{"message": "Inserted " + strconv.Itoa(len(jsonFingerprint.WifiFingerprint)) + " fingerprints for " + jsonFingerprint.Username + " at " + jsonFingerprint.Location, "success": true})
+			c.JSON(http.StatusOK, gin.H{"message": "Inserted fingerprint containing " + strconv.Itoa(len(jsonFingerprint.WifiFingerprint)) + " APs for " + jsonFingerprint.Username + " at " + jsonFingerprint.Location, "success": true})
 		} else {
 			trackFingerprint(c)
 		}
@@ -144,7 +144,7 @@ func trackFingerprint(c *gin.Context) {
 		userJSON.Time = time.Now().String()
 		userPositionCache[strings.ToLower(jsonFingerprint.Group)+strings.ToLower(jsonFingerprint.Username)] = userJSON
 		Debug.Println("Tracking fingerprint for " + jsonFingerprint.Username + " (" + jsonFingerprint.Group + ") at " + jsonFingerprint.Location + " (guess)")
-		c.JSON(http.StatusOK, gin.H{"message": "Calculated location: " + locationGuess, "success": true})
+		c.JSON(http.StatusOK, gin.H{"message": "Calculated location: " + locationGuess, "success": true, "location": locationGuess})
 	} else {
 		c.JSON(http.StatusOK, gin.H{"message": "Something went wrong", "success": false})
 	}

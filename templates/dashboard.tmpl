@@ -327,20 +327,18 @@ function userLocPolling() {
             },
             function(isConfirm) {
               if (isConfirm) {
-                $.get("/delete", {
-                    "group": "{{ .Group }}",
-                    "location": placeToDelete
-                  },
-                  function(data) {
-                    console.log(data);
-                    if (data['success']) {
-                      swal("Deleted!", data['message'], "success");
-                      location.reload()
-                    } else {
-                      swal("Sorry", data['message'], "error");
-                    }
-                  }
-                );
+                var req = $.ajax({
+                  method: "DELETE",
+                  url: "/location"+ '?' + $.param({"group": "{{ .Group }}", "location": placeToDelete})
+                })
+                req.done(function(data) {
+                    console.log(data)
+                    swal("Deleted!", data['message'], "success");
+                    location.reload();
+                  });
+                req.fail(function(data) {
+                    swal("Sorry", data['message'], "error");
+                  });
               } else {
                 swal("Cancelled", "Your data is safe :)", "error");
               }
@@ -363,20 +361,18 @@ function userLocPolling() {
             },
             function(isConfirm) {
               if (isConfirm) {
-                $.get("/deleteUser", {
-                    "group": "{{ .Group }}",
-                    "user": userToDelete
-                  },
-                  function(data) {
-                    console.log(data);
-                    if (data['success']) {
-                      swal("Deleted!", data['message'], "success");
-                      location.reload()
-                    } else {
-                      swal("Sorry", data['message'], "error");
-                    }
-                  }
-                );
+                var req = $.ajax({
+                  method: "DELETE",
+                  url: "/user" + '?' + $.param({"group": "{{ .Group }}", "user": userToDelete })
+                })
+                req.done(function(data) {
+                    console.log(data)
+                    swal("Deleted!", data['message'], "success");
+                    location.reload();
+                  });
+                req.fail(function(data) {
+                    swal("Sorry", data['message'], "error");
+                  });
               } else {
                 swal("Cancelled", "Your data is safe :)", "error");
               }
