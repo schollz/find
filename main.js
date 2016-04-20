@@ -10,6 +10,7 @@ var learning = false;
 var tracking = false;
 var inoptions = false;
 var POLLING_INTERVAL = "pollingInterval";
+
 function toTitleCase(str)
 {
 	return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
@@ -64,7 +65,7 @@ function ipIntToString(ip) {
 }
 
 function options() {
-	$('button#changeserver').toggle('Drop');$('button#changepolling').toggle('Drop');$('button#dashboard').toggle('Drop');$('button#changeuser').toggle('Drop'); $('button#changegroup').toggle('Drop');$('button#learn').toggle('Drop');$('button#stop').toggle('Drop');$('button#track').toggle('Drop');$('button#options').toggleClass('active');
+	$('button#changepolling').toggle('Drop');$('button#changeserver').toggle('Drop');$('button#dashboard').toggle('Drop');$('button#changeuser').toggle('Drop'); $('button#changegroup').toggle('Drop');$('button#learn').toggle('Drop');$('button#stop').toggle('Drop');$('button#track').toggle('Drop');$('button#options').toggleClass('active');
 	if (inoptions == false) {
 		inoptions = true;
 		$('button#options').html('Go back');
@@ -204,6 +205,7 @@ function sendFingerprint() {
 		}, function(){});
 	}
 }
+
 function getPollingInterval() {
 	var pollingInterval = window.localStorage.getItem(POLLING_INTERVAL);
 
@@ -214,6 +216,7 @@ function getPollingInterval() {
 	}
 	return pollingInterval;
 }
+
 function scanAndSend(results) {
 	if (results == null) {
 		results = {input1:"tracking",buttonIndex:1};
@@ -221,7 +224,6 @@ function scanAndSend(results) {
 	currentLocation = results.input1.toLowerCase();
 	if (results.buttonIndex == 1) {
 		clearInterval(scanningInterval);
-
 		var servername = window.localStorage.getItem("server").toLowerCase();
 		if (servername.slice(-1) != '/') {
 			servername += "/";
@@ -314,7 +316,7 @@ function main() {
 	if (test == null || test.length < 1) {
 		window.localStorage.setItem(POLLING_INTERVAL,3000); // default of 3000ms
 	}
-
+	
 	$('h2#user').html("Group: " + window.localStorage.getItem("group") + "<br>User: " + window.localStorage.getItem("username"));
 
 	// Android customization
