@@ -10,6 +10,8 @@ var learning = false;
 var tracking = false;
 var inoptions = false;
 var POLLING_INTERVAL = "pollingInterval";
+		var brightness = cordova.plugins.brightness;
+
 
 function toTitleCase(str)
 {
@@ -108,6 +110,7 @@ function learn() {
 
 
 function track() {
+
 	if (learning==true) {
 		learn();
 	}
@@ -234,17 +237,28 @@ function scanAndSend(results) {
             }
 		$('div#scanning').html("Sending fingerprint to " + servername);
 		sendFingerprint();
-		scanningInterval = setInterval(sendFingerprint,getPollingInterval());
+		scanningInterval = setInterval(sendFingerprint,getPollingInterval());	
+		window.powermanagement.acquire();
+		setBrightness(0);
+
+
 	}
 	toggle = true;
 }
+
+function nope() {
+}
+
 
 function stopScanning() {
 	$('div#scanning').html("Not scanning");
 	$('div#result').html("");
 	$('div#sending').html("");
 	$('div#ballsWaveG').hide();
+	window.powermanagement.release();
 
+
+// value should be float in range from 0 to 1.
 	clearInterval(scanningInterval);
     if (cordova.plugins.backgroundMode.isEnabled() == true) {
 	    cordova.plugins.backgroundMode.disable();	    	
@@ -273,6 +287,7 @@ function initUIEvents() {
 	var isMobile = ( /(android|ipad|iphone|ipod)/i.test(navigator.userAgent) );
 	var press = isMobile ? 'touchstart' : 'mousedown';
 	
+	// document.getElementById('touchstart').addEventListener('touchstart', function(){ brightness.setBrightness(1, function(){};, function(){};);  };, false);
 
 
 
@@ -295,6 +310,7 @@ function initUIEvents() {
 
 function main() {
 	initUIEvents();
+    window.brightness = cordova.require("cordova.plugin.Brightness.Brightness");
 
 	// local storage
 	test = window.localStorage.getItem('username');
@@ -313,7 +329,7 @@ function main() {
 	    window.localStorage.setItem('server',servername)
 	} 
     
-    test = window.localStorage.getItem('pollingInterval');
+    test = window.localStorage.getItem(POLLING_INTERVAL);
 	if (test == null || test.length < 1) {
 		window.localStorage.setItem('pollingInterval',3000); // default of 3000ms
 	}
@@ -330,6 +346,23 @@ function main() {
 
 }
 
+function setBrightness(value) {
+    // value should be float in range from 0 to 1.
+    brightness.setBrightness(value, win, fail);
+}
+function getBrightness() {
+    // win([-1,0-1]) float 0-1 is a brightness level, -1 represents a system default
+    brightness.getBrightness( win, fail);
+}
+function win(status) {
+    // alert('Message: ' + status);
+}
+function fail(status) {
+    // alert('Error: ' + status);
+}
+
 function onDeviceReady() {
     console.log(navigator.notification);
 }
+
+
