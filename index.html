@@ -18,27 +18,27 @@
     under the License.
 -->
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <meta name="format-detection" content="telephone=no" />
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
-        <title>FIND</title>
-        <script type="text/javascript" src="jquery-1.9.js"></script>
-        <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="main.js"></script>
-        <style type="text/css">
-            html, body { width:100%; height:100%; margin:0; padding:0; overflow:hidden; background-color:white;     overflow:visible;
-    -webkit-overflow-scrolling:touch;
-    overflow-scrolling:touch;}
-            div#fullpage { width:100%; height:100%; margin:0; padding:0; border:0px solid red; text-align:center; vertical-align:middle; }
-            button { font-size: 22px; }
-        </style>
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+    <title>FIND</title>
+    <script type="text/javascript" src="jquery-1.9.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="main.js"></script>
+    <style type="text/css">
+        html, body { width:100%; height:100%; margin:0; padding:0; overflow:hidden; background-color:white;     overflow:visible;
+            -webkit-overflow-scrolling:touch;
+            overflow-scrolling:touch;}
+        div#fullpage { width:100%; height:100%; margin:0; padding:0; border:0px solid red; text-align:center; vertical-align:middle; }
+        button { font-size: 22px; }
+    </style>
 
-  <style type="text/css">
+    <style type="text/css">
         button {
-/*            -moz-box-shadow:inset 0px 1px 0px 0px #caefab;
-            -webkit-box-shadow:inset 0px 1px 0px 0px #caefab;
-            box-shadow:inset 0px 1px 0px 0px #caefab;*/
+            /*            -moz-box-shadow:inset 0px 1px 0px 0px #caefab;
+                        -webkit-box-shadow:inset 0px 1px 0px 0px #caefab;
+                        box-shadow:inset 0px 1px 0px 0px #caefab;*/
             -webkit-border-top-left-radius:10px;
             -moz-border-radius-topleft:10px;
             border-top-left-radius:10px;
@@ -67,361 +67,363 @@
             text-transform:none;
             text-decoration:none;
             text-align:center;
-/*            text-shadow:1px 1px 0px #aade7c;*/
+            /*            text-shadow:1px 1px 0px #aade7c;*/
         }
         button .inactive {
-             background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #77d42a), color-stop(1, #5cb811) );
+            background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #77d42a), color-stop(1, #5cb811) );
             background:-moz-linear-gradient( center top, #77d42a 5%, #5cb811 100% );
             filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#77d42a', endColorstr='#5cb811');
             background-color:#77d42a;
         }
         .active {
-/*            background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #b81a11), color-stop(1, #cf1d13) );
-            background:-moz-linear-gradient( center top, #b81a11 5%, #cf1d13 100% );
-            filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#b81a11', endColorstr='#cf1d13');
-*/            background-color:#b81a11;
+            /*            background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #b81a11), color-stop(1, #cf1d13) );
+                        background:-moz-linear-gradient( center top, #b81a11 5%, #cf1d13 100% );
+                        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#b81a11', endColorstr='#cf1d13');
+            */            background-color:#b81a11;
             color:#E4E4E4;
-/*            text-shadow:1px 1px 0px #db8c88;*/
+            /*            text-shadow:1px 1px 0px #db8c88;*/
         }
         button .hint {
             font-size:10px;
             position:relative;
             top:-15px;
         }
-        </style>
+    </style>
 
-        <style>
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- * FROM https://raw.githubusercontent.com/katzer/cordova-plugin-background-mode/example/www/css/index.css
- */
-* {
-    -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
-}
+    <style>
+        /*
+         * Licensed to the Apache Software Foundation (ASF) under one
+         * or more contributor license agreements.  See the NOTICE file
+         * distributed with this work for additional information
+         * regarding copyright ownership.  The ASF licenses this file
+         * to you under the Apache License, Version 2.0 (the
+         * "License"); you may not use this file except in compliance
+         * with the License.  You may obtain a copy of the License at
+         *
+         * http://www.apache.org/licenses/LICENSE-2.0
+         *
+         * Unless required by applicable law or agreed to in writing,
+         * software distributed under the License is distributed on an
+         * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+         * KIND, either express or implied.  See the License for the
+         * specific language governing permissions and limitations
+         * under the License.
+         * FROM https://raw.githubusercontent.com/katzer/cordova-plugin-background-mode/example/www/css/index.css
+         */
+        * {
+            -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
+        }
 
-body {
-    -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
-    -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
-    -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
-    background-color:#E4E4E4;
-    background-image:linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
-    background-image:-webkit-linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
-    background-image:-ms-linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
-    background-image:-webkit-gradient(
-        linear,
-        left top,
-        left bottom,
-        color-stop(0, #A7A7A7),
-        color-stop(0.51, #E4E4E4)
-    );
-    background-attachment:fixed;
-    font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
-    font-size:12px;
-    height:100%;
-    margin:0px;
-    padding:0px;
-    text-transform:uppercase;
-    width:100%;
-}
+        body {
+            -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
+            -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
+            -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
+            background-color:#E4E4E4;
+            background-image:linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
+            background-image:-webkit-linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
+            background-image:-ms-linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
+            background-image:-webkit-gradient(
+              linear,
+              left top,
+              left bottom,
+              color-stop(0, #A7A7A7),
+              color-stop(0.51, #E4E4E4)
+            );
+            background-attachment:fixed;
+            font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
+            font-size:12px;
+            height:100%;
+            margin:0px;
+            padding:0px;
+            text-transform:uppercase;
+            width:100%;
+        }
 
-/* Portrait layout (default) */
-.app {
-    _background:url(../img/logo.png) no-repeat center top; /* 170px x 200px */
-    position:absolute;             /* position in the center of the screen */
-    left:50%;
-    _top:50%;
-    height:50px;                   /* text area height */
-    width:225px;                   /* text area width */
-    text-align:center;
-    padding:180px 0px 0px 0px;     /* image height is 200px (bottom 20px are overlapped with text) */
-    margin:-145px 0px 0px -112px;  /* offset vertical: half of image height and text area height */
-                                   /* offset horizontal: half of text area width */
-}
+        /* Portrait layout (default) */
+        .app {
+            _background:url(../img/logo.png) no-repeat center top; /* 170px x 200px */
+            position:absolute;             /* position in the center of the screen */
+            left:50%;
+            _top:50%;
+            height:50px;                   /* text area height */
+            width:225px;                   /* text area width */
+            text-align:center;
+            padding:180px 0px 0px 0px;     /* image height is 200px (bottom 20px are overlapped with text) */
+            margin:-145px 0px 0px -112px;  /* offset vertical: half of image height and text area height */
+            /* offset horizontal: half of text area width */
+        }
 
-/* Landscape layout (with min-width) */
-@media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {
-    .app {
-        background-position:left center;
-        padding:75px 0px 75px 170px;  /* padding-top + padding-bottom + text area = image height */
-        margin:-90px 0px 0px -198px;  /* offset vertical: half of image height */
-                                      /* offset horizontal: half of image width and text area width */
-    }
-}
+        /* Landscape layout (with min-width) */
+        @media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {
+            .app {
+                background-position:left center;
+                padding:75px 0px 75px 170px;  /* padding-top + padding-bottom + text area = image height */
+                margin:-90px 0px 0px -198px;  /* offset vertical: half of image height */
+                /* offset horizontal: half of image width and text area width */
+            }
+        }
 
-h1 {
-    font-size:24px;
-    font-weight:normal;
-    margin:0px;
-    overflow:visible;
-    padding:0px;
-    text-align:center;
-}
+        h1 {
+            font-size:24px;
+            font-weight:normal;
+            margin:0px;
+            overflow:visible;
+            padding:0px;
+            text-align:center;
+        }
 
-.event {
-    border-radius:4px;
-    -webkit-border-radius:4px;
-    color:#FFFFFF;
-    font-size:12px;
-    margin:0px 30px;
-    padding:2px 0px;
-}
+        .event {
+            border-radius:4px;
+            -webkit-border-radius:4px;
+            color:#FFFFFF;
+            font-size:12px;
+            margin:0px 30px;
+            padding:2px 0px;
+        }
 
-.event.listening {
-    background-color:#333333;
-    display:block;
-}
+        .event.listening {
+            background-color:#333333;
+            display:block;
+        }
 
-.event.received {
-    background-color:#4B946A;
-    display:none;
-}
+        .event.received {
+            background-color:#4B946A;
+            display:none;
+        }
 
-@keyframes fade {
-    from { opacity: 1.0; }
-    50% { opacity: 0.4; }
-    to { opacity: 1.0; }
-}
+        @keyframes fade {
+            from { opacity: 1.0; }
+            50% { opacity: 0.4; }
+            to { opacity: 1.0; }
+        }
 
-@-webkit-keyframes fade {
-    from { opacity: 1.0; }
-    50% { opacity: 0.4; }
-    to { opacity: 1.0; }
-}
+        @-webkit-keyframes fade {
+            from { opacity: 1.0; }
+            50% { opacity: 0.4; }
+            to { opacity: 1.0; }
+        }
 
-.blink {
-    animation:fade 3000ms infinite;
-    -webkit-animation:fade 3000ms infinite;
-}
+        .blink {
+            animation:fade 3000ms infinite;
+            -webkit-animation:fade 3000ms infinite;
+        }
 
-.red
-{
-    background-color:red;
-}
-        </style>
-
-
-<style>
-#ballsWaveG{
-    position:relative;
-    width:125px;
-    height:29px;
-    margin:auto;
-}
-
-.ballsWaveG{
-    position:absolute;
-    top:0;
-    background-color:rgb(0,0,0);
-    width:16px;
-    height:16px;
-    animation-name:ballsWaveG;
-        -o-animation-name:ballsWaveG;
-        -ms-animation-name:ballsWaveG;
-        -webkit-animation-name:ballsWaveG;
-        -moz-animation-name:ballsWaveG;
-    animation-duration:1.5s;
-        -o-animation-duration:1.5s;
-        -ms-animation-duration:1.5s;
-        -webkit-animation-duration:1.5s;
-        -moz-animation-duration:1.5s;
-    animation-iteration-count:infinite;
-        -o-animation-iteration-count:infinite;
-        -ms-animation-iteration-count:infinite;
-        -webkit-animation-iteration-count:infinite;
-        -moz-animation-iteration-count:infinite;
-    animation-direction:normal;
-        -o-animation-direction:normal;
-        -ms-animation-direction:normal;
-        -webkit-animation-direction:normal;
-        -moz-animation-direction:normal;
-    border-radius:8px;
-        -o-border-radius:8px;
-        -ms-border-radius:8px;
-        -webkit-border-radius:8px;
-        -moz-border-radius:8px;
-}
-
-#ballsWaveG_1{
-    left:0;
-    animation-delay:0.6s;
-        -o-animation-delay:0.6s;
-        -ms-animation-delay:0.6s;
-        -webkit-animation-delay:0.6s;
-        -moz-animation-delay:0.6s;
-}
-
-#ballsWaveG_2{
-    left:16px;
-    animation-delay:0.75s;
-        -o-animation-delay:0.75s;
-        -ms-animation-delay:0.75s;
-        -webkit-animation-delay:0.75s;
-        -moz-animation-delay:0.75s;
-}
-
-#ballsWaveG_3{
-    left:31px;
-    animation-delay:0.9s;
-        -o-animation-delay:0.9s;
-        -ms-animation-delay:0.9s;
-        -webkit-animation-delay:0.9s;
-        -moz-animation-delay:0.9s;
-}
-
-#ballsWaveG_4{
-    left:47px;
-    animation-delay:1.05s;
-        -o-animation-delay:1.05s;
-        -ms-animation-delay:1.05s;
-        -webkit-animation-delay:1.05s;
-        -moz-animation-delay:1.05s;
-}
-
-#ballsWaveG_5{
-    left:62px;
-    animation-delay:1.2s;
-        -o-animation-delay:1.2s;
-        -ms-animation-delay:1.2s;
-        -webkit-animation-delay:1.2s;
-        -moz-animation-delay:1.2s;
-}
-
-#ballsWaveG_6{
-    left:78px;
-    animation-delay:1.35s;
-        -o-animation-delay:1.35s;
-        -ms-animation-delay:1.35s;
-        -webkit-animation-delay:1.35s;
-        -moz-animation-delay:1.35s;
-}
-
-#ballsWaveG_7{
-    left:94px;
-    animation-delay:1.5s;
-        -o-animation-delay:1.5s;
-        -ms-animation-delay:1.5s;
-        -webkit-animation-delay:1.5s;
-        -moz-animation-delay:1.5s;
-}
-
-#ballsWaveG_8{
-    left:109px;
-    animation-delay:1.64s;
-        -o-animation-delay:1.64s;
-        -ms-animation-delay:1.64s;
-        -webkit-animation-delay:1.64s;
-        -moz-animation-delay:1.64s;
-}
+        .red
+        {
+            background-color:red;
+        }
+    </style>
 
 
+    <style>
+        #ballsWaveG{
+            position:relative;
+            width:125px;
+            height:29px;
+            margin:auto;
+        }
 
-@keyframes ballsWaveG{
-    0%{
-        background-color:rgb(0,0,0);
-    }
+        .ballsWaveG{
+            position:absolute;
+            top:0;
+            background-color:rgb(0,0,0);
+            width:16px;
+            height:16px;
+            animation-name:ballsWaveG;
+            -o-animation-name:ballsWaveG;
+            -ms-animation-name:ballsWaveG;
+            -webkit-animation-name:ballsWaveG;
+            -moz-animation-name:ballsWaveG;
+            animation-duration:1.5s;
+            -o-animation-duration:1.5s;
+            -ms-animation-duration:1.5s;
+            -webkit-animation-duration:1.5s;
+            -moz-animation-duration:1.5s;
+            animation-iteration-count:infinite;
+            -o-animation-iteration-count:infinite;
+            -ms-animation-iteration-count:infinite;
+            -webkit-animation-iteration-count:infinite;
+            -moz-animation-iteration-count:infinite;
+            animation-direction:normal;
+            -o-animation-direction:normal;
+            -ms-animation-direction:normal;
+            -webkit-animation-direction:normal;
+            -moz-animation-direction:normal;
+            border-radius:8px;
+            -o-border-radius:8px;
+            -ms-border-radius:8px;
+            -webkit-border-radius:8px;
+            -moz-border-radius:8px;
+        }
 
-    100%{
-        background-color:rgb(255,255,255);
-    }
-}
+        #ballsWaveG_1{
+            left:0;
+            animation-delay:0.6s;
+            -o-animation-delay:0.6s;
+            -ms-animation-delay:0.6s;
+            -webkit-animation-delay:0.6s;
+            -moz-animation-delay:0.6s;
+        }
 
-@-o-keyframes ballsWaveG{
-    0%{
-        background-color:rgb(0,0,0);
-    }
+        #ballsWaveG_2{
+            left:16px;
+            animation-delay:0.75s;
+            -o-animation-delay:0.75s;
+            -ms-animation-delay:0.75s;
+            -webkit-animation-delay:0.75s;
+            -moz-animation-delay:0.75s;
+        }
 
-    100%{
-        background-color:rgb(255,255,255);
-    }
-}
+        #ballsWaveG_3{
+            left:31px;
+            animation-delay:0.9s;
+            -o-animation-delay:0.9s;
+            -ms-animation-delay:0.9s;
+            -webkit-animation-delay:0.9s;
+            -moz-animation-delay:0.9s;
+        }
 
-@-ms-keyframes ballsWaveG{
-    0%{
-        background-color:rgb(0,0,0);
-    }
+        #ballsWaveG_4{
+            left:47px;
+            animation-delay:1.05s;
+            -o-animation-delay:1.05s;
+            -ms-animation-delay:1.05s;
+            -webkit-animation-delay:1.05s;
+            -moz-animation-delay:1.05s;
+        }
 
-    100%{
-        background-color:rgb(255,255,255);
-    }
-}
+        #ballsWaveG_5{
+            left:62px;
+            animation-delay:1.2s;
+            -o-animation-delay:1.2s;
+            -ms-animation-delay:1.2s;
+            -webkit-animation-delay:1.2s;
+            -moz-animation-delay:1.2s;
+        }
 
-@-webkit-keyframes ballsWaveG{
-    0%{
-        background-color:rgb(0,0,0);
-    }
+        #ballsWaveG_6{
+            left:78px;
+            animation-delay:1.35s;
+            -o-animation-delay:1.35s;
+            -ms-animation-delay:1.35s;
+            -webkit-animation-delay:1.35s;
+            -moz-animation-delay:1.35s;
+        }
 
-    100%{
-        background-color:rgb(255,255,255);
-    }
-}
+        #ballsWaveG_7{
+            left:94px;
+            animation-delay:1.5s;
+            -o-animation-delay:1.5s;
+            -ms-animation-delay:1.5s;
+            -webkit-animation-delay:1.5s;
+            -moz-animation-delay:1.5s;
+        }
 
-@-moz-keyframes ballsWaveG{
-    0%{
-        background-color:rgb(0,0,0);
-    }
+        #ballsWaveG_8{
+            left:109px;
+            animation-delay:1.64s;
+            -o-animation-delay:1.64s;
+            -ms-animation-delay:1.64s;
+            -webkit-animation-delay:1.64s;
+            -moz-animation-delay:1.64s;
+        }
 
-    100%{
-        background-color:rgb(255,255,255);
-    }
-}
-</style>
-    </head>
-    <body onload="onLoad()">
-    <script>
+
+
+        @keyframes ballsWaveG{
+            0%{
+                background-color:rgb(0,0,0);
+            }
+
+            100%{
+                background-color:rgb(255,255,255);
+            }
+        }
+
+        @-o-keyframes ballsWaveG{
+            0%{
+                background-color:rgb(0,0,0);
+            }
+
+            100%{
+                background-color:rgb(255,255,255);
+            }
+        }
+
+        @-ms-keyframes ballsWaveG{
+            0%{
+                background-color:rgb(0,0,0);
+            }
+
+            100%{
+                background-color:rgb(255,255,255);
+            }
+        }
+
+        @-webkit-keyframes ballsWaveG{
+            0%{
+                background-color:rgb(0,0,0);
+            }
+
+            100%{
+                background-color:rgb(255,255,255);
+            }
+        }
+
+        @-moz-keyframes ballsWaveG{
+            0%{
+                background-color:rgb(0,0,0);
+            }
+
+            100%{
+                background-color:rgb(255,255,255);
+            }
+        }
+    </style>
+</head>
+<body onload="onLoad()">
+<script>
     function onLoad() {
         $('button#dashboard').toggle();
         $('button#changeuser').toggle();
         $('button#changegroup').toggle();
         $('button#changeserver').toggle();
+        $('button#changepolling').toggle();
         $('div#ballsWaveG').hide();
-    	document.addEventListener("deviceready", main, false);
-    	if(! window.plugins) main();
+        document.addEventListener("deviceready", main, false);
+        if(! window.plugins) main();
     }
-    </script>
-    <div class="app">
-            <h1>FIND v0.5</h1>
-            <h2 id='user'>loading...</h2>
-<!--             <p><button id='openwifi'>Open Wifi</button> <button id='closewifi'>Close Wifi</button></p>
- -->        <p><button class="inactive" id='learn' onclick='learn();'>Learn</button><br/></p>
-            <p><button class="inactive" id='track' onclick='track();'>Track</button><br/></p>
-<!--             <p><button class="inactive" id='stop' onclick='stopScanning();'>Stop</button></p>
- -->            
-            <p><button class="inactive" id='options' onclick="options();">Options</button></p>
-            <p><button class="inactive" id='dashboard' onclick='openDashboard();'>Dashboard</button></p>
-            <p><button class="inactive" id='changeuser' onclick='setData("username","user1");'>Change user</button></p>
-            <p><button class="inactive" id='changegroup' onclick='setData("group",makeid());'>Change group</button></p>
-            <p><button class="inactive" id='changeserver' onclick='setData("server","https://ml.internalpositioning.com");'>Change server</button></p>
-            <p><button class="inactive" id='exit' onclick='navigator.app.exitApp();'>Exit</button></p>
+</script>
+<div class="app">
+    <h1>FIND v0.5</h1>
+    <h2 id='user'>loading...</h2>
+    <!--             <p><button id='openwifi'>Open Wifi</button> <button id='closewifi'>Close Wifi</button></p>
+     -->        <p><button class="inactive" id='learn' onclick='learn();'>Learn</button><br/></p>
+    <p><button class="inactive" id='track' onclick='track();'>Track</button><br/></p>
+    <!--             <p><button class="inactive" id='stop' onclick='stopScanning();'>Stop</button></p>
+     -->
+    <p><button class="inactive" id='options' onclick="options();">Options</button></p>
+    <p><button class="inactive" id='dashboard' onclick='openDashboard();'>Dashboard</button></p>
+    <p><button class="inactive" id='changeuser' onclick='setData("username","user1","user name");'>Change user</button></p>
+    <p><button class="inactive" id='changegroup' onclick='setData("group",makeid(), "group name");'>Change group</button></p>
+    <p><button class="inactive" id='changeserver' onclick='setData("server","https://ml.internalpositioning.com", "Server address");'>Change server</button></p>
+    <p><button class="inactive" id='changepolling' onclick='setData("pollingInterval","3000", "tracking interval in ms");'>Change Tracking Interval</button></p>
+    <p><button class="inactive" id='exit' onclick='navigator.app.exitApp();'>Exit</button></p>
 
-<div id="ballsWaveG">
-    <div id="ballsWaveG_1" class="ballsWaveG"></div>
-    <div id="ballsWaveG_2" class="ballsWaveG"></div>
-    <div id="ballsWaveG_3" class="ballsWaveG"></div>
-    <div id="ballsWaveG_4" class="ballsWaveG"></div>
-    <div id="ballsWaveG_5" class="ballsWaveG"></div>
-    <div id="ballsWaveG_6" class="ballsWaveG"></div>
-    <div id="ballsWaveG_7" class="ballsWaveG"></div>
-    <div id="ballsWaveG_8" class="ballsWaveG"></div>
-</div>
-
-            <div id='scanning'></div>
-            <div id='sending'></div>
-            <div id='result'></div>
+    <div id="ballsWaveG">
+        <div id="ballsWaveG_1" class="ballsWaveG"></div>
+        <div id="ballsWaveG_2" class="ballsWaveG"></div>
+        <div id="ballsWaveG_3" class="ballsWaveG"></div>
+        <div id="ballsWaveG_4" class="ballsWaveG"></div>
+        <div id="ballsWaveG_5" class="ballsWaveG"></div>
+        <div id="ballsWaveG_6" class="ballsWaveG"></div>
+        <div id="ballsWaveG_7" class="ballsWaveG"></div>
+        <div id="ballsWaveG_8" class="ballsWaveG"></div>
     </div>
-    </body>
+
+    <div id='scanning'></div>
+    <div id='sending'></div>
+    <div id='result'></div>
+</div>
+</body>
 </html>
