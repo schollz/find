@@ -1,40 +1,35 @@
 package main
 
 import (
-	"fmt"
+	"regexp"
 	"strconv"
 	"strings"
 )
 
-func scanCommandWindows() string {
-	return "netsh wlan show network mode=bssid"
+// Regular expression matching lines of the Wifi signals results
+// of the shape `Signal : 16%`
+const windowsRssiExpr = "Signal\\s*: \\d+"
+
+var windowsRssiRegexp = regexp.MustCompile(windowsRssiExpr)
+
+func windowsFindMac(line string) (string, bool) {
+	return linuxFindMac(line)
 }
 
-func processOutputWindows(out string) []WifiData {
-	w := []WifiData{}
-	wTemp := WifiData{Mac: "none", Rssi: 0}
-	for _, line := range strings.Split(out, "\n") {
-		if len(line) < 3 {
-			continue
-		}
-		parts := strings.Fields(line)
-		if parts[0] == "BSSID" {
-			wTemp.Mac = parts[3]
-		}
-		if parts[0] == "Signal" {
-			val, err := strconv.ParseFloat(strings.Replace(parts[2], "%", "", 1), 10)
-			if err != nil {
-				fmt.Println(line, val, err)
-			}
-			if val > 0 {
-				val = (val / 2) - 100
-			}
-			wTemp.Rssi = int(val)
-			if wTemp.Mac != "none" && wTemp.Rssi != 0 {
-				w = append(w, wTemp)
-			}
-			wTemp = WifiData{Mac: "none", Rssi: 0}
-		}
+func windowsFindRssi(line string) (int, bool) {
+	rawRssi := windowsRssiRegexp.FindString(line)
+	if rawRssi == "" {
+		return 0, false
 	}
-	return w
+
+	components := strings.Split(rawRssi, ": ")
+
+	// We can safely access element 1 given that the line
+	// was accepted by the rssi regexp that contains 1 `: `
+	signal, err := strconv.ParseFloat(components[1], 10)
+
+	// Convert from percentage to rssi
+	signal = (signal / 2) - 100
+
+	return int(signal), (err == nil)
 }

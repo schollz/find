@@ -54,43 +54,11 @@ func getInput(prompt string) string {
 	return strings.ToLower(strings.TrimSpace(text))
 }
 
-func processOutput(out string, os string) (data []WifiData, err error) {
-	err = nil
-	data = []WifiData{}
-	if os == "linux" {
-		data = processOutputLinux(out)
-	} else if os == "darwin" {
-		data = processOutputOSX(out)
-	} else if os == "windows" {
-		data = processOutputWindows(out)
-	} else {
-		err = fmt.Errorf(os + " system has no known WiFi scanning parser")
-	}
-	return
-}
-
-func getCommand(i string) (command string, err error) {
-	err = nil
-	command = ""
-	if runtime.GOOS == "darwin" {
-		command = scanCommandOSX()
-	} else if runtime.GOOS == "linux" {
-		command = scanCommandLinux(i)
-	} else if runtime.GOOS == "windows" {
-		command = scanCommandWindows()
-	} else {
-		err = fmt.Errorf(runtime.GOOS + " system has no known WiFi scanning command")
-	}
-	return
-}
-
-func scanWifi(i string) (string, error) {
-	command, err := getCommand(i)
-	if err != nil {
-		return "", err
-	}
+func scanWifi(osConfig OSConfig) (string, error) {
+	command := osConfig.WifiScanCommand
 	log.Info("Gathering fingerprint with '" + command + "'")
 	out, err := exec.Command(strings.Split(command, " ")[0], strings.Split(command, " ")[1:]...).Output()
+
 	return string(out), err
 }
 
@@ -118,13 +86,6 @@ func setupLogging() {
 	} else {
 		logging.SetBackend(backend1Leveled)
 	}
-
-	// log.Info("debug")
-	// log.Info("info")
-	// log.Notice("notice")
-	// log.Warning("warning")
-	// log.Error("err")
-	// log.Critical("crit")
 }
 
 func main() {
@@ -132,13 +93,12 @@ func main() {
 	var times int
 	var address string
 	var wlan_interface string
+	var osConfig OSConfig
+
 	app := cli.NewApp()
 	app.Name = "fingerprint"
 	app.Usage = "client for sending WiFi fingerprints to a FIND server"
 	app.Version = "0.2"
-	app.Action = func(c *cli.Context) {
-		println("Hello friend!")
-	}
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
 			Name:  "server,s",
@@ -182,6 +142,13 @@ func main() {
 	app.Action = func(c *cli.Context) {
 		times = c.Int("continue")
 		wlan_interface = c.String("interface")
+
+		var ok bool
+		osConfig, ok = GetConfiguration(runtime.GOOS, wlan_interface)
+		if !ok {
+			log.Fatal("Your OS '" + runtime.GOOS + "' is not currently supported")
+		}
+
 		// set group
 		f.Group = strings.ToLower(c.String("group"))
 		if f.Group == "group" {
@@ -221,7 +188,7 @@ func main() {
 	for i := 0; i < times; i++ {
 
 		log.Info("Scanning Wifi")
-		out, err := scanWifi(wlan_interface)
+		out, err := scanWifi(osConfig)
 		if err != nil {
 			if strings.Contains(err.Error(), "255") {
 				fmt.Println("\nNeed to run with sudo: 'sudo ./fingerprint'")
@@ -242,7 +209,7 @@ func main() {
 		errorsInARow = 0
 
 		log.Info("Processing", len(strings.Split(out, "\n")), "lines out output")
-		f.WifiFingerprint, err = processOutput(out, runtime.GOOS)
+		f.WifiFingerprint, err = ParseOutput(osConfig.ScanConfig, out)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -272,7 +239,11 @@ func sendFingerprint(address string, f Fingerprint) (string, error) {
 
 	// fmt.Println("response Status:", resp.Status)
 	// fmt.Println("response Headers:", resp.Header)
-	body, _ := ioutil.ReadAll(resp.Body)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return "", err
+	}
+
 	if strings.Contains(string(body), `"success":true`) == false && strings.Contains(string(body), `"success"`) == true {
 		return "", fmt.Errorf("Something wrong with server")
 	}
