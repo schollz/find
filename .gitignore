@@ -6,6 +6,7 @@ data/production/
 data/analysis/
 data/images/
 documentation/site
+find
 
 __pycache__/
 www/sphinx-api/_build/

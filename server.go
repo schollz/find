@@ -20,6 +20,7 @@ var RuntimeArgs struct {
 	ServerCRT  string
 	ServerKey  string
 	SourcePath string
+	Socket     string
 }
 
 // VersionNum keeps track of the version
@@ -34,6 +35,7 @@ func main() {
 	VersionNum = "2.0"
 	// _, executableFile, _, _ := runtime.Caller(0) // get full path of this file
 	flag.StringVar(&RuntimeArgs.Port, "p", ":8003", "port to bind")
+	flag.StringVar(&RuntimeArgs.Socket, "s", "", "unix socket")
 	flag.StringVar(&RuntimeArgs.ServerCRT, "crt", "", "location of ssl crt")
 	flag.StringVar(&RuntimeArgs.ServerKey, "key", "", "location of ssl key")
 	flag.CommandLine.Usage = func() {
@@ -42,6 +44,7 @@ run this to start the server and then visit localhost at the port you specify
 (see parameters).
 Example: 'find yourserver.com'
 Example: 'find -p :8080 localhost:8080'
+Example: 'find -s /var/run/find.sock'
 Example: 'find -db /var/lib/find/db.bolt localhost:8003'
 Example: 'find -p :8080 -crt ssl/server.crt -key ssl/server.key localhost:8080'
 Options:`)
@@ -107,7 +110,9 @@ Options:`)
 	r.GET("/status", getStatus)
 	dat, _ := ioutil.ReadFile("./static/logo.txt")
 	fmt.Println(string(dat))
-	if RuntimeArgs.ServerCRT != "" && RuntimeArgs.ServerKey != "" {
+	if RuntimeArgs.Socket != "" {
+		r.RunUnix(RuntimeArgs.Socket)
+	} else if RuntimeArgs.ServerCRT != "" && RuntimeArgs.ServerKey != "" {
 		fmt.Println("(version " + VersionNum + ") is up and running on https://" + RuntimeArgs.ExternalIP)
 		fmt.Println("-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----")
 		r.RunTLS(RuntimeArgs.Port, RuntimeArgs.ServerCRT, RuntimeArgs.ServerKey)
