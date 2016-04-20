@@ -9,6 +9,7 @@ var servername;
 var learning = false;
 var tracking = false;
 var inoptions = false;
+var POLLING_INTERVAL = "pollingInterval";
 
 function toTitleCase(str)
 {
@@ -205,6 +206,17 @@ function sendFingerprint() {
 	}
 }
 
+function getPollingInterval() {
+	var pollingInterval = window.localStorage.getItem(POLLING_INTERVAL);
+
+	if (pollingInterval == null || pollingInterval == "null"){
+		pollingInterval = 3000;
+	} else {
+		pollingInterval = parseInt(pollingInterval);
+	}
+	return pollingInterval;
+}
+
 function scanAndSend(results) {
 	if (results == null) {
 		results = {input1:"tracking",buttonIndex:1};
@@ -221,7 +233,7 @@ function scanAndSend(results) {
             }
 		$('div#scanning').html("Sending fingerprint to " + servername);
 		sendFingerprint();
-		scanningInterval = setInterval(sendFingerprint,3000);
+		scanningInterval = setInterval(sendFingerprint,getPollingInterval());
 	}
 	toggle = true;
 }
@@ -239,16 +251,16 @@ function stopScanning() {
 }
 
 
-function setData(datatype,defaultname) {
+function setData(datatype,defaultname,friendlyname) {
 	navigator.notification.prompt(
-		    'Please enter a ' + datatype + ' name',  // message
+		    'Please enter a ' + friendlyname,  // message
 		    function(results) {
 				if (results.buttonIndex == 1) {
 					window.localStorage.setItem(datatype,results.input1);
 				}
 				$('h2#user').html("Group: " + window.localStorage.getItem("group") + "<br>User: " + window.localStorage.getItem("username"));
 			},                  // callback to invoke
-		    'Set ' + datatype,            // title
+		    'Set ' + friendlyname,            // title
 		    ['Ok','Exit'],             // buttonLabels
 		    defaultname                 // defaultText
 	);	
@@ -299,6 +311,11 @@ function main() {
 	    servername  = 'https://ml.internalpositioning.com';
 	    window.localStorage.setItem('server',servername)
 	} 
+    
+    test = window.localStorage.getItem(POLLING_INTERVAL);
+	if (test == null || test.length < 1) {
+		window.localStorage.setItem(POLLING_INTERVAL,3000); // default of 3000ms
+	}
 
 	$('h2#user').html("Group: " + window.localStorage.getItem("group") + "<br>User: " + window.localStorage.getItem("username"));
 

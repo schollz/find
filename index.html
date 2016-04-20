@@ -388,6 +388,7 @@ h1 {
         $('button#changeuser').toggle();
         $('button#changegroup').toggle();
         $('button#changeserver').toggle();
+        $('button#changepolling').toggle();
         $('div#ballsWaveG').hide();
     	document.addEventListener("deviceready", main, false);
     	if(! window.plugins) main();
@@ -403,9 +404,10 @@ h1 {
  -->            
             <p><button class="inactive" id='options' onclick="options();">Options</button></p>
             <p><button class="inactive" id='dashboard' onclick='openDashboard();'>Dashboard</button></p>
-            <p><button class="inactive" id='changeuser' onclick='setData("username","user1");'>Change user</button></p>
-            <p><button class="inactive" id='changegroup' onclick='setData("group",makeid());'>Change group</button></p>
-            <p><button class="inactive" id='changeserver' onclick='setData("server","https://ml.internalpositioning.com");'>Change server</button></p>
+            <p><button class="inactive" id='changeuser' onclick='setData("username","user1","user name");'>Change user</button></p>
+            <p><button class="inactive" id='changegroup' onclick='setData("group",makeid(), "group name");'>Change group</button></p>
+            <p><button class="inactive" id='changeserver' onclick='setData("server","https://ml.internalpositioning.com", "Server address");'>Change server</button></p>
+            <p><button class="inactive" id='changepolling' onclick='setData("pollingInterval","3000", "tracking interval in ms");'>Change Tracking Interval</button></p>
             <p><button class="inactive" id='exit' onclick='navigator.app.exitApp();'>Exit</button></p>
 
 <div id="ballsWaveG">
