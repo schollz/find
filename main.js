@@ -162,7 +162,7 @@ function sendFingerprint() {
 			network_data.push({"mac": item['BSSID'],"rssi": item['level']})
 		}
 		
-		var data = {
+		var fingerprint = {
             "group": window.localStorage.getItem("group").toLowerCase(),
             "username": window.localStorage.getItem("username").toLowerCase(),
             "password": "none",
@@ -188,12 +188,12 @@ function sendFingerprint() {
 		   type: "POST",
 		   url: servername + route,
 		   dataType: "json",
-		   data: JSON.stringify(data),
-		   success: function(data) {
+		   data: JSON.stringify(fingerprint),
+		   success: function(response) {
 		   	var d = new Date();
 			var n = d.toString();
 			if (learning == true || tracking == true) {
-		     $('div#result').html( n + "<br><strong>" + data["message"] +"</strong>");
+		     $('div#result').html( n + "<br><strong>" + response["message"] +"</strong>");
 			}
 		   },
 		   error: function(e) {
