@@ -66,6 +66,7 @@ function ipIntToString(ip) {
 
 function options() {
 	$('button#changeserver').toggle('Drop');$('button#dashboard').toggle('Drop');$('button#changeuser').toggle('Drop'); $('button#changegroup').toggle('Drop');$('button#learn').toggle('Drop');$('button#stop').toggle('Drop');$('button#track').toggle('Drop');$('button#options').toggleClass('active');
+	$('button#changepolling').toggle('Drop');
 	if (inoptions == false) {
 inoptions = true;
 $('button#options').html('Go back');
@@ -209,10 +210,10 @@ function sendFingerprint() {
 function getPollingInterval() {
 	var pollingInterval = window.localStorage.getItem(POLLING_INTERVAL);
 
-	if (pollingInterval == null || pollingInterval == "null"){
-		pollingInterval = 3000;
+	if (pollingInterval == null || pollingInterval == "null" || pollingInterval < 2){
+		pollingInterval = 2000;
 	} else {
-		pollingInterval = parseInt(pollingInterval);
+		pollingInterval = 1000*parseInt(pollingInterval);
 	}
 	return pollingInterval;
 }
@@ -312,9 +313,9 @@ function main() {
 	    window.localStorage.setItem('server',servername)
 	} 
     
-    test = window.localStorage.getItem(POLLING_INTERVAL);
+    test = window.localStorage.getItem('pollingInterval');
 	if (test == null || test.length < 1) {
-		window.localStorage.setItem(POLLING_INTERVAL,3000); // default of 3000ms
+		window.localStorage.setItem('pollingInterval',3000); // default of 3000ms
 	}
 
 	$('h2#user').html("Group: " + window.localStorage.getItem("group") + "<br>User: " + window.localStorage.getItem("username"));
