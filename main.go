@@ -46,6 +46,7 @@ var format2 = logging.MustStringFormatter(
 
 var verbose = true
 var errorsInARow = 0
+var hasIw = true
 
 func getInput(prompt string) string {
 	reader := bufio.NewReader(os.Stdin)
@@ -174,6 +175,16 @@ func main() {
 		setupLogging()
 	}
 	app.Run(os.Args)
+
+	// Check, if linux, if user has iw or iwlist
+	if runtime.GOOS == "linux" {
+		command := "/sbin/iw dev wlan0 scan -u"
+		out, _ := exec.Command(strings.Split(command, " ")[0], strings.Split(command, " ")[1:]...).Output()
+		if strings.Contains(string(out), "not found") {
+			hasIw = false
+			log.Notice("/sbin/iw not found, defaulting to /sbin/iwlist")
+		}
+	}
 
 	// Print the current parameters
 	log.Notice("You can see fewer messages by adding --nodebug")
