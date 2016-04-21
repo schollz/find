@@ -12,6 +12,7 @@ package main
 // was found in the given line.
 
 import (
+	"fmt"
 	"regexp"
 )
 
@@ -47,7 +48,8 @@ func populateConfigurations(wlanInterface string) {
 		ScanConfig:      ScanParsingConfig{darwinFindMac, darwinFindRssi},
 	}
 
-	if hasIw {
+	fmt.Println(useIwlist)
+	if !useIwlist {
 		linuxCommand := "/sbin/iw dev " + wlanInterface + " scan -u"
 		osConfigurations["linux"] = OSConfig{
 			WifiScanCommand: linuxCommand,
