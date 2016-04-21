@@ -113,10 +113,14 @@ func getUserLocations(c *gin.Context) {
 	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
 
 	group := c.DefaultQuery("group", "noneasdf")
+	userQuery := c.DefaultQuery("user", "noneasdf")
 	usersQuery := c.DefaultQuery("users", "noneasdf")
 	group = strings.ToLower(group)
 	if group != "noneasdf" {
 		people := make(map[string][]UserPositionJSON)
+		if userQuery != "noneasdf" {
+			usersQuery = userQuery
+		}
 		users := strings.Split(strings.ToLower(usersQuery), ",")
 		if users[0] == "noneasdf" {
 			users = getUsers(group)
