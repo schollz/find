@@ -11,10 +11,7 @@ package main
 // and the RSSI signal plus a boolean flag indicating if such content
 // was found in the given line.
 
-import (
-	"fmt"
-	"regexp"
-)
+import "regexp"
 
 // Regular expression matching standard (IEEE 802) MAC-48 addresses
 const macExpr = "([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})"
@@ -48,7 +45,6 @@ func populateConfigurations(wlanInterface string) {
 		ScanConfig:      ScanParsingConfig{darwinFindMac, darwinFindRssi},
 	}
 
-	fmt.Println(useIwlist)
 	if !useIwlist {
 		linuxCommand := "/sbin/iw dev " + wlanInterface + " scan -u"
 		osConfigurations["linux"] = OSConfig{
