@@ -13,7 +13,6 @@ var POLLING_INTERVAL = "pollingInterval";
 var brightness = cordova.plugins.brightness;
 var isPersisting = false;
 
-
 function toTitleCase(str)
 {
     return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
@@ -110,6 +109,25 @@ function learn() {
 	}
 }
 
+function setNewAlarm() {
+	var alarmDate = new Date();
+	alarmDate.setMinutes(alarmDate.getMinutes() + 1);
+	navigator.plugins.alarm.set(alarmDate, 
+	function(){
+		navigator.vibrate(0);
+		setTimeout(function(){ navigator.vibrate(0); }, 100);
+		setTimeout(function(){ navigator.vibrate(0); }, 200);
+		setTimeout(function(){ navigator.vibrate(0); }, 300);
+	}, 
+	function(){
+		navigator.vibrate(0);
+		setTimeout(function(){ navigator.vibrate(0); }, 100);
+		setTimeout(function(){ navigator.vibrate(0); }, 200);
+		setTimeout(function(){ navigator.vibrate(0); }, 300);
+	});
+}
+
+var alarmInterval;
 
 function track() {
 
@@ -122,11 +140,14 @@ function track() {
 		$('button#track').html('Stop tracking');
 		scanAndSend(null);
 		tracking = true;
+		setNewAlarm();
+		alarmInterval = setInterval(setNewAlarm,61000);
 	} else {
 		tracking = false;
 		$('button#track').toggleClass('active');
 		$('button#track').html('Track');
 		stopScanning();
+		clearInterval(alarmInterval);
 	}
 }
 
@@ -251,7 +272,7 @@ function scanAndSend(results) {
 	toggle = true;
 }
 
-function togglePersist() {
+function togglePersist() { 
 	if (isPersisting == true) {
 		isPersisting = false;
 		window.powermanagement.release();		
@@ -349,14 +370,22 @@ function createAlarm(delaySeconds, repeatSeconds) {
 function main() {
 	initUIEvents();
     window.brightness = cordova.require("cordova.plugin.Brightness.Brightness");
-
+//     var alarmDate = new Date();
+// alarmDate.setMinutes(alarmDate.getMinutes() + 1);
+// navigator.plugins.alarm.set(alarmDate, 
+// function(){
+// 	alert("HI!");
+// }, 
+// function(){
+// });
 
   chrome.alarms.onAlarm.addListener(function(alarm) {
-    // if (alarm.name === REPEATING_ALARM_NAME ||
-    //   alarm.name.indexOf(SINGLE_ALARM_NAME_PREFIX) > -1) {
-    //   alert("Received alarm: " + alarm.name);
-    // }
+    if (alarm.name === REPEATING_ALARM_NAME ||
+      alarm.name.indexOf(SINGLE_ALARM_NAME_PREFIX) > -1) {
+      alert("Received alarm: " + alarm.name);
+    }
   });
+	
 
 	// local storage
 	test = window.localStorage.getItem('username');
