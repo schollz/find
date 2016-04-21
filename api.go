@@ -284,7 +284,7 @@ func editUserName(c *gin.Context) {
 	}
 }
 
-func deleteName(c *gin.Context) {
+func deleteLocation(c *gin.Context) {
 	group := strings.ToLower(c.DefaultQuery("group", "noneasdf"))
 	location := strings.ToLower(c.DefaultQuery("location", "none"))
 	if group != "noneasdf" {
@@ -313,9 +313,45 @@ func deleteName(c *gin.Context) {
 		db.Close()
 		optimizePriorsThreaded(strings.ToLower(group))
 
-		c.JSON(http.StatusOK, gin.H{"message": "Changed name of " + strconv.Itoa(numChanges) + " things", "success": true})
+		c.JSON(http.StatusOK, gin.H{"message": "Deleted " + strconv.Itoa(numChanges) + " locations", "success": true})
 	} else {
 		c.JSON(http.StatusOK, gin.H{"success": false, "message": "Error parsing request"})
+	}
+}
+
+func deleteLocations(c *gin.Context) {
+	group := strings.ToLower(c.DefaultQuery("group", "noneasdf"))
+	locationsQuery := strings.ToLower(c.DefaultQuery("names", "none"))
+	if group != "noneasdf" && locationsQuery != "none" {
+		locations := strings.Split(strings.ToLower(locationsQuery), ",")
+		db, err := bolt.Open(path.Join(RuntimeArgs.SourcePath, group+".db"), 0600, nil)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		numChanges := 0
+		db.Update(func(tx *bolt.Tx) error {
+			b := tx.Bucket([]byte("fingerprints"))
+			if b != nil {
+				c := b.Cursor()
+				for k, v := c.Last(); k != nil; k, v = c.Prev() {
+					v2 := loadFingerprint(v)
+					for _, location := range locations {
+						if v2.Location == location {
+							b.Delete(k)
+							numChanges++
+							break
+						}
+					}
+				}
+			}
+			return nil
+		})
+		db.Close()
+		optimizePriorsThreaded(strings.ToLower(group))
+		c.JSON(http.StatusOK, gin.H{"message": "Deleted " + strconv.Itoa(numChanges) + " locations", "success": true})
+	} else {
+		c.JSON(http.StatusOK, gin.H{"success": false, "message": "Need to provide group and location list. DELETE /locations?group=X&names=Y,Z,W"})
 	}
 }
 
