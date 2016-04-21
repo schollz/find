@@ -140,14 +140,14 @@ function track() {
 		$('button#track').html('Stop tracking');
 		scanAndSend(null);
 		tracking = true;
-		setNewAlarm();
-		alarmInterval = setInterval(setNewAlarm,61000);
+		// setNewAlarm();
+		// alarmInterval = setInterval(setNewAlarm,61000);
 	} else {
 		tracking = false;
 		$('button#track').toggleClass('active');
 		$('button#track').html('Track');
 		stopScanning();
-		clearInterval(alarmInterval);
+		// clearInterval(alarmInterval);
 	}
 }
 
