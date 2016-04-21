@@ -389,6 +389,7 @@ h1 {
         $('button#changegroup').toggle();
         $('button#changeserver').toggle();
         $('button#changepolling').toggle();
+        $('button#togglepersist').toggle();
         $('div#ballsWaveG').hide();
     	document.addEventListener("deviceready", main, false);
     	if(! window.plugins) main();
@@ -398,17 +399,20 @@ h1 {
             <h1>FIND v0.5</h1>
             <h2 id='user'>loading...</h2>
 <!--             <p><button id='openwifi'>Open Wifi</button> <button id='closewifi'>Close Wifi</button></p>
- -->        <p><button class="inactive" id='learn' onclick='learn();'>Learn</button><br/></p>
-            <p><button class="inactive" id='track' onclick='track();'>Track</button><br/></p>
-<!--             <p><button class="inactive" id='stop' onclick='stopScanning();'>Stop</button></p>
- -->            
+ -->
+            <p><button class="inactive" id='exit' onclick='navigator.app.exitApp();'>Exit</button></p>
             <p><button class="inactive" id='options' onclick="options();">Options</button></p>
             <p><button class="inactive" id='dashboard' onclick='openDashboard();'>Dashboard</button></p>
+            <p><button class="inactive" id='togglepersist' onclick='togglePersist();'>Stay on</button></p>
             <p><button class="inactive" id='changeuser' onclick='setData("username","user1","user name");'>Change user</button></p>
             <p><button class="inactive" id='changegroup' onclick='setData("group",makeid(), "group name");'>Change group</button></p>
             <p><button class="inactive" id='changeserver' onclick='setData("server","https://ml.internalpositioning.com", "Server address");'>Change server</button></p>
             <p><button class="inactive" id='changepolling' onclick='setData("pollingInterval","3", "tracking interval in seconds");'>Change tracking interval</button></p>
-            <p><button class="inactive" id='exit' onclick='navigator.app.exitApp();'>Exit</button></p>
+
+         <p><button class="inactive" id='learn' onclick='learn();'>Learn</button><br/></p>
+            <p><button class="inactive" id='track' onclick='track();'>Track</button><br/></p>
+<!--             <p><button class="inactive" id='stop' onclick='stopScanning();'>Stop</button></p>
+ -->            
 
 <div id="ballsWaveG">
     <div id="ballsWaveG_1" class="ballsWaveG"></div>

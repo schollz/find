@@ -10,7 +10,8 @@ var learning = false;
 var tracking = false;
 var inoptions = false;
 var POLLING_INTERVAL = "pollingInterval";
-		var brightness = cordova.plugins.brightness;
+var brightness = cordova.plugins.brightness;
+var isPersisting = false;
 
 
 function toTitleCase(str)
@@ -69,6 +70,7 @@ function ipIntToString(ip) {
 function options() {
 	$('button#changeserver').toggle('Drop');$('button#dashboard').toggle('Drop');$('button#changeuser').toggle('Drop'); $('button#changegroup').toggle('Drop');$('button#learn').toggle('Drop');$('button#stop').toggle('Drop');$('button#track').toggle('Drop');$('button#options').toggleClass('active');
 	$('button#changepolling').toggle('Drop');
+	$('button#togglepersist').toggle('Drop');
 	if (inoptions == false) {
 inoptions = true;
 $('button#options').html('Go back');
@@ -238,15 +240,27 @@ function scanAndSend(results) {
 		$('div#scanning').html("Sending fingerprint to " + servername);
 		sendFingerprint();
 		scanningInterval = setInterval(sendFingerprint,getPollingInterval());	
-		window.powermanagement.acquire();
-		setBrightness(0);
+		// createAlarm(5, 30);
+		if (isPersisting == true) {
+			window.powermanagement.acquire();
+			setBrightness(0);			
+		}
 
 
 	}
 	toggle = true;
 }
 
-function nope() {
+function togglePersist() {
+	if (isPersisting == true) {
+		isPersisting = false;
+		window.powermanagement.release();		
+		setBrightness(0.5);		
+		$('button#togglepersist').html("Stay on");	
+	} else {
+		isPersisting = true;
+		$('button#togglepersist').html("Let sleep");	
+	}
 }
 
 
@@ -255,7 +269,10 @@ function stopScanning() {
 	$('div#result').html("");
 	$('div#sending').html("");
 	$('div#ballsWaveG').hide();
-	window.powermanagement.release();
+	if (isPersisting == true) {
+			window.powermanagement.release();		
+			setBrightness(0.5);			
+	}
 
 
 // value should be float in range from 0 to 1.
@@ -263,6 +280,7 @@ function stopScanning() {
     if (cordova.plugins.backgroundMode.isEnabled() == true) {
 	    cordova.plugins.backgroundMode.disable();	    	
     }
+    chrome.alarms.clear(REPEATING_ALARM_NAME)
 }
 
 
@@ -308,9 +326,37 @@ function initUIEvents() {
 
 }
 
+
+var SINGLE_ALARM_NAME_PREFIX = 'AlarmManualTests-OneTime';
+var REPEATING_ALARM_NAME = 'AlarmManualTests-Repeating1';
+var numAlarms = 0;
+
+function createAlarm(delaySeconds, repeatSeconds) {
+  var alarmName = SINGLE_ALARM_NAME_PREFIX + numAlarms;
+  numAlarms++;
+
+  var expectedFireTime = Date.now() + (delaySeconds * 1000);
+  var alarm = { when:expectedFireTime };
+  if (repeatSeconds) {
+    alarmName = REPEATING_ALARM_NAME;
+    alarm.periodInMinutes = repeatSeconds / 60;
+  }
+  chrome.alarms.create(alarmName, alarm);
+}
+
+
+
 function main() {
 	initUIEvents();
     window.brightness = cordova.require("cordova.plugin.Brightness.Brightness");
+
+
+  chrome.alarms.onAlarm.addListener(function(alarm) {
+    // if (alarm.name === REPEATING_ALARM_NAME ||
+    //   alarm.name.indexOf(SINGLE_ALARM_NAME_PREFIX) > -1) {
+    //   alert("Received alarm: " + alarm.name);
+    // }
+  });
 
 	// local storage
 	test = window.localStorage.getItem('username');
