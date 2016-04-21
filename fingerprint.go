@@ -101,7 +101,7 @@ func handleFingerprint(c *gin.Context) {
 	if c.BindJSON(&jsonFingerprint) == nil {
 		cleanFingerprint(&jsonFingerprint)
 		if jsonFingerprint.Location != "" {
-			go putFingerprintIntoDatabase(jsonFingerprint, "fingerprints")
+			putFingerprintIntoDatabase(jsonFingerprint, "fingerprints")
 			isLearning[strings.ToLower(jsonFingerprint.Group)] = true
 			Debug.Println("Inserted fingerprint for " + jsonFingerprint.Username + " (" + jsonFingerprint.Group + ") at " + jsonFingerprint.Location)
 			c.JSON(http.StatusOK, gin.H{"message": "Inserted fingerprint containing " + strconv.Itoa(len(jsonFingerprint.WifiFingerprint)) + " APs for " + jsonFingerprint.Username + " at " + jsonFingerprint.Location, "success": true})
@@ -130,7 +130,7 @@ func trackFingerprint(c *gin.Context) {
 		}
 		locationGuess, bayes := calculatePosterior(jsonFingerprint, *NewFullParameters())
 		jsonFingerprint.Location = locationGuess
-		go putFingerprintIntoDatabase(jsonFingerprint, "fingerprints-track")
+		putFingerprintIntoDatabase(jsonFingerprint, "fingerprints-track")
 		positions := [][]string{}
 		positions1 := []string{}
 		positions2 := []string{}

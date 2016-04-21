@@ -82,7 +82,7 @@ func slashDashboard(c *gin.Context) {
 	users := getUsers(group)
 	people := make(map[string]UserPositionJSON)
 	for _, user := range users {
-		people[user] = getPositionBreakdown(group, user)
+		people[user] = getCurrentPositionOfUser(group, user)
 	}
 	type DashboardData struct {
 		Networks         []string
@@ -125,7 +125,7 @@ func slashLocation(c *gin.Context) {
 		return
 	}
 	user := c.Param("user")
-	userJSON := getPositionBreakdown(group, user)
+	userJSON := getCurrentPositionOfUser(group, user)
 	c.JSON(http.StatusOK, userJSON)
 }
 

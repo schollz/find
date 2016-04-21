@@ -31,7 +31,7 @@ type UserPositionJSON struct {
 	Bayes    map[string]float64 `json:"bayes"`
 }
 
-func getPositionBreakdown(group string, user string) UserPositionJSON {
+func getCurrentPositionOfUser(group string, user string) UserPositionJSON {
 	group = strings.ToLower(group)
 	user = strings.ToLower(user)
 	if val, ok := userPositionCache[group+user]; ok {
@@ -97,8 +97,37 @@ func userLocations(c *gin.Context) {
 		users := getUsers(group)
 		people := make(map[string]UserPositionJSON)
 		for _, user := range users {
-			people[user] = getPositionBreakdown(group, user)
+			people[user] = getCurrentPositionOfUser(group, user)
 		}
+		c.JSON(http.StatusOK, gin.H{"message": "Correctly found", "success": true, "users": people})
+	} else {
+		c.JSON(http.StatusOK, gin.H{"success": false, "message": "Error parsing request"})
+	}
+}
+func getUserLocations(c *gin.Context) {
+	c.Writer.Header().Set("Content-Type", "application/json")
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+	c.Writer.Header().Set("Access-Control-Max-Age", "86400")
+	c.Writer.Header().Set("Access-Control-Allow-Methods", "GET")
+	c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, X-Max")
+	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+
+	group := c.DefaultQuery("group", "noneasdf")
+	usersQuery := c.DefaultQuery("users", "noneasdf")
+	group = strings.ToLower(group)
+	if group != "noneasdf" {
+		people := make(map[string][]UserPositionJSON)
+		users := strings.Split(strings.ToLower(usersQuery), ",")
+		if users[0] == "noneasdf" {
+			users = getUsers(group)
+		}
+		for _, user := range users {
+			if _, ok := people[user]; !ok {
+				people[user] = []UserPositionJSON{}
+			}
+			people[user] = append(people[user], getCurrentPositionOfUser(group, user))
+		}
+
 		c.JSON(http.StatusOK, gin.H{"message": "Correctly found", "success": true, "users": people})
 	} else {
 		c.JSON(http.StatusOK, gin.H{"success": false, "message": "Error parsing request"})
