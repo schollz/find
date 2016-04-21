@@ -15,7 +15,7 @@ var rssiRegexp = regexp.MustCompile(linuxRssiExpr)
 func linuxFindMac(line string) (string, bool) {
 	mac := macRegexp.FindString(line)
 
-	return mac, (mac != "")
+	return strings.ToLower(mac), (mac != "")
 }
 
 func linuxFindRssi(line string) (int, bool) {

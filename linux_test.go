@@ -1,12 +1,14 @@
 package main
 
 import (
-	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 var linuxConfig = ScanParsingConfig{linuxFindMac, linuxFindRssi}
+var linuxConfigIwlist = ScanParsingConfig{linuxFindMac, linuxFindRssiIwList}
 
 func TestLinuxOutEmptyResultWhenEmptyScan(t *testing.T) {
 	data, _ := ParseOutput(linuxConfig, "")
@@ -97,4 +99,32 @@ func TestPi3FullOutput(t *testing.T) {
 
 	assert.Nil(t, err)
 	assert.Equal(t, expected, data)
+}
+
+func TestLinuxIwListOutput(t *testing.T) {
+	dat, _ := ioutil.ReadFile("test/iwlistPiOutput.txt")
+	data, err := ParseOutput(linuxConfigIwlist, string(dat))
+
+	expected := []WifiData{
+
+		{"70:73:cb:bd:9f:b5", -77},
+		{"80:37:73:ba:f7:d8", -23},
+		{"a0:63:91:2b:9e:65", -46},
+		{"00:23:69:d4:47:9f", -71},
+		{"80:37:73:87:56:36", -61},
+		{"2c:b0:5d:36:e3:b8", -76},
+		{"58:20:b1:21:63:9f", -69},
+		{"30:8d:99:71:95:c5", -85},
+		{"4c:60:de:fe:e5:24", -89},
+		{"00:1a:1e:46:cd:10", -75},
+		{"00:1a:1e:46:cd:11", -77},
+		{"c0:c1:c0:f0:6f:cd", -89},
+		{"c8:b3:73:25:22:51", -87},
+		{"8c:09:f4:d3:84:50", -93},
+		{"08:95:2a:b1:e9:55", -87},
+	}
+
+	assert.Nil(t, err)
+	assert.Equal(t, expected, data)
+
 }
