@@ -140,6 +140,10 @@ function track() {
 		$('button#track').html('Stop tracking');
 		scanAndSend(null);
 		tracking = true;
+		createAlarm(10,61);
+
+
+
 		// setNewAlarm();
 		// alarmInterval = setInterval(setNewAlarm,61000);
 	} else {
