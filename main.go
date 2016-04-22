@@ -259,6 +259,7 @@ func sendFingerprint(address string, f Fingerprint) (string, error) {
 		return "", err
 	}
 
+    log.Info(r.Message)
 	if strings.Contains(r.Message, ":") {
 		log.Critical(strings.TrimSpace(strings.Split(r.Message, ":")[1]))
 	}
