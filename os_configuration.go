@@ -28,7 +28,7 @@ var macRegexp = regexp.MustCompile(macExpr)
 
 type OSConfig struct {
 	WifiScanCommand string
-	ScanConfig	  ScanParsingConfig
+	ScanConfig      ScanParsingConfig
 }
 
 type ScanParsingConfig struct {
@@ -114,7 +114,7 @@ func DownloadVerifyFile(url string, target string, sha1sum string) (error) {
 func populateConfigurations(wlanInterface string) {
 	osConfigurations["darwin"] = OSConfig{
 		WifiScanCommand: "/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -s",
-		ScanConfig:	  ScanParsingConfig{darwinFindMac, darwinFindRssi},
+		ScanConfig:      ScanParsingConfig{darwinFindMac, darwinFindRssi},
 	}
 
 	if !useIwlist {
