@@ -85,22 +85,48 @@ Recalculates the priors for the database for the `group`.
 }
 ```
 
-## `GET /location?group=X&user=Y&history=Z`
+## `GET /location?group=X&user=Y or /location?group=X or /location?group=X&user=Y,Z,W`
+
 Gets the locations. If `user` is not provided it will return locations for all users in the `group`. If `history` is not included, it will return the last location, otherwise it will return the last `Z` locations.
 
 ### Response
 
 ```json
 {
-    "success":true,
-    "message":"Found X users.",
-    "userX": [
-        {
-            "time": "2016-04-16 08:16:43.123233725 -0400 EDT",
-            "location": "some location",
-            "bayes": {}
-        }
-    ]
+   "message":"Correctly found locations.",
+   "success":true,
+   "users":{
+      "morpheus":[
+         {
+            "time":"2016-04-18 15:59:38.146929368 -0400 EDT",
+            "location":"office",
+            "bayes":{
+               "bed bath":-1.0796283868148098,
+               "bedroom":-0.3253323338565688,
+               "car":-0.11084494825121938,
+               "dining":-0.21592336935362944,
+               "kitchen":0.7779455402822841,
+               "living":-0.5328733505357962,
+               "office":1.486656848529739
+            }
+         }
+      ],
+      "zack":[
+         {
+            "time":"2016-04-20 07:27:47.960140659 -0400 EDT",
+            "location":"office",
+            "bayes":{
+               "bed bath":-1.028454724759723,
+               "bedroom":0.1239023145100694,
+               "car":-0.1493711750580678,
+               "dining":-0.4237049232002753,
+               "kitchen":0.6637176338607336,
+               "living":-0.701636080467658,
+               "office":1.515546955114921
+            }
+         }
+      ]
+   }
 }
 ```
 
