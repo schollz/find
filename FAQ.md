@@ -120,4 +120,4 @@ between floors.
 
 ### Does it work with [home-assistant.io](https://home-assistant.io/)?
 
-**Yes.** See [here](https://community.home-assistant.io/t/anyone-seen-this-find-internal-positioning/772/2?u=schollz) for the discussion on how to use it with home-assistant.oi
+**Yes.** See [here](https://community.home-assistant.io/t/anyone-seen-this-find-internal-positioning/772/2?u=schollz) for the discussion on how to use it with home-assistant.io.
