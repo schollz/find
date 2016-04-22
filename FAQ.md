@@ -118,4 +118,6 @@ between floors.
 
 **Yes!** We host our code on [Github](https://github.com/schollz/find) and will accept Pull requests and Feature requests.
 
+### Does it work with [home-assistant.io](https://home-assistant.io/)?
 
+**Yes.** See [here](https://community.home-assistant.io/t/anyone-seen-this-find-internal-positioning/772/2?u=schollz) for the discussion on how to use it with home-assistant.oi
