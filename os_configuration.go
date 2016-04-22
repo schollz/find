@@ -117,10 +117,18 @@ func populateConfigurations(wlanInterface string) {
 		ScanConfig:	  ScanParsingConfig{darwinFindMac, darwinFindRssi},
 	}
 
-	linuxCommand := "/sbin/iw dev " + wlanInterface + " scan -u"
-	osConfigurations["linux"] = OSConfig{
-		WifiScanCommand: linuxCommand,
-		ScanConfig:	  ScanParsingConfig{linuxFindMac, linuxFindRssi},
+	if !useIwlist {
+		linuxCommand := "/sbin/iw dev " + wlanInterface + " scan -u"
+		osConfigurations["linux"] = OSConfig{
+			WifiScanCommand: linuxCommand,
+			ScanConfig:      ScanParsingConfig{linuxFindMac, linuxFindRssi},
+		}
+	} else {
+		linuxCommand := "/sbin/iwlist " + wlanInterface + " scan"
+		osConfigurations["linux"] = OSConfig{
+			WifiScanCommand: linuxCommand,
+			ScanConfig:      ScanParsingConfig{linuxFindMac, linuxFindRssiIwList},
+		}
 	}
 
 	

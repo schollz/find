@@ -46,6 +46,7 @@ var format2 = logging.MustStringFormatter(
 
 var verbose = true
 var errorsInARow = 0
+var useIwlist = false
 
 func getInput(prompt string) string {
 	reader := bufio.NewReader(os.Stdin)
@@ -133,6 +134,10 @@ func main() {
 			Name:  "nodebug,d",
 			Usage: "turns off debugging",
 		},
+		cli.BoolFlag{
+			Name:  "iwlist,w",
+			Usage: "switch to iwlist if iw fails",
+		},
 		cli.StringFlag{
 			Name:  "interface,i",
 			Value: "wlan0",
@@ -142,6 +147,7 @@ func main() {
 	app.Action = func(c *cli.Context) {
 		times = c.Int("continue")
 		wlan_interface = c.String("interface")
+		useIwlist = c.Bool("iwlist")
 
 		var ok bool
 		osConfig, ok = GetConfiguration(runtime.GOOS, wlan_interface)
