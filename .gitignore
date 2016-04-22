@@ -83,3 +83,7 @@ nohup.out
 
 # Temp files
 *~
+
+# binaries and binary folders
+bin/
+*.exe
