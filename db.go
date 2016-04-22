@@ -2,11 +2,21 @@ package main
 
 import (
 	"log"
+	"os"
 	"path"
+	"strings"
 	"time"
 
 	"github.com/boltdb/bolt"
 )
+
+func groupExists(group string) bool {
+	if _, err := os.Stat(path.Join(RuntimeArgs.SourcePath, strings.ToLower(group)+".db")); os.IsNotExist(err) {
+		return false
+	} else {
+		return true
+	}
+}
 
 func renameNetwork(group string, oldName string, newName string) {
 	Debug.Println("Opening parameters")

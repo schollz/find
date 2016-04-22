@@ -76,6 +76,10 @@ func getCurrentPositionOfUser(group string, user string) UserPositionJSON {
 func calculate(c *gin.Context) {
 	group := c.DefaultQuery("group", "noneasdf")
 	if group != "noneasdf" {
+		if !groupExists(group) {
+			c.JSON(http.StatusOK, gin.H{"message": "You should insert fingerprints first, see documentation", "success": false})
+			return
+		}
 		optimizePriorsThreaded(strings.ToLower(group))
 		c.JSON(http.StatusOK, gin.H{"message": "Parameters optimized.", "success": true})
 	} else {
@@ -94,6 +98,10 @@ func userLocations(c *gin.Context) {
 	group := c.DefaultQuery("group", "noneasdf")
 	group = strings.ToLower(group)
 	if group != "noneasdf" {
+		if !groupExists(group) {
+			c.JSON(http.StatusOK, gin.H{"message": "You should insert fingerprints before tracking, see documentation", "success": false})
+			return
+		}
 		users := getUsers(group)
 		people := make(map[string]UserPositionJSON)
 		for _, user := range users {
@@ -117,6 +125,10 @@ func getUserLocations(c *gin.Context) {
 	usersQuery := c.DefaultQuery("users", "noneasdf")
 	group = strings.ToLower(group)
 	if group != "noneasdf" {
+		if !groupExists(group) {
+			c.JSON(http.StatusOK, gin.H{"message": "You should insert fingerprints before tracking, see documentation", "success": false})
+			return
+		}
 		people := make(map[string][]UserPositionJSON)
 		allusers := getUsers(group)
 		if userQuery != "noneasdf" {

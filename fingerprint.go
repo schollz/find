@@ -100,6 +100,14 @@ func handleFingerprint(c *gin.Context) {
 	var jsonFingerprint Fingerprint
 	if c.BindJSON(&jsonFingerprint) == nil {
 		cleanFingerprint(&jsonFingerprint)
+		if len(jsonFingerprint.Group) == 0 {
+			c.JSON(http.StatusOK, gin.H{"message": "Need to define your group name in request, see API", "success": false})
+			return
+		}
+		if len(jsonFingerprint.WifiFingerprint) == 0 {
+			c.JSON(http.StatusOK, gin.H{"message": "No fingerprints found to insert, see API", "success": false})
+			return
+		}
 		if jsonFingerprint.Location != "" {
 			putFingerprintIntoDatabase(jsonFingerprint, "fingerprints")
 			isLearning[strings.ToLower(jsonFingerprint.Group)] = true
@@ -115,6 +123,18 @@ func trackFingerprint(c *gin.Context) {
 	var jsonFingerprint Fingerprint
 	if c.BindJSON(&jsonFingerprint) == nil {
 		cleanFingerprint(&jsonFingerprint)
+		if !groupExists(jsonFingerprint.Group) || len(jsonFingerprint.Group) == 0 {
+			c.JSON(http.StatusOK, gin.H{"message": "You should insert fingerprints before tracking", "success": false})
+			return
+		}
+		if len(jsonFingerprint.WifiFingerprint) == 0 {
+			c.JSON(http.StatusOK, gin.H{"message": "No fingerprints found to track, see API", "success": false})
+			return
+		}
+		if len(jsonFingerprint.Username) == 0 {
+			c.JSON(http.StatusOK, gin.H{"message": "No username defined, see API", "success": false})
+			return
+		}
 		if wasLearning, ok := isLearning[strings.ToLower(jsonFingerprint.Group)]; ok {
 			if wasLearning {
 				Debug.Println("Was learning, calculating priors")
@@ -144,8 +164,8 @@ func trackFingerprint(c *gin.Context) {
 		userJSON.Time = time.Now().String()
 		userPositionCache[strings.ToLower(jsonFingerprint.Group)+strings.ToLower(jsonFingerprint.Username)] = userJSON
 		Debug.Println("Tracking fingerprint for " + jsonFingerprint.Username + " (" + jsonFingerprint.Group + ") at " + jsonFingerprint.Location + " (guess)")
-		c.JSON(http.StatusOK, gin.H{"message": "Calculated location: " + locationGuess, "success": true, "location": locationGuess})
+		c.JSON(http.StatusOK, gin.H{"message": "Calculated location: " + locationGuess, "success": true, "location": locationGuess, "bayes": bayes})
 	} else {
-		c.JSON(http.StatusOK, gin.H{"message": "Something went wrong", "success": false})
+		c.JSON(http.StatusOK, gin.H{"message": "Could not bind JSON", "success": false})
 	}
 }
