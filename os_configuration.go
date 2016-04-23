@@ -13,12 +13,13 @@ package main
 
 import (
 	"crypto/sha1"
-	"errors"
 	"encoding/hex"
+	"errors"
 	"io"
 	"net/http"
 	"os"
 	"regexp"
+	"runtime"
 )
 
 // Regular expression matching standard (IEEE 802) MAC-48 addresses
@@ -49,26 +50,26 @@ func GetConfiguration(os string, wlanInterface string) (OSConfig, bool) {
 
 func ComputeSHA1Sum(filename string) (string, error) {
 	fd, err := os.Open(filename)
-	
+
 	if err != nil {
 		return "", err
 	}
 	defer fd.Close()
-	
+
 	h := sha1.New()
 	_, err = io.Copy(h, fd)
 	if err != nil {
 		return "", err
 	}
-	
+
 	result := h.Sum(nil)
-	
+
 	return hex.EncodeToString(result), nil
 }
 
-func DownloadVerifyFile(url string, target string, sha1sum string) (error) {
+func DownloadVerifyFile(url string, target string, sha1sum string) error {
 	needsDownload := true
-	
+
 	_, err := os.Stat(target)
 	if err == nil {
 		// File already exists, check if the hash matches
@@ -77,37 +78,37 @@ func DownloadVerifyFile(url string, target string, sha1sum string) (error) {
 			needsDownload = false
 		}
 	}
-	
+
 	if needsDownload {
 		fd, err := os.Create(target)
 		if err != nil {
 			fd.Close()
 			return err
 		}
-		
+
 		response, err := http.Get(url)
 		if err != nil {
 			return err
 		}
 		defer response.Body.Close()
-		
+
 		n, err := io.Copy(fd, response.Body)
 		if err != nil {
 			return err
 		}
-		
+
 		log.Info(n, "bytes downloaded.")
 		fd.Close()
-		
+
 		fileSum, err := ComputeSHA1Sum(target)
-		
+
 		if fileSum != sha1sum {
 			log.Warning("3rd party utility hash (" + fileSum + ") does NOT match expected hash (" + sha1sum + ").")
 			os.Remove(target)
 			return errors.New("Download failed")
 		}
 	}
-	
+
 	return nil
 }
 
@@ -131,61 +132,61 @@ func populateConfigurations(wlanInterface string) {
 		}
 	}
 
-	
 	// Check for an alternative Windows wifi utility
-	_, err := os.Stat("bin")
-	if os.IsNotExist(err) {
-		// Create a bin folder
-		os.Mkdir("bin", os.ModePerm)
-	}
 	windowsConfig := OSConfig{
 		WifiScanCommand: "netsh wlan show network mode=bssid",
-		ScanConfig:	  ScanParsingConfig{windowsFindMac, windowsFindRssi},
+		ScanConfig:      ScanParsingConfig{windowsFindMac, windowsFindRssi},
 	}
-	needsPrompt := true
-	
-	// Check if the alternative is downloaded
-	altSum := "5209b821e93d9a407b725b229223e53bb52495c9"
-	_, err = os.Stat("bin/windows-wlan-util.exe")
-	if err == nil {
-		// Verify the file
-		fileSum, _ := ComputeSHA1Sum("bin/windows-wlan-util.exe")
-		if fileSum == altSum {
-			windowsConfig = OSConfig{
-				WifiScanCommand: "bin/windows-wlan-util.exe query",
-				ScanConfig:	  ScanParsingConfig{windows2FindMac, windows2FindRssi},
-			}
-			needsPrompt = false
-		} else {
-			log.Warning("3rd party utility hash (" + fileSum + ") does NOT match expected hash (" + altSum + ").")
+	if runtime.GOOS == "windows" {
+		_, err := os.Stat("bin")
+		if os.IsNotExist(err) {
+			// Create a bin folder
+			os.Mkdir("bin", os.ModePerm)
 		}
-	} else {
-		_, err := os.Stat("bin/windows-use-netsh")
+		needsPrompt := true
+		// Check if the alternative is downloaded
+		altSum := "5209b821e93d9a407b725b229223e53bb52495c9"
+		_, err = os.Stat("bin/windows-wlan-util.exe")
 		if err == nil {
-			needsPrompt = false
-		}
-	}
-	
-	if needsPrompt {
-		// Ask if the user wants to download the alternative
-		altUtil := getInput("Do you want to download a 3rd party utility for better wifi capture? (y/n)")
-		if altUtil == "y" {
-			err = DownloadVerifyFile(
-				"https://github.com/ScottSWu/windows-wlan-util/releases/download/v1.0/windows-wlan-util.exe",
-				"bin/windows-wlan-util.exe", "5209b821e93d9a407b725b229223e53bb52495c9")
-			if err == nil {
+			// Verify the file
+			fileSum, _ := ComputeSHA1Sum("bin/windows-wlan-util.exe")
+			if fileSum == altSum {
 				windowsConfig = OSConfig{
 					WifiScanCommand: "bin/windows-wlan-util.exe query",
-					ScanConfig:	  ScanParsingConfig{windows2FindMac, windows2FindRssi},
+					ScanConfig:      ScanParsingConfig{windows2FindMac, windows2FindRssi},
 				}
+				needsPrompt = false
 			} else {
-				log.Warning("Failed to download 3rd party utility. You will be asked again next time.")
+				log.Warning("3rd party utility hash (" + fileSum + ") does NOT match expected hash (" + altSum + ").")
 			}
 		} else {
-			fd, _ := os.Create("bin/windows-use-netsh")
-			fd.Close()
+			_, err := os.Stat("bin/windows-use-netsh")
+			if err == nil {
+				needsPrompt = false
+			}
 		}
+
+		if needsPrompt {
+			// Ask if the user wants to download the alternative
+			altUtil := getInput("Do you want to download a 3rd party utility for better wifi capture? (y/n)")
+			if altUtil == "y" {
+				err = DownloadVerifyFile(
+					"https://github.com/ScottSWu/windows-wlan-util/releases/download/v1.0/windows-wlan-util.exe",
+					"bin/windows-wlan-util.exe", "5209b821e93d9a407b725b229223e53bb52495c9")
+				if err == nil {
+					windowsConfig = OSConfig{
+						WifiScanCommand: "bin/windows-wlan-util.exe query",
+						ScanConfig:      ScanParsingConfig{windows2FindMac, windows2FindRssi},
+					}
+				} else {
+					log.Warning("Failed to download 3rd party utility. You will be asked again next time.")
+				}
+			} else {
+				fd, _ := os.Create("bin/windows-use-netsh")
+				fd.Close()
+			}
+		}
+
 	}
-	
 	osConfigurations["windows"] = windowsConfig
 }

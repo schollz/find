@@ -227,6 +227,8 @@ func main() {
 		}
 		log.Info("Response: " + response)
 
+		time.Sleep(1 * time.Second)
+
 	}
 
 }
