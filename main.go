@@ -97,7 +97,7 @@ func main() {
 	var osConfig OSConfig
 
 	app := cli.NewApp()
-	app.Name = "fingerprint"
+	app.Name = "find"
 	app.Usage = "client for sending WiFi fingerprints to a FIND server"
 	app.Version = "0.2"
 	app.Flags = []cli.Flag{
