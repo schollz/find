@@ -31,8 +31,8 @@ Requires posting a `WifiFingerprint` JSON:
 
 ```json
 {
-    "success": true
-    "message": "Inserted fingerprint containing 23 APs for zack at zakhome floor 2 office",
+    "success": true,
+    "message": "Inserted fingerprint containing 23 APs for zack at zakhome floor 2 office"
 }
 ```
 
@@ -65,14 +65,14 @@ Requires posting a `WifiFingerprint` JSON:
 
 ```json
 {
-    "success": true
+    "success": true,
     "message": "Calculated location: zakhome floor 2 office",
     "location": "zakhome floor 2 office",
     "bayes": {
         "zakhome floor 1 kitchen": 0.07353831034486494,
         "zakhome floor 2 bedroom": -0.9283974092154644,
         "zakhome floor 2 office": 0.8548590988705993
-    },
+    }
 }
 
 ```
