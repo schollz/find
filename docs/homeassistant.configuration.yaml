@@ -1,0 +1,145 @@
+homeassistant:
+  # Name of the location where Home Assistant is running
+  name: Home
+  # Location required to calculate the time the sun rises and sets
+  latitude: 36.0755
+  longitude: -79.0741
+  # C for Celsius, F for Fahrenheit
+  temperature_unit: F
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: America/New_York
+  customize:
+    script.timed_office:
+      hidden: true
+    script.timed_bedroom:
+      hidden: true
+    script.timed_office_off:
+      hidden: true
+    script.timed_bedroom_off:
+      hidden: true
+    sensor.find_location_sensor:
+      hidden: true
+
+frontend:
+
+history:
+
+logbook:
+
+sun:
+
+#updater:
+
+
+# Prediction of weather
+sensor:
+#  - platform: yr
+  - platform: rest
+    resource: https://ml.internalpositioning.com/location?group=find2&user=zack
+    value_template: '{{ value_json.users.zack[0].location }}{{ value_json.users.zack[0].time }}'
+    method: GET
+    name: FIND location sensor
+    scan_interval: 3
+  - platform: rest
+    resource: https://ml.internalpositioning.com/location?group=find2&user=zack
+    value_template: '{{ value_json.users.zack[0].location }}'
+    method: GET
+    name: FIND location
+    scan_interval: 6
+
+
+automation:
+  - alias: 'In office'
+    trigger:
+      - platform: state
+        entity_id: sensor.find_location_sensor
+    condition:
+      - platform: template
+        value_template: "{% if 'office' in states('sensor.find_location_sensor') %}true{% else %}false{% endif %}"
+    action:
+      service: homeassistant.turn_on
+      entity_id: script.timed_office
+  - alias: 'In bedroom'
+    trigger:
+      - platform: state
+        entity_id: sensor.find_location_sensor
+    condition:
+      - platform: template
+        value_template: "{% if 'bedroom' in states('sensor.find_location_sensor') %}true{% else %}false{% endif %}"
+    action:
+      service: homeassistant.turn_on
+      entity_id: script.timed_bedroom
+  # - alias: 'In bedroom'
+  #   trigger:
+  #     - platform: state
+  #       entity_id: sensor.find_location_sensor
+  #       state: 'bedroom'
+  #   action:
+  #     service: homeassistant.turn_on
+  #     entity_id: script.timed_bedroom
+
+group:
+  Lights:
+    - switch.office
+    - switch.bedroom
+
+switch:
+  - platform: command_switch
+    switches:
+      office:
+        oncmd: echo on
+        offcmd: echo off
+        initial: 'on'
+      bedroom:
+        oncmd: echo on
+        offcmd: echo off
+        initial: 'on'
+
+script:
+  timed_office:
+    alias: "Turn on lamp and set timer"
+    sequence:
+      - service: script.turn_off
+        data:
+           entity_id: script.timed_office_off
+      - service: switch.turn_on
+        data:
+          entity_id: switch.office
+      # Set new timer 
+      - service: script.turn_on
+        data:
+          entity_id: script.timed_office_off
+
+  timed_office_off:
+    alias: "Turn off office after 10 minutes"
+    sequence:
+      - delay:
+          minutes: 1
+      - service: switch.turn_off
+        data:
+          entity_id: switch.office
+
+  timed_bedroom:
+    alias: "Turn on lamp and set timer"
+    sequence:
+      # Cancel ev. old timers 
+      - service: script.turn_off
+        data:
+           entity_id: script.timed_bedroom_off
+      - service: switch.turn_on
+        data:
+          entity_id: switch.bedroom
+      # Set new timer 
+      - service: script.turn_on
+        data:
+          entity_id: script.timed_bedroom_off
+
+  timed_bedroom_off:
+    alias: "Turn off office after 10 minutes"
+    sequence:
+      - delay:
+          minutes: 1
+      - service: switch.turn_off
+        data:
+          entity_id: switch.bedrrom
+
