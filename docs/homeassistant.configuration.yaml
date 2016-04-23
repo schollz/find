@@ -19,6 +19,10 @@ homeassistant:
       hidden: true
     sensor.find_location_sensor:
       hidden: true
+    script.timed_living:
+      hidden: true
+    script.timed_living_off:
+      hidden: true
 
 frontend:
 
@@ -30,19 +34,23 @@ sun:
 
 #updater:
 
+#weblink:
+#  entities:
+#    - name: Back to FIND information
+#      url: https://github.com/schollz/find
 
 # Prediction of weather
 sensor:
 #  - platform: yr
   - platform: rest
-    resource: https://ml.internalpositioning.com/location?group=find2&user=zack
-    value_template: '{{ value_json.users.zack[0].location }}{{ value_json.users.zack[0].time }}'
+    resource: https://ml.internalpositioning.com/location?group=YOURGROUP&user=YOURUSER
+    value_template: '{{ value_json.users.YOURUSER[0].location }}{{ value_json.users.YOURUSER[0].time }}'
     method: GET
     name: FIND location sensor
     scan_interval: 3
   - platform: rest
-    resource: https://ml.internalpositioning.com/location?group=find2&user=zack
-    value_template: '{{ value_json.users.zack[0].location }}'
+    resource: https://ml.internalpositioning.com/location?group=YOURGROUP&user=YOURUSER
+    value_template: '{{ value_json.users.YOURUSER[0].location }}'
     method: GET
     name: FIND location
     scan_interval: 6
@@ -69,35 +77,55 @@ automation:
     action:
       service: homeassistant.turn_on
       entity_id: script.timed_bedroom
-  # - alias: 'In bedroom'
-  #   trigger:
-  #     - platform: state
-  #       entity_id: sensor.find_location_sensor
-  #       state: 'bedroom'
-  #   action:
-  #     service: homeassistant.turn_on
-  #     entity_id: script.timed_bedroom
+  - alias: 'In living'
+    trigger:
+      - platform: state
+        entity_id: sensor.find_location_sensor
+    condition:
+      - platform: template
+        value_template: "{% if 'living' in states('sensor.find_location_sensor') %}true{% else %}false{% endif %}"
+    action:
+      service: homeassistant.turn_on
+      entity_id: script.timed_living
+
 
 group:
   Lights:
     - switch.office
     - switch.bedroom
+    - switch.living
+    - switch.dining
+    - switch.kitchen
+#  Links:
+#    - weblink.back_to_find_information
 
 switch:
   - platform: command_switch
     switches:
       office:
+        oncmd: echo "rf g1 on" 
+        offcmd: echo "rf g1 off" 
+        initial: 'on'
+      bedroom:
         oncmd: echo on
         offcmd: echo off
         initial: 'on'
-      bedroom:
+      living:
+        oncmd: echo on
+        offcmd: echo off
+        initial: 'on'
+      dining:
+        oncmd: echo on
+        offcmd: echo off
+        initial: 'on'
+      kitchen:
         oncmd: echo on
         offcmd: echo off
         initial: 'on'
 
 script:
   timed_office:
-    alias: "Turn on lamp and set timer"
+    alias: "Turn on office and set timer"
     sequence:
       - service: script.turn_off
         data:
@@ -111,10 +139,10 @@ script:
           entity_id: script.timed_office_off
 
   timed_office_off:
-    alias: "Turn off office after 10 minutes"
+    alias: "Turn off office after 3 minutes"
     sequence:
       - delay:
-          minutes: 1
+          minutes: 3
       - service: switch.turn_off
         data:
           entity_id: switch.office
@@ -138,8 +166,31 @@ script:
     alias: "Turn off office after 10 minutes"
     sequence:
       - delay:
-          minutes: 1
+          minutes: 3
       - service: switch.turn_off
         data:
-          entity_id: switch.bedrrom
+          entity_id: switch.bedroom
 
+  timed_living:
+    alias: "Turn on living room"
+    sequence:
+      # Cancel ev. old timers 
+      - service: script.turn_off
+        data:
+           entity_id: script.timed_living_off
+      - service: switch.turn_on
+        data:
+          entity_id: switch.living
+      # Set new timer 
+      - service: script.turn_on
+        data:
+          entity_id: script.timed_living_off
+
+  timed_living_off:
+    alias: "Turn off living"
+    sequence:
+      - delay:
+          minutes: 3
+      - service: switch.turn_off
+        data:
+          entity_id: switch.living
