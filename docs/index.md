@@ -38,7 +38,7 @@ Submit a fingerprint to be used for learning the classification of the location.
    "username":"some user",
    "location":"some place",
    "time":12309123,
-   "wififingerprint":[
+   "wifi-fingerprint":[
       {
          "mac":"AA:AA:AA:AA:AA:AA",
          "rssi":-45
@@ -93,7 +93,7 @@ Submit a fingerprint to be used for classifying the location. The information fo
    "username":"some user",
    "location":"some place",
    "time":12309123,
-   "wififingerprint":[
+   "wifi-fingerprint":[
       {
          "mac":"AA:AA:AA:AA:AA:AA",
          "rssi":-45
