@@ -1,2 +1,9 @@
-site_name: FIND API
+site_name: FIND Documentation
 theme: cyborg
+repo_url: https://github.com/schollz/find
+site_description: API documentation for schollz/find, a Framework for Internal Positioning and WiFi based location
+site_url: https://docs.internalpositioning.com
+site_author: Zack
+pages:
+  - 'API': index.md
+  - 'FAQ': faq.md

@@ -1,12 +1,36 @@
-# FIND API
+# API
+
+
+**The server for FIND allows manipulation of fingerprints directly through these API routes. Most useful is likely the [/location](/#get-location) route which gathers
+the most recent location for a user.**
+
+
+
 [![](https://raw.githubusercontent.com/schollz/find/master/static/splash.gif)](https://www.internalpositioning.com/)
 
-# Fingerprinting
-## `POST /learn`
 
-Parses and inserts fingerprints. `time` is optional. `location` is optional for the `/track` route.
 
-Requires posting a `WifiFingerprint` JSON:
+
+
+
+
+
+<br><br><br><br><br>
+
+
+
+
+
+
+## POST /learn
+
+### Description
+
+Submit a fingerprint to be used for learning the classification of the location. The information for the fingerprint is gathered from the WiFi client - either the App or the program.
+
+### Parameters
+
+#### POST
 
 ```json
 {
@@ -36,11 +60,32 @@ Requires posting a `WifiFingerprint` JSON:
 }
 ```
 
-## `POST /track`
 
-Parses and inserts fingerprints. `time` is optional. `location` is optional for the `/track` route.
 
-Requires posting a `WifiFingerprint` JSON:
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br><br><br><br><br>
+
+
+
+## POST /track
+
+Submit a fingerprint to be used for classifying the location. The information for the fingerprint is gathered from the WiFi client - either the App or the program.
+
+### Parameters
+
+#### POST
 
 ```json
 {
@@ -56,7 +101,7 @@ Requires posting a `WifiFingerprint` JSON:
       {
          "mac":"BB:BB:BB:BB:BB:BB",
          "rssi":-55
-     } 
+     }
    ]
 }
 ```
@@ -78,9 +123,28 @@ Requires posting a `WifiFingerprint` JSON:
 ```
 
 
-## `GET /calculate?group=X`
+
+
+
+
+
+
+
+<br><br><br><br><br>
+
+## GET /calculate
+
+### Description
+
 Recalculates the priors for the database for the `group`.
 
+
+### Parameters
+
+
+| Name  | Location  | Description  | Required  |
+|---|---|---|---|
+|  group | query  | Defines the unique group ID  | yes  |
 
 ### Response
 
@@ -91,11 +155,34 @@ Recalculates the priors for the database for the `group`.
 }
 ```
 
-## `GET /location?group=X&user=Y or /location?group=X or /location?group=X&user=Y,Z,W`
 
-Gets the locations. If `user` is not provided it will return locations for all users in the `group`. If `history` is not included, it will return the last location, otherwise it will return the last `Z` locations.
+
+
+
+
+
+<br><br><br><br><br>
+
+
+## GET /location
+
+### Description
+
+Gets the locations for the specified user(s) in the specified group.
+
+
+### Parameters
+
+
+| Name  | Location  | Description  | Required  |
+|---|---|---|---|
+|  group | query  | Defines the unique group ID  | yes  |
+| user | query | Specifies a user to get location | no |
+| users | query | Specifies multiple users `users=X,Y,Z` to get histories | no |
 
 ### Response
+
+If `user` or `users` are not specified, then the location of all users are returned.
 
 ```json
 {
@@ -136,10 +223,21 @@ Gets the locations. If `user` is not provided it will return locations for all u
 }
 ```
 
+<br><br><br><br><br>
 
-## `DELETE` `/username?group=X&user=Y`
+## DELETE /username
 
-Deletes user `Y` in group `X`.
+### Description
+
+Deletes all the tracking fingerprints for specified user in the specified group.
+
+### Parameters
+
+
+| Name  | Location  | Description  | Required  |
+|---|---|---|---|
+|  group | query  | Defines the unique group ID  | yes  |
+| user | query | Specifies a user  | yes |
 
 ### Response
 
@@ -150,9 +248,17 @@ Deletes user `Y` in group `X`.
 }
 ```
 
-## `GET` `/status`
+<br><br><br><br><br>
+
+## GET /status
+
+### Description
 
 Returns status of the server and some information about the computer.
+
+### Parameters
+
+None.
 
 ### Response
 
