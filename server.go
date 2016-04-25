@@ -98,6 +98,8 @@ Options:`)
 	r.POST("/fingerprint", handleFingerprint)
 	r.POST("/learn", handleFingerprint)
 	r.POST("/track", trackFingerprint)
+	r.GET("/learn", handleFingerprint)
+	r.GET("/track", trackFingerprint)
 
 	// API routes (api.go)
 	r.GET("/location", getUserLocations)
