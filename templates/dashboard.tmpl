@@ -67,6 +67,72 @@
   <link rel="stylesheet" type="text/css" href="/static/css/sweetalert.css">
 
 
+  <link rel="stylesheet" href="/static/css/jquery-ui.css">
+  <script src="/static/js/jquery-ui.js"></script>
+  <script>
+  $(function() {
+    $( document ).tooltip({
+      position: {
+        my: "center bottom-20",
+        at: "center top",
+        using: function( position, feedback ) {
+          $( this ).css( position );
+          $( "<div>" )
+            .addClass( "arrow" )
+            .addClass( feedback.vertical )
+            .addClass( feedback.horizontal )
+            .appendTo( this );
+        }
+      }
+    });
+  });
+  </script>
+  <style>
+  .ui-tooltip, .arrow:after {
+    background: black;
+    border: 2px solid white;
+  }
+  .ui-tooltip {
+    padding: 10px 20px;
+    color: white;
+    border-radius: 20px;
+    font: bold 14px "Helvetica Neue", Sans-Serif;
+    box-shadow: 0 0 7px black;
+  }
+  .arrow {
+    width: 70px;
+    height: 16px;
+    overflow: hidden;
+    position: absolute;
+    left: 50%;
+    margin-left: -35px;
+    bottom: -16px;
+  }
+  .arrow.top {
+    top: -16px;
+    bottom: auto;
+  }
+  .arrow.left {
+    left: 20%;
+  }
+  .arrow:after {
+    content: "";
+    position: absolute;
+    left: 20px;
+    top: -20px;
+    width: 35px;
+    height: 25px;
+    box-shadow: 6px 5px 9px -9px black;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+  .arrow.top:after {
+    bottom: -20px;
+    top: auto;
+  }
+  </style>
+
 </head>
 
 <body>
@@ -169,7 +235,7 @@
 
       <div class="panel panel-primary" id="volume-fees-panel">
           <div class="panel-body">
-          <button class="btn btn-warning btn-block" id="startTracking">Track</button>
+          <button class="btn btn-warning btn-block" id="startTracking" title="Click to start tracking all the users in realtime. There current positions will update here.">Track</button>
           </div>
       </div>
 
@@ -182,12 +248,12 @@
           <div class="panel panel-primary" id="volume-fees-panel">
             <div class="panel-heading">
               <h3 class="panel-title">
-                         {{ $index }} &nbsp;<a id="{{ $index }}" class="edituser"><span class="fa fa-pencil-square-o"></span></a>&nbsp;<a id="{{ $index }}" class="deleteuser"><i class="fa fa-trash"></i></a>
+                         {{ $index }} &nbsp;<a id="{{ $index }}" class="edituser" title="Click to change the name for '{{ $index }}'"><span class="fa fa-pencil-square-o"></span></a>&nbsp;<a id="{{ $index }}" class="deleteuser" title="Click to delete user '{{ $index }}'"><i class="fa fa-trash"></i></a>
                        </h3>
             </div>
             <div class="panel-body">
-              <p id="lastSeen{{$index}}"><strong>Last seen:</strong> {{ $user.Time }} at {{ $user.Location }}</p>
-              <p id="bayes{{$index}}"><strong>Confidence:</strong> ...loading...</strong></p>
+              <p id="lastSeen{{$index}}" title="Shows the last time and place of user when you are tracking."><strong>Last seen:</strong> {{ $user.Time }} at {{ $user.Location }}</p>
+              <p id="bayes{{$index}}" title="Shows the exponential Bayesian scores when you are tracking."><strong>Confidence:</strong> ...loading...</strong></p>
             </div>
           </div>
         </div>
@@ -209,7 +275,7 @@
 
       <div class="panel panel-primary" id="volume-fees-panel">
           <div class="panel-body">
-          <button type="submit" class="btn btn-info btn-block" id="recalculateAll">Update</button>
+          <button type="submit" class="btn btn-info btn-block" id="recalculateAll" title="Reclaculate the machine learning parameters and update your statistics.">Update</button>
           </div>
       </div>
 
@@ -224,7 +290,7 @@
             <div class="panel-heading">
               <h3 class="panel-title">
                          {{ $element }}
-                         <a id="{{ $element }}" class="editnetworkloc"><span class="fa fa-pencil-square-o"></span></a>
+                         <a id="{{ $element }}" class="editnetworkloc" title="Click to change this networks name">&nbsp;<span class="fa fa-pencil-square-o"></span></a>
                          (Mixin = {{ index $.Dash.Mixin $element }}, Cutoff = {{ index $.Dash.VarabilityCutoff $element }})
                        </h3>
             </div>
@@ -232,13 +298,13 @@
               {{ range $locIndex, $loc := index $.Dash.Locations $element }}
               <dl>
                 <dt>
-                  <a  href="#" onClick="window.open('/explore/{{ $.Group }}/{{ $element }}/{{ $loc }}','pagename','resizable,height=420,width=1000'); return false;">
+                  <a  href="#" onClick="window.open('/explore/{{ $.Group }}/{{ $element }}/{{ $loc }}','pagename','resizable,height=420,width=1000'); return false;" title="Click to explore the signal values of the APs at '{{ $loc }}'.">
                   {{ $loc }}
                 </a>
                  &nbsp;
-                  <a id="{{ $loc }}" class="editloc"><span class="fa fa-pencil-square-o"></span></a>&nbsp;<a id="{{ $loc }}" class="deleteloc"><i class="fa fa-trash"></i></a>&nbsp;</dt>
-                <dd>({{ index $.Dash.LocationCount $loc }}) &nbsp;
-                  <span class="bg-success"><a  href="#" onClick="window.open('/pie/{{ $.Group }}/{{ $element }}/{{ $loc }}','pagename','resizable,height=380,width=480'); return false;">{{ index $.Dash.LocationAccuracy $loc }}%</a>  </span>
+                  <a id="{{ $loc }}" class="editloc" title="Click to change name of '{{ $loc }}'"><span class="fa fa-pencil-square-o"></span></a>&nbsp;<a id="{{ $loc }}" class="deleteloc"  title="Click to delete '{{ $loc }}'"><i class="fa fa-trash"></i></a>&nbsp;</dt>
+                <dd><span title="Number of fingerprints used for learning">({{ index $.Dash.LocationCount $loc }})</span> &nbsp;
+                  <span class="bg-success"><a title="Click to open pie chart depicting frequency of classification for '{{ $loc }}'" href="#" onClick="window.open('/pie/{{ $.Group }}/{{ $element }}/{{ $loc }}','pagename','resizable,height=380,width=480'); return false;">{{ index $.Dash.LocationAccuracy $loc }}%</a>  </span>
                 </dd>
               </dl>
               {{ end }}
@@ -310,6 +376,8 @@ function userLocPolling() {
       $('.deleteuser').css('cursor', 'pointer');
       $('.editloc').css('cursor', 'pointer');
       $('.edituser').css('cursor', 'pointer');
+      $('.editnetworkname').css('cursor', 'pointer');
+      $('.editnetworkloc').css('cursor', 'pointer');
 
       //userInterval = setInterval(userLocPolling,1500);
 
