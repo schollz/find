@@ -60,8 +60,13 @@ func calculatePosterior(res Fingerprint, ps FullParameters) (string, map[string]
 	PBayesMix := make(map[string]float64)
 	bestLocation := ""
 	maxVal := float64(-100)
+	mixin := ps.Priors[n].Special["MixIn"]
+	mixinOverride, _ := getMixinOverride(res.Group)
+	if mixinOverride >= 0 || mixinOverride <= 1 {
+		mixin = mixinOverride
+	}
 	for key := range PBayes1 {
-		PBayesMix[key] = ps.Priors[n].Special["MixIn"]*PBayes1[key] + (1-ps.Priors[n].Special["MixIn"])*PBayes2[key]
+		PBayesMix[key] = mixin*PBayes1[key] + (1-mixin)*PBayes2[key]
 		if PBayesMix[key] > maxVal {
 			maxVal = PBayesMix[key]
 			bestLocation = key

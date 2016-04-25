@@ -100,8 +100,13 @@ func slashDashboard(c *gin.Context) {
 	dash.LocationCount = make(map[string]int)
 	dash.Mixin = make(map[string]float64)
 	dash.VarabilityCutoff = make(map[string]float64)
+	mixinOverride, _ := getMixinOverride(group)
 	for n := range ps.NetworkLocs {
-		dash.Mixin[n] = ps.Priors[n].Special["MixIn"]
+		if mixinOverride != -1 {
+			dash.Mixin[n] = mixinOverride
+		} else {
+			dash.Mixin[n] = ps.Priors[n].Special["MixIn"]
+		}
 		dash.VarabilityCutoff[n] = ps.Priors[n].Special["VarabilityCutoff"]
 		dash.Networks = append(dash.Networks, n)
 		dash.Locations[n] = []string{}

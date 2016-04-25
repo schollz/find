@@ -159,6 +159,28 @@ func getUserLocations(c *gin.Context) {
 	}
 }
 
+func putMixinOverride(c *gin.Context) {
+	group := strings.ToLower(c.DefaultQuery("group", "noneasdf"))
+	newMixin := c.DefaultQuery("mixin", "none")
+	if group != "noneasdf" {
+		fmt.Println(group, newMixin)
+		newMixinFloat, err := strconv.ParseFloat(newMixin, 64)
+		if err == nil {
+			err2 := setMixinOverride(group, newMixinFloat)
+			if err2 == nil {
+				mixinOverrideCache[group] = newMixinFloat
+				c.JSON(http.StatusOK, gin.H{"success": true, "message": "Overriding mixin for " + group + ", now set to " + newMixin})
+			} else {
+				c.JSON(http.StatusOK, gin.H{"success": false, "message": err2.Error()})
+			}
+		} else {
+			c.JSON(http.StatusOK, gin.H{"success": false, "message": err.Error()})
+		}
+	} else {
+		c.JSON(http.StatusOK, gin.H{"success": false, "message": "Error parsing request"})
+	}
+}
+
 func editNetworkName(c *gin.Context) {
 	group := c.DefaultQuery("group", "noneasdf")
 	oldname := c.DefaultQuery("oldname", "none")

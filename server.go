@@ -102,6 +102,7 @@ Options:`)
 	r.GET("/track", trackFingerprint)
 
 	// API routes (api.go)
+	r.PUT("/mixin", putMixinOverride)
 	r.GET("/location", getUserLocations)
 	r.GET("/whereami", whereAmI)
 	r.GET("/editname", editName)

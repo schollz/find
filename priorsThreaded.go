@@ -211,8 +211,13 @@ func optimizePriorsThreaded(group string) {
 	}
 
 	// Load new priors and calculate new cross Validation
+	mixinOverride, _ := getMixinOverride(group)
 	for n := range ps.Priors {
-		ps.Priors[n].Special["MixIn"] = bestMixin[n]
+		if mixinOverride != -1 {
+			ps.Priors[n].Special["MixIn"] = mixinOverride
+		} else {
+			ps.Priors[n].Special["MixIn"] = bestMixin[n]
+		}
 		ps.Priors[n].Special["VarabilityCutoff"] = bestCutoff[n]
 		crossValidation(group, n, &ps, fingerprintsInMemory, fingerprintsOrdering)
 	}
