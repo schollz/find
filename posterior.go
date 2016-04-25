@@ -19,6 +19,14 @@ func calculatePosterior(res Fingerprint, ps FullParameters) (string, map[string]
 		Debug.Println(n, inNetworkAlready, ps.NetworkLocs[n], res)
 	}
 
+	if len(ps.NetworkLocs[n]) == 1 {
+		for key := range ps.NetworkLocs[n] {
+			PBayesMix := make(map[string]float64)
+			PBayesMix[key] = 1
+			return key, PBayesMix
+		}
+	}
+
 	PBayes1 := make(map[string]float64)
 	PBayes2 := make(map[string]float64)
 	PA := 1.0 / float64(len(ps.NetworkLocs[n]))
