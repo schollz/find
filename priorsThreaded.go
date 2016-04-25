@@ -93,6 +93,11 @@ func optimizePriorsThreaded(group string) {
 
 	// loop through these parameters
 	mixins := []float64{0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9}
+	mixinOverride, _ := getMixinOverride(group)
+	if mixinOverride >= 0 && mixinOverride <= 1 {
+		mixins = []float64{mixinOverride}
+	}
+	fmt.Println(mixins)
 	// cutoff := 0.1
 	cutoffs := []float64{0.005, 0.05, 0.1}
 	bestMixin := make(map[string]float64)
@@ -211,13 +216,8 @@ func optimizePriorsThreaded(group string) {
 	}
 
 	// Load new priors and calculate new cross Validation
-	mixinOverride, _ := getMixinOverride(group)
 	for n := range ps.Priors {
-		if mixinOverride != -1 {
-			ps.Priors[n].Special["MixIn"] = mixinOverride
-		} else {
-			ps.Priors[n].Special["MixIn"] = bestMixin[n]
-		}
+		ps.Priors[n].Special["MixIn"] = bestMixin[n]
 		ps.Priors[n].Special["VarabilityCutoff"] = bestCutoff[n]
 		crossValidation(group, n, &ps, fingerprintsInMemory, fingerprintsOrdering)
 	}

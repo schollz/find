@@ -306,9 +306,6 @@ func getParameters(group string, ps *FullParameters, fingerprintsInMemory map[st
 
 func getMixinOverride(group string) (float64, error) {
 	group = strings.ToLower(group)
-	if val, ok := mixinOverrideCache[group]; ok {
-		return val, nil
-	}
 	override := float64(-1)
 	db, err := bolt.Open(path.Join(RuntimeArgs.SourcePath, group+".db"), 0600, nil)
 	defer db.Close()
@@ -329,7 +326,6 @@ func getMixinOverride(group string) (float64, error) {
 		override, err = strconv.ParseFloat(string(v), 64)
 		return err
 	})
-	mixinOverrideCache[group] = override
 	return override, err
 }
 
