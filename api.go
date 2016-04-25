@@ -168,6 +168,7 @@ func putMixinOverride(c *gin.Context) {
 		if err == nil {
 			err2 := setMixinOverride(group, newMixinFloat)
 			if err2 == nil {
+				optimizePriorsThreaded(strings.ToLower(group))
 				c.JSON(http.StatusOK, gin.H{"success": true, "message": "Overriding mixin for " + group + ", now set to " + newMixin})
 			} else {
 				c.JSON(http.StatusOK, gin.H{"success": false, "message": err2.Error()})
