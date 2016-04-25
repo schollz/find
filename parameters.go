@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"path"
+	"strconv"
 
 	"github.com/boltdb/bolt"
 )
@@ -300,4 +301,53 @@ func getParameters(group string, ps *FullParameters, fingerprintsInMemory map[st
 		}
 	}
 
+}
+
+func getMixinOverride(group string) (float64, error) {
+	override := float64(-1)
+	db, err := bolt.Open(path.Join(RuntimeArgs.SourcePath, group+".db"), 0600, nil)
+	defer db.Close()
+	if err != nil {
+		Error.Println(err)
+	}
+
+	err = db.View(func(tx *bolt.Tx) error {
+		// Assume bucket exists and has keys
+		b := tx.Bucket([]byte("resources"))
+		if b == nil {
+			return fmt.Errorf("Resources dont exist")
+		}
+		v := b.Get([]byte("mixinOverride"))
+		if len(v) == 0 {
+			return fmt.Errorf("No mixin override")
+		}
+		override, err = strconv.ParseFloat(string(v), 64)
+		return err
+	})
+	return override, err
+}
+
+func setMixinOverride(group string, mixin float64) error {
+	if mixin < 0 || mixin > 1 {
+		return fmt.Errorf("mixin must be between 0 and 1")
+	}
+	db, err := bolt.Open(path.Join(RuntimeArgs.SourcePath, group+".db"), 0600, nil)
+	defer db.Close()
+	if err != nil {
+		Error.Println(err)
+	}
+
+	err = db.Update(func(tx *bolt.Tx) error {
+		bucket, err := tx.CreateBucketIfNotExists([]byte("resources"))
+		if err != nil {
+			return fmt.Errorf("create bucket: %s", err)
+		}
+
+		err = bucket.Put([]byte("mixinOverride"), []byte(strconv.FormatFloat(mixin, 'E', -1, 64)))
+		if err != nil {
+			return fmt.Errorf("could add to bucket: %s", err)
+		}
+		return err
+	})
+	return err
 }
