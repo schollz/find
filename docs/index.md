@@ -248,6 +248,30 @@ Deletes all the tracking fingerprints for specified user in the specified group.
 }
 ```
 
+<br><br><br><br><br>
+
+## DELETE /locations
+
+### Description
+
+Bulk delete locations
+
+### Parameters
+
+| Name  | Location  | Description  | Required  |
+|---|---|---|---|
+|  group | query  | Defines the unique group ID  | yes  |
+| names | query | Enter locations seperated by commas, e.g. locations=X,Y,Z  | yes |
+
+### Response
+
+```json
+{
+  "success":true,
+  "message":"Deleted X locations"
+}
+```
+
 
 
 <br><br><br><br><br>
