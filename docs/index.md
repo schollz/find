@@ -263,7 +263,7 @@ Allows overriding of the `Mixin` parameter. Value of `0` uses only the RSSI Prio
 | Name  | Location  | Description  | Required  |
 |---|---|---|---|
 |  group | query  | Defines the unique group ID  | yes  |
-| mixin | query | Specifiy a value between 0 and 1, or -1 to deactivate  | yes |
+| mixin | query | Specifiy a value between 0 and 1 to activate, or -1 to deactivate  | yes |
 
 ### Response
 
