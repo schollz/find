@@ -248,6 +248,39 @@ Deletes all the tracking fingerprints for specified user in the specified group.
 }
 ```
 
+
+
+<br><br><br><br><br>
+
+## PUT /mixin
+
+### Description
+
+Allows overriding of the `Mixin` parameter. Value of `0` uses only the RSSI Priors, while value of `1` uses only the Mac prevalence statistics.
+
+### Parameters
+
+| Name  | Location  | Description  | Required  |
+|---|---|---|---|
+|  group | query  | Defines the unique group ID  | yes  |
+| mixin | query | Specifiy a value between 0 and 1, or -1 to deactivate  | yes |
+
+### Response
+
+
+```json
+{
+  "message":"Overriding mixin for testdb, now set to 1",
+  "success":true
+}
+```
+
+
+
+
+
+
+
 <br><br><br><br><br>
 
 ## GET /status
