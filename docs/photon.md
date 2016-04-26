@@ -25,55 +25,58 @@ http_header_t headers[] = {
 http_request_t request;
 http_response_t response;
 
-// switch to activate different modes
-unsigned int SLEEP = 0;
-
-void button_handler(system_event_t event, int duration, void* )
-{
-    if (!duration) { // just pressed
-        RGB.control(true);
-        if (SLEEP == 0) {
-            RGB.color(255,0,0);
-            SLEEP = 1; // sleep mode on
-        } else if (SLEEP == 1) {
-            RGB.color(0,255,0);
-            SLEEP = 2; // undefined mode
-        } else {
-            RGB.color(0,0,255);
-            SLEEP = 0;
-        }
-    }
-    else {    // just released
-        RGB.control(false);
-    }
-}
+// // SWITCH
+// unsigned int SLEEP = 0;
+// void button_handler(system_event_t event, int duration, void* )
+// {
+//     if (!duration) { // just pressed
+//         RGB.control(true);
+//         if (SLEEP == 0) {
+//             RGB.color(255,0,0);
+//             SLEEP = 1; // sleep mode on
+//         } else if (SLEEP == 1) {
+//             RGB.color(0,255,0);
+//             SLEEP = 2; // undefined mode
+//         } else {
+//             RGB.color(0,0,255);
+//             SLEEP = 0;
+//         }
+//     }
+//     else {    // just released
+//         RGB.control(false);
+//     }
+// }
 
 void setup() {
     Serial.begin(9600);
-    System.on(button_status, button_handler);
+    // // SWITCH
+    // System.on(button_status, button_handler);
 }
 
 void loop() {
-    if (SLEEP == 1) {
-        RGB.color(255,0,0);
-    }
-    if (SLEEP == 2) {
-        RGB.color(0,255,0);
-    }
+    
+    // // SWITCH
+    // if (SLEEP == 1) {
+    //     RGB.color(255,0,0);
+    // }
+    // if (SLEEP == 2) {
+    //     RGB.color(0,255,0);
+    // }
 
     if (nextTime > millis()) {
         return;
     }
 
+    // // DEBUGGING
     // Serial.println();
     // Serial.println("Application>\tStart of Loop.");
 
-    request.hostname = "ml2.internalpositioning.com"; 
+    request.hostname = "ml2.internalpositioning.com";
     request.port = 80;
     request.path = "/track";
 
 
-    request.body = "{\"group\":\"GROUPNAME\",\"username\":\"USERNAME\",\"location\":\"LOCATIONNAME\",\"wifi-fingerprint\":[";
+    request.body = "{\"group\":\"YOURGROUP\",\"username\":\"YOURUSERNAME\",\"location\":\"YOURLOCATION\",\"wifi-fingerprint\":[";
     WiFiAccessPoint aps[20];
     int found = WiFi.scan(aps, 20);
     for (int i=0; i<found; i++) {
@@ -93,23 +96,25 @@ void loop() {
     }
     request.body = request.body + "]}";
 
-    // Serial.println(request.body);
-    http.get(request, response, headers);
+    http.post(request, response, headers);
     
+    // // DEBUGGING
+    // Serial.println("Fingerprint:");
+    // Serial.println(request.body);
     // Serial.print("Application>\tResponse status: ");
     // Serial.println(response.status);
-
     // Serial.print("Application>\tHTTP Response Body: ");
     // Serial.println(response.body);
     
-    nextTime = millis() + 3000;
-    if (SLEEP == 1) {
-        System.sleep(3);
-    } else {
-        delay(3000);
-    }
+    nextTime = millis() + 2000; // sends response every 5 seconds  (2 sec delay + ~3 sec for gathering signals)
+    
+    // // SWITCH
+    // if (SLEEP == 1) {
+    //     System.sleep(3);
+    // } else {
+    //     delay(3000);
+    // }
 }
-
 ```
 
 ### Things to keep in mind
