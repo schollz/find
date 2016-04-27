@@ -122,3 +122,8 @@ void loop() {
 - You must use HTTP, not HTTPS. That's why the server is set to `ml2.internalpositioning.com`
 - You can not flash from WiFi is the board is in sleep mode. Thats what the button is for. If this fails, you can reset by unplugging, holding down "Setup" and then plugging in while holding down "Setup." Then link up the Photon like you did from the beginning.
 - The Photon ESP chip sees fewer macs than a Android does, probably because of the antenna. Thus, its best to not use platform-specific information and you should set the mixins to `0` on the server by using `curl https://ml.internalpositioning.com/mixin?group=X&mixin=0`.
+
+
+### Benchmarking
+
+Using a `nextTime` of `+2000ms` without System sleep gave a runtime of 13 hours, 32 minutes - ~813 minutes. Using fully charged [battery](http://www.insigniaproducts.com/products/computer-speakers-accessories/NS-MB2601.html) with 2600 mAh. This means, the sketch takes about 192 mA.
