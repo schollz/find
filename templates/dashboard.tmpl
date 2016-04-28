@@ -326,6 +326,13 @@
 
 
   <script>
+
+  function jq( myid ) {
+
+      return myid.replace(".","\\.").replace("@","\\@");
+
+  }
+
  var userInterval;
 function userLocPolling() {
         $.getJSON("/userlocs", {
@@ -337,7 +344,7 @@ function userLocPolling() {
                 userkey = key;
                 console.log(key)
                 console.log(data['users'][key])
-                $('#lastSeen' + key).html("<strong>Last seen:</strong> " + data['users'][key]['time'] + " at " + data['users'][key]['location']);
+                $(jq('#lastSeen' + key)).html("<strong>Last seen:</strong> " + data['users'][key]['time'] + " at " + data['users'][key]['location']);
                 // $('#bayes' + key).text("Bayes: " + JSON.stringify(data['users'][key]['bayes']));
                 var tuples = [];
 
@@ -363,7 +370,7 @@ function userLocPolling() {
                     }
                 }
                 console.log(vals.join())
-               $('#bayes' + userkey).html("<strong>Confidence:</strong> " + vals.join())
+               $(jq('#bayes' + userkey)).html("<strong>Confidence:</strong> " + vals.join())
 
 
               }
