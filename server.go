@@ -22,6 +22,7 @@ var RuntimeArgs struct {
 	SourcePath string
 	Socket     string
 	Cwd        string
+	Mqtt       bool
 }
 
 // VersionNum keeps track of the version
@@ -40,6 +41,7 @@ func main() {
 	flag.StringVar(&RuntimeArgs.Socket, "s", "", "unix socket")
 	flag.StringVar(&RuntimeArgs.ServerCRT, "crt", "", "location of ssl crt")
 	flag.StringVar(&RuntimeArgs.ServerKey, "key", "", "location of ssl key")
+	flag.BoolVar(&RuntimeArgs.Mqtt, "mqtt", false, "turn on MQTT message passing")
 	flag.CommandLine.Usage = func() {
 		fmt.Println(`find (version ` + VersionNum + `)
 run this to start the server and then visit localhost at the port you specify

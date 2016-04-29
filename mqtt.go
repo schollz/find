@@ -8,7 +8,7 @@ import (
 )
 
 func sendMQTTMessage(message string, group string, user string) error {
-	server := "tcp://SOMEURL:1883"
+	server := "tcp://ml.internalpositioning.com:1883"
 	room := group
 	name := user
 	// subTopic := strings.Join([]string{"/find/", room, "/+"}, "")
@@ -27,7 +27,7 @@ func sendMQTTMessage(message string, group string, user string) error {
 	if token := client.Connect(); token.Wait() && token.Error() != nil {
 		panic(token.Error())
 	}
-	Debug.Println("Connected ", name, server)
+	// Debug.Println("Connected ", name, server)
 
 	if token := client.Publish(pubTopic, 1, false, message); token.Wait() && token.Error() != nil {
 		return fmt.Errorf("Failed to send message")

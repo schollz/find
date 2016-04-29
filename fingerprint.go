@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"strconv"
@@ -164,7 +165,17 @@ func trackFingerprint(c *gin.Context) {
 		userJSON.Time = time.Now().String()
 		userPositionCache[strings.ToLower(jsonFingerprint.Group)+strings.ToLower(jsonFingerprint.Username)] = userJSON
 		Debug.Println("Tracking fingerprint for " + jsonFingerprint.Username + " (" + jsonFingerprint.Group + ") at " + jsonFingerprint.Location + " (guess)")
-		// sendMQTTMessage("Tracking fingerprint for "+jsonFingerprint.Username+" ("+jsonFingerprint.Group+") at "+jsonFingerprint.Location+" (guess)", jsonFingerprint.Group, jsonFingerprint.Username)
+		if RuntimeArgs.Mqtt {
+			type FingerprintResponse struct {
+				LocationGuess string             `json:"location"`
+				Bayes         map[string]float64 `json:"bayes"`
+			}
+			mqttMessage, _ := json.Marshal(FingerprintResponse{
+				LocationGuess: locationGuess,
+				Bayes:         bayes,
+			})
+			go sendMQTTMessage(string(mqttMessage)+"\n", jsonFingerprint.Group, jsonFingerprint.Username)
+		}
 		c.JSON(http.StatusOK, gin.H{"message": "Calculated location: " + locationGuess, "success": true, "location": locationGuess, "bayes": bayes})
 	} else {
 		c.JSON(http.StatusOK, gin.H{"message": "Could not bind JSON", "success": false})
