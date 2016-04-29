@@ -1,8 +1,10 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"math/rand"
+	"net/http"
 	"strconv"
 	"strings"
 	"time"
@@ -12,29 +14,29 @@ import (
 
 var mqttClients map[string]*MQTT.Client
 
-func init() {
-	if RuntimeArgs.Mqtt {
-		go clearMqttPool()
+func setupMqtt() {
+	go clearMqttPool()
 
-		server := "tcp://ml.internalpositioning.com:1883"
-		name := "user" + strconv.Itoa(rand.Intn(1000))
+	server := "tcp://ml.internalpositioning.com:1883"
+	name := "user" + strconv.Itoa(rand.Intn(1000))
 
-		subTopic := strings.Join([]string{"/find/", "fingerprint", "/+"}, "")
-		opts := MQTT.NewClientOptions().AddBroker(server).SetClientID(name).SetCleanSession(true)
+	opts := MQTT.NewClientOptions().AddBroker(server).SetClientID(name).SetCleanSession(true)
 
-		opts.OnConnect = func(c *MQTT.Client) {
-			if token := c.Subscribe(subTopic, 1, messageReceived); token.Wait() && token.Error() != nil {
-				panic(token.Error())
-			}
-		}
-
-		client := MQTT.NewClient(opts)
-
-		if token := client.Connect(); token.Wait() && token.Error() != nil {
+	opts.OnConnect = func(c *MQTT.Client) {
+		if token := c.Subscribe("/fingerprint/track/+", 1, messageReceived); token.Wait() && token.Error() != nil {
 			panic(token.Error())
 		}
-		fmt.Printf("Connected to ", name, server)
+		if token := c.Subscribe("/fingerprint/learn/+", 1, messageReceived); token.Wait() && token.Error() != nil {
+			panic(token.Error())
+		}
 	}
+
+	client := MQTT.NewClient(opts)
+
+	if token := client.Connect(); token.Wait() && token.Error() != nil {
+		panic(token.Error())
+	}
+	fmt.Printf("Connected to ", name, server)
 }
 
 func clearMqttPool() {
@@ -67,6 +69,26 @@ func sendMQTTMessage(message string, group string, user string) error {
 
 func messageReceived(client *MQTT.Client, msg MQTT.Message) {
 	topics := strings.Split(msg.Topic(), "/")
-	msgFrom := topics[len(topics)-1]
-	fmt.Print(msgFrom + ": " + string(msg.Payload()))
+	Debug.Println(topics)
+	if len(topics) != 4 {
+		return
+	}
+	route := strings.TrimSpace(topics[2])
+	if (route != "track" && route != "learn") || strings.TrimSpace(topics[1]) != "fingerprint" {
+		return
+	}
+
+	url := "http://127.0.0.1" + RuntimeArgs.Port + "/" + route
+
+	var jsonStr = msg.Payload()
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonStr))
+	req.Header.Set("X-Custom-Header", "myvalue")
+	req.Header.Set("Content-Type", "application/json")
+
+	client2 := &http.Client{}
+	resp, err := client2.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
 }

@@ -178,6 +178,7 @@ func trackFingerprint(c *gin.Context) {
 		}
 		c.JSON(http.StatusOK, gin.H{"message": "Calculated location: " + locationGuess, "success": true, "location": locationGuess, "bayes": bayes})
 	} else {
+		Warning.Println("Could not bind JSON")
 		c.JSON(http.StatusOK, gin.H{"message": "Could not bind JSON", "success": false})
 	}
 }

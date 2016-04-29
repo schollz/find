@@ -60,6 +60,10 @@ Options:`)
 		RuntimeArgs.ExternalIP = GetLocalIP() + RuntimeArgs.Port
 	}
 
+	if RuntimeArgs.Mqtt {
+		setupMqtt()
+	}
+
 	// var ps FullParameters = *NewFullParameters()
 	// getParameters("findtest2", &ps)
 	// calculatePriors("findtest2", &ps)
