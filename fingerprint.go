@@ -164,6 +164,7 @@ func trackFingerprint(c *gin.Context) {
 		userJSON.Time = time.Now().String()
 		userPositionCache[strings.ToLower(jsonFingerprint.Group)+strings.ToLower(jsonFingerprint.Username)] = userJSON
 		Debug.Println("Tracking fingerprint for " + jsonFingerprint.Username + " (" + jsonFingerprint.Group + ") at " + jsonFingerprint.Location + " (guess)")
+		// sendMQTTMessage("Tracking fingerprint for "+jsonFingerprint.Username+" ("+jsonFingerprint.Group+") at "+jsonFingerprint.Location+" (guess)", jsonFingerprint.Group, jsonFingerprint.Username)
 		c.JSON(http.StatusOK, gin.H{"message": "Calculated location: " + locationGuess, "success": true, "location": locationGuess, "bayes": bayes})
 	} else {
 		c.JSON(http.StatusOK, gin.H{"message": "Could not bind JSON", "success": false})
