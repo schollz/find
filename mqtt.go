@@ -117,6 +117,9 @@ func updateMosquittoConfig() {
 	db.View(func(tx *bolt.Tx) error {
 		// Assume bucket exists and has keys
 		b := tx.Bucket([]byte("mqtt"))
+		if b == nil {
+			return fmt.Errorf("No such bucket yet")
+		}
 
 		c := b.Cursor()
 
