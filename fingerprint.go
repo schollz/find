@@ -133,8 +133,9 @@ func learnFingerprint(jsonFingerprint Fingerprint) (string, bool) {
 	}
 	putFingerprintIntoDatabase(jsonFingerprint, "fingerprints")
 	isLearning[strings.ToLower(jsonFingerprint.Group)] = true
-	Debug.Println("Inserted fingerprint for " + jsonFingerprint.Username + " (" + jsonFingerprint.Group + ") at " + jsonFingerprint.Location)
-	return "Inserted fingerprint containing " + strconv.Itoa(len(jsonFingerprint.WifiFingerprint)) + " APs for " + jsonFingerprint.Username + " at " + jsonFingerprint.Location, true
+	message := "Inserted fingerprint containing " + strconv.Itoa(len(jsonFingerprint.WifiFingerprint)) + " APs for " + jsonFingerprint.Username + " at " + jsonFingerprint.Location
+	Debug.Println(message)
+	return message, true
 }
 
 func trackFingerprint(jsonFingerprint Fingerprint) (string, bool, string, map[string]float64) {
