@@ -192,6 +192,9 @@ func mqttBuildFingerprint(topic string, message []byte) (jsonFingerprint Fingerp
 	jsonFingerprint.Username = topics[2]
 	routers := []Router{}
 	for i := 0; i < len(message); i += 14 {
+		if (i + 14) >= len(message) {
+			break
+		}
 		mac := string(message[i:i+2]) + ":" + string(message[i+2:i+4]) + ":" + string(message[i+4:i+6]) + ":" + string(message[i+6:i+8]) + ":" + string(message[i+8:i+10]) + ":" + string(message[i+10:i+12])
 		val, _ := strconv.Atoi(string(message[i+12 : i+14]))
 		rssi := -1 * val
