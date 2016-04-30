@@ -126,4 +126,8 @@ void loop() {
 
 ### Benchmarking
 
-Using a `nextTime` of `+2000ms` without System sleep gave a runtime of 13 hours, 32 minutes - ~813 minutes. Using fully charged [battery](http://www.insigniaproducts.com/products/computer-speakers-accessories/NS-MB2601.html) with 2600 mAh. This means, the sketch takes about 192 mA.
+Using a `nextTime` of `+2000ms` it uses 147 mA.
+
+Using a `nextTime` of `+5000ms`, it uses 113 mA.
+
+Using a `nextTime` of `+10000ms`, with SLEEP ACTIVATED, it uses 
