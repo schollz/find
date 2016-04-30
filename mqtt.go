@@ -132,7 +132,7 @@ func updateMosquittoConfig() {
 
 		return nil
 	})
-	os.MkdirAll(path.Join(RuntimeArgs.Cwd, "mosquitto"), 0660)
+	os.MkdirAll(path.Join(RuntimeArgs.Cwd, "mosquitto"), 0644)
 	ioutil.WriteFile(path.Join(RuntimeArgs.Cwd, "mosquitto/acl"), []byte(acl), 0644)
 	ioutil.WriteFile(path.Join(RuntimeArgs.Cwd, "mosquitto/passwd"), []byte(passwd), 0644)
 	ioutil.WriteFile(path.Join(RuntimeArgs.Cwd, "mosquitto/conf"), []byte(conf), 0644)
