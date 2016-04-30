@@ -36,6 +36,7 @@ func setupMqtt() {
 	if token := adminClient.Connect(); token.Wait() && token.Error() != nil {
 		panic(token.Error())
 	}
+	Deubg.Println("Finished setup")
 }
 
 func putMQTT(c *gin.Context) {
