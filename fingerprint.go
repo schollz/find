@@ -97,88 +97,97 @@ func putFingerprintIntoDatabase(res Fingerprint, database string) error {
 	return err
 }
 
-func handleFingerprint(c *gin.Context) {
+func trackFingerprintPOST(c *gin.Context) {
 	var jsonFingerprint Fingerprint
 	if c.BindJSON(&jsonFingerprint) == nil {
-		cleanFingerprint(&jsonFingerprint)
-		if len(jsonFingerprint.Group) == 0 {
-			c.JSON(http.StatusOK, gin.H{"message": "Need to define your group name in request, see API", "success": false})
-			return
-		}
-		if len(jsonFingerprint.WifiFingerprint) == 0 {
-			c.JSON(http.StatusOK, gin.H{"message": "No fingerprints found to insert, see API", "success": false})
-			return
-		}
-		if jsonFingerprint.Location != "" {
-			putFingerprintIntoDatabase(jsonFingerprint, "fingerprints")
-			isLearning[strings.ToLower(jsonFingerprint.Group)] = true
-			Debug.Println("Inserted fingerprint for " + jsonFingerprint.Username + " (" + jsonFingerprint.Group + ") at " + jsonFingerprint.Location)
-			c.JSON(http.StatusOK, gin.H{"message": "Inserted fingerprint containing " + strconv.Itoa(len(jsonFingerprint.WifiFingerprint)) + " APs for " + jsonFingerprint.Username + " at " + jsonFingerprint.Location, "success": true})
+		message, success, locationGuess, bayes := trackFingerprint(jsonFingerprint)
+		if success {
+			c.JSON(http.StatusOK, gin.H{"message": message, "success": true, "location": locationGuess, "bayes": bayes})
 		} else {
-			trackFingerprint(c)
+			c.JSON(http.StatusOK, gin.H{"message": message, "success": false})
 		}
-	}
-}
-
-func trackFingerprint(c *gin.Context) {
-	var jsonFingerprint Fingerprint
-	if c.BindJSON(&jsonFingerprint) == nil {
-		cleanFingerprint(&jsonFingerprint)
-		if !groupExists(jsonFingerprint.Group) || len(jsonFingerprint.Group) == 0 {
-			c.JSON(http.StatusOK, gin.H{"message": "You should insert fingerprints before tracking", "success": false})
-			return
-		}
-		if len(jsonFingerprint.WifiFingerprint) == 0 {
-			c.JSON(http.StatusOK, gin.H{"message": "No fingerprints found to track, see API", "success": false})
-			return
-		}
-		if len(jsonFingerprint.Username) == 0 {
-			c.JSON(http.StatusOK, gin.H{"message": "No username defined, see API", "success": false})
-			return
-		}
-		if wasLearning, ok := isLearning[strings.ToLower(jsonFingerprint.Group)]; ok {
-			if wasLearning {
-				Debug.Println("Was learning, calculating priors")
-				group := strings.ToLower(jsonFingerprint.Group)
-				isLearning[group] = false
-				optimizePriorsThreaded(group)
-				if _, ok := usersCache[group]; ok {
-					if len(usersCache[group]) == 0 {
-						usersCache[group] = append([]string{}, strings.ToLower(jsonFingerprint.Username))
-					}
-				}
-			}
-		}
-		locationGuess, bayes := calculatePosterior(jsonFingerprint, *NewFullParameters())
-		jsonFingerprint.Location = locationGuess
-		putFingerprintIntoDatabase(jsonFingerprint, "fingerprints-track")
-		positions := [][]string{}
-		positions1 := []string{}
-		positions2 := []string{}
-		positions1 = append(positions1, locationGuess)
-		positions2 = append(positions2, " ")
-		positions = append(positions, positions1)
-		positions = append(positions, positions2)
-		var userJSON UserPositionJSON
-		userJSON.Location = locationGuess
-		userJSON.Bayes = bayes
-		userJSON.Time = time.Now().String()
-		userPositionCache[strings.ToLower(jsonFingerprint.Group)+strings.ToLower(jsonFingerprint.Username)] = userJSON
-		Debug.Println("Tracking fingerprint for " + jsonFingerprint.Username + " (" + jsonFingerprint.Group + ") at " + jsonFingerprint.Location + " (guess)")
-		if RuntimeArgs.Mqtt {
-			type FingerprintResponse struct {
-				LocationGuess string             `json:"location"`
-				Bayes         map[string]float64 `json:"bayes"`
-			}
-			mqttMessage, _ := json.Marshal(FingerprintResponse{
-				LocationGuess: locationGuess,
-				Bayes:         bayes,
-			})
-			go sendMQTTMessage(string(mqttMessage)+"\n", jsonFingerprint.Group, jsonFingerprint.Username)
-		}
-		c.JSON(http.StatusOK, gin.H{"message": "Calculated location: " + locationGuess, "success": true, "location": locationGuess, "bayes": bayes})
 	} else {
 		Warning.Println("Could not bind JSON")
 		c.JSON(http.StatusOK, gin.H{"message": "Could not bind JSON", "success": false})
 	}
+}
+
+func learnFingerprintPOST(c *gin.Context) {
+	var jsonFingerprint Fingerprint
+	if c.BindJSON(&jsonFingerprint) == nil {
+		message, success := learnFingerprint(jsonFingerprint)
+		c.JSON(http.StatusOK, gin.H{"message": message, "success": success})
+	} else {
+		Warning.Println("Could not bind JSON")
+		c.JSON(http.StatusOK, gin.H{"message": "Could not bind JSON", "success": false})
+	}
+}
+
+func learnFingerprint(jsonFingerprint Fingerprint) (string, bool) {
+	cleanFingerprint(&jsonFingerprint)
+	if len(jsonFingerprint.Group) == 0 {
+		return "Need to define your group name in request, see API", false
+	}
+	if len(jsonFingerprint.WifiFingerprint) == 0 {
+		return "No fingerprints found to insert, see API", false
+	}
+	putFingerprintIntoDatabase(jsonFingerprint, "fingerprints")
+	isLearning[strings.ToLower(jsonFingerprint.Group)] = true
+	Debug.Println("Inserted fingerprint for " + jsonFingerprint.Username + " (" + jsonFingerprint.Group + ") at " + jsonFingerprint.Location)
+	return "Inserted fingerprint containing " + strconv.Itoa(len(jsonFingerprint.WifiFingerprint)) + " APs for " + jsonFingerprint.Username + " at " + jsonFingerprint.Location, true
+}
+
+func trackFingerprint(jsonFingerprint Fingerprint) (string, bool, string, map[string]float64) {
+	bayes := make(map[string]float64)
+	cleanFingerprint(&jsonFingerprint)
+	if !groupExists(jsonFingerprint.Group) || len(jsonFingerprint.Group) == 0 {
+		return "You should insert fingerprints before tracking", false, "", bayes
+	}
+	if len(jsonFingerprint.WifiFingerprint) == 0 {
+		return "No fingerprints found to track, see API", false, "", bayes
+	}
+	if len(jsonFingerprint.Username) == 0 {
+		return "No username defined, see API", false, "", bayes
+	}
+	if wasLearning, ok := isLearning[strings.ToLower(jsonFingerprint.Group)]; ok {
+		if wasLearning {
+			Debug.Println("Was learning, calculating priors")
+			group := strings.ToLower(jsonFingerprint.Group)
+			isLearning[group] = false
+			optimizePriorsThreaded(group)
+			if _, ok := usersCache[group]; ok {
+				if len(usersCache[group]) == 0 {
+					usersCache[group] = append([]string{}, strings.ToLower(jsonFingerprint.Username))
+				}
+			}
+		}
+	}
+	locationGuess, bayes := calculatePosterior(jsonFingerprint, *NewFullParameters())
+	jsonFingerprint.Location = locationGuess
+	putFingerprintIntoDatabase(jsonFingerprint, "fingerprints-track")
+	positions := [][]string{}
+	positions1 := []string{}
+	positions2 := []string{}
+	positions1 = append(positions1, locationGuess)
+	positions2 = append(positions2, " ")
+	positions = append(positions, positions1)
+	positions = append(positions, positions2)
+	var userJSON UserPositionJSON
+	userJSON.Location = locationGuess
+	userJSON.Bayes = bayes
+	userJSON.Time = time.Now().String()
+	userPositionCache[strings.ToLower(jsonFingerprint.Group)+strings.ToLower(jsonFingerprint.Username)] = userJSON
+	Debug.Println("Tracking fingerprint for " + jsonFingerprint.Username + " (" + jsonFingerprint.Group + ") at " + jsonFingerprint.Location + " (guess)")
+	if RuntimeArgs.Mqtt {
+		type FingerprintResponse struct {
+			LocationGuess string             `json:"location"`
+			Bayes         map[string]float64 `json:"bayes"`
+		}
+		mqttMessage, _ := json.Marshal(FingerprintResponse{
+			LocationGuess: locationGuess,
+			Bayes:         bayes,
+		})
+		go sendMQTTLocation(string(mqttMessage), jsonFingerprint.Group, jsonFingerprint.Username)
+	}
+	return "Calculated location: " + locationGuess, true, locationGuess, bayes
 }
