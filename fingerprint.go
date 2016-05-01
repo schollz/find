@@ -26,6 +26,7 @@ type Fingerprint struct {
 	Group           string   `json:"group"`
 	Username        string   `json:"username"`
 	Location        string   `json:"location"`
+	Timestamp       string   `json:"timestamp"`
 	WifiFingerprint []Router `json:"wifi-fingerprint"`
 }
 
@@ -93,8 +94,10 @@ func putFingerprintIntoDatabase(res Fingerprint, database string) error {
 			return fmt.Errorf("create bucket: %s", err)
 		}
 
-		timestamp := strconv.FormatInt(time.Now().UnixNano(), 10)
-		err = bucket.Put([]byte(timestamp), dumpFingerprint(res))
+		if len(res.Timestamp) == 0 {
+			res.Timestamp = strconv.FormatInt(time.Now().UnixNano(), 10)
+		}
+		err = bucket.Put([]byte(res.Timestamp), dumpFingerprint(res))
 		if err != nil {
 			return fmt.Errorf("could add to bucket: %s", err)
 		}
@@ -122,6 +125,10 @@ func learnFingerprintPOST(c *gin.Context) {
 	var jsonFingerprint Fingerprint
 	if c.BindJSON(&jsonFingerprint) == nil {
 		message, success := learnFingerprint(jsonFingerprint)
+		Debug.Println(message)
+		if !success {
+			Debug.Println(jsonFingerprint)
+		}
 		c.JSON(http.StatusOK, gin.H{"message": message, "success": success})
 	} else {
 		Warning.Println("Could not bind JSON")
@@ -140,7 +147,6 @@ func learnFingerprint(jsonFingerprint Fingerprint) (string, bool) {
 	putFingerprintIntoDatabase(jsonFingerprint, "fingerprints")
 	isLearning[strings.ToLower(jsonFingerprint.Group)] = true
 	message := "Inserted fingerprint containing " + strconv.Itoa(len(jsonFingerprint.WifiFingerprint)) + " APs for " + jsonFingerprint.Username + " at " + jsonFingerprint.Location
-	Debug.Println(message)
 	return message, true
 }
 
