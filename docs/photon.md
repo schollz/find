@@ -130,4 +130,4 @@ Using a `nextTime` of `+2000ms` it uses 147 mA.
 
 Using a `nextTime` of `+5000ms`, it uses 113 mA.
 
-Using a `nextTime` of `+10000ms`, with SLEEP ACTIVATED, it uses 
+Using a `nextTime` of `+10000ms`, with SLEEP ACTIVATED, it uses 81 mA
