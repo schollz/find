@@ -10,9 +10,11 @@ import (
 	"flag"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"os"
 	"path"
+	"strings"
 
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -32,6 +34,7 @@ var RuntimeArgs struct {
 	MqttAdmin         string
 	MosquittoPID      string
 	MqttAdminPassword string
+	Dump              string
 	Mqtt              bool
 }
 
@@ -58,6 +61,7 @@ func main() {
 	flag.StringVar(&RuntimeArgs.MqttAdmin, "mqttadmin", "", "admin to read all messages")
 	flag.StringVar(&RuntimeArgs.MqttAdminPassword, "mqttadminpass", "", "admin to read all messages")
 	flag.StringVar(&RuntimeArgs.MosquittoPID, "mosquitto", "", "mosquitto PID")
+	flag.StringVar(&RuntimeArgs.Dump, "dump", "", "group to dump to folder")
 	flag.CommandLine.Usage = func() {
 		fmt.Println(`find (version ` + VersionNum + `)
 run this to start the server and then visit localhost at the port you specify
@@ -82,6 +86,16 @@ Options:`)
 		setupMqtt()
 	} else {
 		RuntimeArgs.Mqtt = false
+	}
+
+	if len(RuntimeArgs.Dump) > 0 {
+		err := dumpFingerprints(strings.ToLower(RuntimeArgs.Dump))
+		if err == nil {
+			fmt.Println("Successfully dumped.")
+		} else {
+			log.Fatal(err)
+		}
+		os.Exit(1)
 	}
 
 	// Setup Gin-Gonic

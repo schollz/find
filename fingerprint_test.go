@@ -20,7 +20,7 @@ func Example1() {
 	dumped, _ := json.Marshal(loadedFingerprint)
 	bFingerprint2 := dumpFingerprint(loadedFingerprint)
 	fmt.Println(len(dumped), len(bFingerprint2))
-	// Output: 793 318
+	// Output: 808 330
 }
 
 func BenchmarkPutFingerprintInDatabase(b *testing.B) {
