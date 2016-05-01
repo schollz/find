@@ -10,6 +10,7 @@ pages:
   - 'MQTT': mqtt.md
   - 'Photon': photon.md
   - 'Hass': hass.md
+  - 'Privacy Policy': privacy.md
 
 extra_javascript:
     - https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML
