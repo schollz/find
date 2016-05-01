@@ -83,7 +83,7 @@ func calculate(c *gin.Context) {
 	group := c.DefaultQuery("group", "noneasdf")
 	if group != "noneasdf" {
 		if !groupExists(group) {
-			c.JSON(http.StatusOK, gin.H{"message": "You should insert fingerprints first, see documentation", "success": false})
+			c.JSON(http.StatusOK, gin.H{"message": "You should insert a fingerprint first, see documentation", "success": false})
 			return
 		}
 		optimizePriorsThreaded(strings.ToLower(group))

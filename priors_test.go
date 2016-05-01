@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"path"
 	"testing"
@@ -14,11 +13,11 @@ func TestPriorsThreaded(t *testing.T) {
 	assert.Equal(t, optimizePriorsThreaded("testdb"), nil)
 }
 
-func ExampleTestPriors() {
-	// optimizePriors("testdb")
-	fmt.Println("OK")
-	// Output: OK
-}
+// func ExampleTestPriors() {
+// 	// optimizePriors("testdb")
+// 	fmt.Println("OK")
+// 	// Output: OK
+// }
 
 //go test -test.bench BenchmarkOptimizePriors -test.benchmem
 func BenchmarkOptimizePriors(b *testing.B) {

@@ -1,8 +1,11 @@
 package main
 
-import "fmt"
+import (
+	"testing"
 
-func ExampleBackup() {
-	fmt.Println(dumpFingerprints("testdb"))
-	// Output: <nil>
+	"github.com/stretchr/testify/assert"
+)
+
+func TestBackup(t *testing.T) {
+	assert.Equal(t, dumpFingerprints("testdb"), nil)
 }
