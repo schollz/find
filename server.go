@@ -1,3 +1,9 @@
+// Copyright 2015-2016 Zack Scholl. All rights reserved.
+// Use of this source code is governed by a AGPL
+// license that can be found in the LICENSE file.
+
+// server.go handles Flag parsing and starts the Gin-Tonic webserver.
+
 package main
 
 import (
@@ -32,6 +38,7 @@ var RuntimeArgs struct {
 // VersionNum keeps track of the version
 var VersionNum string
 
+// init initiates the paths in RuntimeArgs
 func init() {
 	cwd, _ := os.Getwd()
 	RuntimeArgs.SourcePath = path.Join(cwd, "data")
@@ -41,6 +48,8 @@ func init() {
 func main() {
 	VersionNum = "2.0"
 	// _, executableFile, _, _ := runtime.Caller(0) // get full path of this file
+
+	// Bing flags for changing parameters of FIND
 	flag.StringVar(&RuntimeArgs.Port, "p", ":8003", "port to bind")
 	flag.StringVar(&RuntimeArgs.Socket, "s", "", "unix socket")
 	flag.StringVar(&RuntimeArgs.ServerCRT, "crt", "", "location of ssl crt")
@@ -49,7 +58,6 @@ func main() {
 	flag.StringVar(&RuntimeArgs.MqttAdmin, "mqttadmin", "", "admin to read all messages")
 	flag.StringVar(&RuntimeArgs.MqttAdminPassword, "mqttadminpass", "", "admin to read all messages")
 	flag.StringVar(&RuntimeArgs.MosquittoPID, "mosquitto", "", "mosquitto PID")
-
 	flag.CommandLine.Usage = func() {
 		fmt.Println(`find (version ` + VersionNum + `)
 run this to start the server and then visit localhost at the port you specify
@@ -68,6 +76,7 @@ Options:`)
 		RuntimeArgs.ExternalIP = GetLocalIP() + RuntimeArgs.Port
 	}
 
+	// Check whether all the MQTT variables are passed to initiate the MQTT routines
 	if len(RuntimeArgs.MqttServer) > 0 && len(RuntimeArgs.MqttAdmin) > 0 && len(RuntimeArgs.MosquittoPID) > 0 {
 		RuntimeArgs.Mqtt = true
 		setupMqtt()
@@ -75,54 +84,45 @@ Options:`)
 		RuntimeArgs.Mqtt = false
 	}
 
-	// var ps FullParameters = *NewFullParameters()
-	// getParameters("findtest2", &ps)
-	// calculatePriors("findtest2", &ps)
-	// saveParameters("findtest2", ps)
-	// // fmt.Println(string(dumpParameters(ps)))
-	// saveParameters("findtest2", ps)
-	// fmt.Println(ps.MacVariability)
-	// fmt.Println(ps.NetworkLocs)
-	// optimizePriors("findtest2")
-	// ps, _ = openParameters("findtest2")
-	//
-	// getPositionBreakdown("findtest2", "zack")
-
+	// Setup Gin-Gonic
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.Default()
+
+	// Load templates
 	r.LoadHTMLGlob(path.Join(RuntimeArgs.Cwd, "templates/*"))
+
+	// Load static files (if they are not hosted by external service)
 	r.Static("static/", path.Join(RuntimeArgs.Cwd, "static/"))
+
+	// Create cookie store to keep track of logged in user
 	store := sessions.NewCookieStore([]byte("secret"))
 	r.Use(sessions.Sessions("mysession", store))
 
-	// 404 page
+	// 404-page redirects to login
 	r.NoRoute(func(c *gin.Context) {
 		c.HTML(http.StatusOK, "login.tmpl", gin.H{
 			"ErrorMessage": "Please login first.",
 		})
 	})
 
-	// webpages (routes.go)
-	r.GET("/pie/:group/:network/:location", slashPie)
+	// Routes for logging in and viewing dashboards (routes.go)
 	r.GET("/", slash)
 	r.GET("/login", slashLogin)
 	r.POST("/login", slashLoginPOST)
 	r.GET("/logout", slashLogout)
 	r.GET("/dashboard/:group", slashDashboard)
 	r.GET("/explore/:group/:network/:location", slashExplore2)
+	r.GET("/pie/:group/:network/:location", slashPie)
 
-	// fingerprinting (fingerprint.go)
-	// r.POST("/fingerprint", handleFingerprint)
+	// Routes for performing fingerprinting (fingerprint.go)
 	r.POST("/learn", learnFingerprintPOST)
 	r.POST("/track", trackFingerprintPOST)
 
-	// MQTT routes (mqtt.go)
+	// Routes for MQTT (mqtt.go)
 	r.PUT("/mqtt", putMQTT)
 
-	// API routes (api.go)
-	r.PUT("/mixin", putMixinOverride)
+	// Routes for API access (api.go)
 	r.GET("/location", getUserLocations)
-	r.GET("/whereami", whereAmI)
 	r.GET("/editname", editName)
 	r.GET("/editusername", editUserName)
 	r.GET("/editnetworkname", editNetworkName)
@@ -130,10 +130,16 @@ Options:`)
 	r.DELETE("/locations", deleteLocations)
 	r.DELETE("/user", deleteUser)
 	r.GET("/calculate", calculate)
-	r.GET("/userlocs", userLocations)
 	r.GET("/status", getStatus)
+	r.GET("/userlocs", userLocations) // to be deprecated
+	r.GET("/whereami", whereAmI)      // to be deprecated
+	r.PUT("/mixin", putMixinOverride)
+
+	// Load and display the logo
 	dat, _ := ioutil.ReadFile("./static/logo.txt")
 	fmt.Println(string(dat))
+
+	// Check whether user is providing certificates
 	if RuntimeArgs.Socket != "" {
 		r.RunUnix(RuntimeArgs.Socket)
 	} else if RuntimeArgs.ServerCRT != "" && RuntimeArgs.ServerKey != "" {

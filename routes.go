@@ -1,3 +1,9 @@
+// Copyright 2015-2016 Zack Scholl. All rights reserved.
+// Use of this source code is governed by a AGPL
+// license that can be found in the LICENSE file.
+
+// routes.go contains the functions that handle the web page views
+
 package main
 
 import (
@@ -15,6 +21,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// slash returns the dashboard, if logged in, else it redirects to login page.
 func slash(c *gin.Context) {
 	var group string
 	loginGroup := sessions.Default(c)
@@ -27,6 +34,7 @@ func slash(c *gin.Context) {
 	}
 }
 
+// slashLogin handles a login with url parameter and returns dashboard if successful, else login.
 func slashLogin(c *gin.Context) {
 	loginGroup := sessions.Default(c)
 	group := c.DefaultQuery("group", "noneasdf")
@@ -39,6 +47,7 @@ func slashLogin(c *gin.Context) {
 	}
 }
 
+// slashLogin handles a POST login and returns dashboard if successful, else login.
 func slashLoginPOST(c *gin.Context) {
 	loginGroup := sessions.Default(c)
 	group := strings.ToLower(c.PostForm("group"))
@@ -53,6 +62,7 @@ func slashLoginPOST(c *gin.Context) {
 	}
 }
 
+// slashLogout handles a logout
 func slashLogout(c *gin.Context) {
 	var group string
 	loginGroup := sessions.Default(c)
@@ -70,6 +80,7 @@ func slashLogout(c *gin.Context) {
 	}
 }
 
+// slashDashboard displays the dashboard
 func slashDashboard(c *gin.Context) {
 	group := c.Param("group")
 	if _, err := os.Stat(path.Join(RuntimeArgs.SourcePath, group+".db")); os.IsNotExist(err) {
@@ -118,6 +129,7 @@ func slashDashboard(c *gin.Context) {
 	})
 }
 
+// slash Location returns location (to be deprecated)
 func slashLocation(c *gin.Context) {
 	group := c.Param("group")
 	if _, err := os.Stat(path.Join(RuntimeArgs.SourcePath, group+".db")); os.IsNotExist(err) {
@@ -129,6 +141,7 @@ func slashLocation(c *gin.Context) {
 	c.JSON(http.StatusOK, userJSON)
 }
 
+// slashExplore returns a chart of the data
 func slashExplore(c *gin.Context) {
 	group := c.Param("group")
 	if _, err := os.Stat(path.Join(RuntimeArgs.SourcePath, group+".db")); os.IsNotExist(err) {
@@ -170,6 +183,7 @@ func slashExplore(c *gin.Context) {
 	})
 }
 
+// slashExplore returns a chart of the data (canvas.js)
 func slashExplore2(c *gin.Context) {
 	group := c.Param("group")
 	if _, err := os.Stat(path.Join(RuntimeArgs.SourcePath, group+".db")); os.IsNotExist(err) {
@@ -233,6 +247,7 @@ func slashExplore2(c *gin.Context) {
 	})
 }
 
+// slashPie returns a Pie chart
 func slashPie(c *gin.Context) {
 	group := c.Param("group")
 	if _, err := os.Stat(path.Join(RuntimeArgs.SourcePath, group+".db")); os.IsNotExist(err) {

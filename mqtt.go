@@ -1,3 +1,9 @@
+// Copyright 2015-2016 Zack Scholl. All rights reserved.
+// Use of this source code is governed by a AGPL
+// license that can be found in the LICENSE file.
+
+// mqtt.go contains functions for performing MQTT transactions.
+
 package main
 
 import (

@@ -1,3 +1,9 @@
+// Copyright 2015-2016 Zack Scholl. All rights reserved.
+// Use of this source code is governed by a AGPL
+// license that can be found in the LICENSE file.
+
+// parameters.go contains structures and functions for setting and getting Naive-Bayes parameters.
+
 package main
 
 import (

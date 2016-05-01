@@ -1,7 +1,14 @@
+// Copyright 2015-2016 Zack Scholl. All rights reserved.
+// Use of this source code is governed by a AGPL
+// license that can be found in the LICENSE file.
+
+// posteriors.go contains variables for calcualting Naive-Bayes posteriors.
+
 package main
 
 import "math"
 
+// calculatePosterior takes a Fingerprint and a Parameter set and returns the noramlized Bayes probabilities of possible locations
 func calculatePosterior(res Fingerprint, ps FullParameters) (string, map[string]float64) {
 	if !ps.Loaded {
 		ps, _ = openParameters(res.Group)
@@ -78,6 +85,8 @@ func calculatePosterior(res Fingerprint, ps FullParameters) (string, map[string]
 	return bestLocation, PBayesMix
 }
 
+// calculatePosteriorThreadSafe is exactly the same as calculatePosterior except it does not do the mixin calculation
+// as it is used for optimizing priors.
 func calculatePosteriorThreadSafe(res Fingerprint, ps FullParameters, cutoff float64) (map[string]float64, map[string]float64) {
 	if !ps.Loaded {
 		ps, _ = openParameters(res.Group)
@@ -136,6 +145,7 @@ func calculatePosteriorThreadSafe(res Fingerprint, ps FullParameters, cutoff flo
 	return PBayes1, PBayes2
 }
 
+// normalizeBayes takes the bayes map and normalizes to standard normal.
 func normalizeBayes(bayes map[string]float64) map[string]float64 {
 	vals := make([]float64, len(bayes))
 	i := 0

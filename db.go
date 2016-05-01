@@ -1,3 +1,11 @@
+// Copyright 2015-2016 Zack Scholl. All rights reserved.
+// Use of this source code is governed by a AGPL
+// license that can be found in the LICENSE file.
+
+// db.go contains generic functions for parsing data from the database.
+// This file is not exhaustive of all database functions, if they pertain to a
+// specific property (fingerprinting/priors/parameters), it will instead be in respective file.
+
 package main
 
 import (

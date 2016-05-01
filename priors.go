@@ -1,3 +1,9 @@
+// Copyright 2015-2016 Zack Scholl. All rights reserved.
+// Use of this source code is governed by a AGPL
+// license that can be found in the LICENSE file.
+
+// priors.go contains variables for calcualting priors.
+
 package main
 
 import (
@@ -42,6 +48,7 @@ func init() {
 	FoldCrossValidation = 4
 }
 
+// deprecated
 func optimizePriors(group string) {
 	// generate the fingerprintsInMemory
 	fingerprintsInMemory := make(map[string]Fingerprint)
@@ -187,6 +194,7 @@ func crossValidation(group string, n string, ps *FullParameters, fingerprintsInM
 	return average
 }
 
+// calculatePriors generates the prior data for Naive-Bayes classification. Now deprecated, use calculatePriorsThreaded instead.
 func calculatePriors(group string, ps *FullParameters, fingerprintsInMemory map[string]Fingerprint, fingerprintsOrdering []string) {
 	// defer timeTrack(time.Now(), "calculatePriors")
 	ps.Priors = make(map[string]PriorParameters)

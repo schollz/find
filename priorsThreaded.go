@@ -1,3 +1,9 @@
+// Copyright 2015-2016 Zack Scholl. All rights reserved.
+// Use of this source code is governed by a AGPL
+// license that can be found in the LICENSE file.
+
+// priorsThreaded.go contains the main Prior-calculation function which is multi-threaded
+
 package main
 
 import (
@@ -55,6 +61,7 @@ func worker(id int, jobs <-chan jobA, results chan<- resultA) {
 	}
 }
 
+// optimizePriorsThreaded generates the optimized prior data for Naive-Bayes classification.
 func optimizePriorsThreaded(group string) {
 	// Debug.Println("Optimizing priors for " + group)
 	// generate the fingerprintsInMemory
