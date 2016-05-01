@@ -1,6 +1,6 @@
 # Benchmarks 05/01/2016
 
-Current coverage (`go test -cover`): 21.0%.
+Current coverage (`go test -cover`): 34.1%.
 
 To test first start process on one terminal `./gofind`, and then in another window `./testing/testdb.sh`. Then you can close `./gofind` and run with `go test -bench=. -test.benchmem`.
 
