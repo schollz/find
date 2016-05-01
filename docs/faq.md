@@ -124,7 +124,20 @@ exclusive* and *exhaustive* - which they are. You cannot be in more than one loc
 
 #### Method 2
 
-Documentation forthcoming.
+The second method is uses the *prevalence* of a specific Mac address in a single fingerprint. A single fingerprint is composed of all the Mac addresses and signal values that were detected in that read. In certain locations, you can more frequently sample certain routers than other routers. Thus, a very simple method of classification can use the frequency of "seeing" a Mac address as a basis.
+
+**Practical considerations:**
+
+* This calculation is *Antenna based* since different devices will be able to "see" more or less routers based on their antenna type. Thus, this type of calculation will often be used for single-device learning.
+
+
+#### Mixin
+
+There is a `mixin` variable that calculates the linear combination of Method 1 and 2 that results in the optimal parameter set.
+
+**Practical considerations:**
+
+* This `mixin` parameter [can be set manually](/#put-mixin), in the case that you are sure you don't want to use antenna specific information (Method 2).
 
 <br><br><br><br>
 

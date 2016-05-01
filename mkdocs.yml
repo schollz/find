@@ -7,6 +7,9 @@ site_author: Zack
 pages:
   - 'API': index.md
   - 'FAQ': faq.md
+  - 'MQTT': mqtt.md
+  - 'Photon': photon.md
+  - 'Hass': hass.md
 
 extra_javascript:
     - https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML
