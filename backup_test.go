@@ -1,6 +1,8 @@
 package main
 
+import "fmt"
+
 func ExampleBackup() {
-	dumpFingerprints("testdb")
-	// Output: Successfully bacuped up.
+	fmt.Println(dumpFingerprints("testdb"))
+	// Output: <nil>
 }

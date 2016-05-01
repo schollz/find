@@ -7,7 +7,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"path"
@@ -15,15 +14,15 @@ import (
 	"github.com/boltdb/bolt"
 )
 
-func dumpFingerprints(group string) {
+func dumpFingerprints(group string) error {
 	err := os.MkdirAll("dump-"+group, 0664)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
-	f, err := os.OpenFile(path.Join("dump-"+group, "learning.fingerprints"), os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0664)
+	f, err := os.OpenFile(path.Join("dump-"+group, "learning.fingerprints"), os.O_WRONLY|os.O_CREATE, 0664)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	defer f.Close()
@@ -43,5 +42,5 @@ func dumpFingerprints(group string) {
 		return nil
 	})
 	db.Close()
-	fmt.Println("Successfully bacuped up.")
+	return nil
 }

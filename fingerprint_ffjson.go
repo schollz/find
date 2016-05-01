@@ -38,6 +38,8 @@ func (mj *Fingerprint) MarshalJSONBuf(buf fflib.EncodingBuffer) error {
 	fflib.WriteJsonString(buf, string(mj.Username))
 	buf.WriteString(`,"location":`)
 	fflib.WriteJsonString(buf, string(mj.Location))
+	buf.WriteString(`,"timestamp":`)
+	fflib.FormatBits2(buf, uint64(mj.Timestamp), 10, mj.Timestamp < 0)
 	buf.WriteString(`,"wifi-fingerprint":`)
 	if mj.WifiFingerprint != nil {
 		buf.WriteString(`[`)
@@ -73,6 +75,8 @@ const (
 
 	ffj_t_Fingerprint_Location
 
+	ffj_t_Fingerprint_Timestamp
+
 	ffj_t_Fingerprint_WifiFingerprint
 )
 
@@ -81,6 +85,8 @@ var ffj_key_Fingerprint_Group = []byte("group")
 var ffj_key_Fingerprint_Username = []byte("username")
 
 var ffj_key_Fingerprint_Location = []byte("location")
+
+var ffj_key_Fingerprint_Timestamp = []byte("timestamp")
 
 var ffj_key_Fingerprint_WifiFingerprint = []byte("wifi-fingerprint")
 
@@ -159,6 +165,14 @@ mainparse:
 						goto mainparse
 					}
 
+				case 't':
+
+					if bytes.Equal(ffj_key_Fingerprint_Timestamp, kn) {
+						currentKey = ffj_t_Fingerprint_Timestamp
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
 				case 'u':
 
 					if bytes.Equal(ffj_key_Fingerprint_Username, kn) {
@@ -179,6 +193,12 @@ mainparse:
 
 				if fflib.AsciiEqualFold(ffj_key_Fingerprint_WifiFingerprint, kn) {
 					currentKey = ffj_t_Fingerprint_WifiFingerprint
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffj_key_Fingerprint_Timestamp, kn) {
+					currentKey = ffj_t_Fingerprint_Timestamp
 					state = fflib.FFParse_want_colon
 					goto mainparse
 				}
@@ -226,6 +246,9 @@ mainparse:
 
 				case ffj_t_Fingerprint_Location:
 					goto handle_Location
+
+				case ffj_t_Fingerprint_Timestamp:
+					goto handle_Timestamp
 
 				case ffj_t_Fingerprint_WifiFingerprint:
 					goto handle_WifiFingerprint
@@ -322,9 +345,39 @@ handle_Location:
 	state = fflib.FFParse_after_value
 	goto mainparse
 
+handle_Timestamp:
+
+	/* handler: uj.Timestamp type=int64 kind=int64 quoted=false*/
+
+	{
+		if tok != fflib.FFTok_integer && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for int64", tok))
+		}
+	}
+
+	{
+
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tval, err := fflib.ParseInt(fs.Output.Bytes(), 10, 64)
+
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			uj.Timestamp = int64(tval)
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
 handle_WifiFingerprint:
 
-	/* handler: uj.WifiFingerprint type=[]gofind.Router kind=slice quoted=false*/
+	/* handler: uj.WifiFingerprint type=[]find.Router kind=slice quoted=false*/
 
 	{
 
@@ -365,7 +418,7 @@ handle_WifiFingerprint:
 					wantVal = true
 				}
 
-				/* handler: tmp_uj__WifiFingerprint type=gofind.Router kind=struct quoted=false*/
+				/* handler: tmp_uj__WifiFingerprint type=find.Router kind=struct quoted=false*/
 
 				{
 					if tok == fflib.FFTok_null {

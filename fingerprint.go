@@ -23,16 +23,16 @@ import (
 
 // Fingerprint is the prototypical information from the fingerprinting device
 // IF you change Fingerprint, follow these steps to re-generate fingerprint_ffjson.go
-// find ./ -name "*.go" -type f | xargs sed -i  's/package main/package find/g'
+// find ./ -name "*.go" -type f | xargs sed -i  's/package main/package main/g'
 // Uncomment json.Marshal/Unmarshal functions
 // $GOPATH/bin/ffjson fingerprint.go
-// find ./ -name "*.go" -type f | xargs sed -i  's/package find/package main/g'
+// find ./ -name "*.go" -type f | xargs sed -i  's/package main/package main/g'
 // Comment json.Marshal/Unmarshal functions
 type Fingerprint struct {
 	Group           string   `json:"group"`
 	Username        string   `json:"username"`
 	Location        string   `json:"location"`
-	Timestamp       string   `json:"timestamp"`
+	Timestamp       int64    `json:"timestamp"`
 	WifiFingerprint []Router `json:"wifi-fingerprint"`
 }
 
@@ -57,16 +57,16 @@ var jsonExample = `{
 
 // compression 9 us -> 900 us
 func dumpFingerprint(res Fingerprint) []byte {
-	// dumped, _ := res.MarshalJSON()
-	dumped, _ := json.Marshal(res)
+	dumped, _ := res.MarshalJSON()
+	//dumped, _ := json.Marshal(res)
 	return compressByte(dumped)
 }
 
 // compression 30 us -> 600 us
 func loadFingerprint(jsonByte []byte) Fingerprint {
 	res := Fingerprint{}
-	// res.UnmarshalJSON(decompressByte(jsonByte))
-	json.Unmarshal(decompressByte(jsonByte), res)
+	//json.Unmarshal(decompressByte(jsonByte), res)
+	res.UnmarshalJSON(decompressByte(jsonByte))
 	return res
 }
 
@@ -102,10 +102,11 @@ func putFingerprintIntoDatabase(res Fingerprint, database string) error {
 			return fmt.Errorf("create bucket: %s", err)
 		}
 
-		if len(res.Timestamp) == 0 {
-			res.Timestamp = strconv.FormatInt(time.Now().UnixNano(), 10)
+		if res.Timestamp == 0 {
+			res.Timestamp = time.Now().UnixNano()
 		}
-		err = bucket.Put([]byte(res.Timestamp), dumpFingerprint(res))
+		Debug.Println(res)
+		err = bucket.Put([]byte(strconv.FormatInt(res.Timestamp, 10)), dumpFingerprint(res))
 		if err != nil {
 			return fmt.Errorf("could add to bucket: %s", err)
 		}
