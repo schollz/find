@@ -1,3 +1,30 @@
+# Benchmarks 05/01/2016
+
+Current coverage (`go test -cover`): 21.0%.
+
+To test first start process on one terminal `./gofind`, and then in another window `./testing/testdb.sh`. Then you can close `./gofind` and run with `go test -bench=. -test.benchmem`.
+
+### i7-3370 @ 3.4GHz
+
+2,058 fingerprints
+```
+BenchmarkPutFingerprintInDatabase-8          100          18653644 ns/op         1498396 B/op        237 allocs/op
+BenchmarkGetFingerprintInDatabase-8          500           3347812 ns/op           52653 B/op         91 allocs/op
+BenchmarkLoadFingerprint-8                100000             12204 ns/op            2457 B/op         32 allocs/op
+BenchmarkLoadCompressedFingerprint-8       30000             55108 ns/op           44846 B/op         40 allocs/op
+BenchmarkDumpFingerprint-8                200000              8032 ns/op            2372 B/op         44 allocs/op
+BenchmarkDumpCompressedFingerprint-8        1000           1400471 ns/op         1463938 B/op        128 allocs/op
+BenchmarkLoadParameters-8                    100          15343887 ns/op         2661374 B/op       3771 allocs/op
+BenchmarkGetParameters-8                     100          13094985 ns/op          733550 B/op       4273 allocs/op
+BenchmarkCalculatePosteriors1-8            30000             48986 ns/op            2711 B/op         12 allocs/op
+BenchmarkOptimizePriors-8                     10         169952320 ns/op        26243536 B/op      45237 allocs/op
+BenchmarkOptimizePriorsThreaded-8              5         215925640 ns/op        27777283 B/op     103140 allocs/op
+BenchmarkOptimizePriorsThreadedNot-8          10         183357620 ns/op        25007952 B/op      40562 allocs/op
+BenchmarkCrossValidation-8                   100          16531952 ns/op          819349 B/op       3355 allocs/op
+BenchmarkCalculatePriors-8                   200           9649543 ns/op          371202 B/op       1109 allocs/op
+```
+
+
 
 # Benchmarks 04/16/2016
 
