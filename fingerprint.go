@@ -105,7 +105,6 @@ func putFingerprintIntoDatabase(res Fingerprint, database string) error {
 		if res.Timestamp == 0 {
 			res.Timestamp = time.Now().UnixNano()
 		}
-		Debug.Println(res)
 		err = bucket.Put([]byte(strconv.FormatInt(res.Timestamp, 10)), dumpFingerprint(res))
 		if err != nil {
 			return fmt.Errorf("could add to bucket: %s", err)

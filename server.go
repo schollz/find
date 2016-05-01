@@ -10,6 +10,7 @@ import (
 	"flag"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"os"
 	"path"
@@ -91,6 +92,8 @@ Options:`)
 		err := dumpFingerprints(strings.ToLower(RuntimeArgs.Dump))
 		if err == nil {
 			fmt.Println("Successfully dumped.")
+		} else {
+			log.Fatal(err)
 		}
 		os.Exit(1)
 	}
