@@ -7,12 +7,11 @@ import (
 	"testing"
 
 	"github.com/boltdb/bolt"
+	"github.com/stretchr/testify/assert"
 )
 
-func ExampleTestPriorsThreaded() {
-	optimizePriorsThreaded("testdb")
-	fmt.Println("OK")
-	// Output: OK
+func TestPriorsThreaded(t *testing.T) {
+	assert.Equal(t, optimizePriorsThreaded("testdb"), nil)
 }
 
 func ExampleTestPriors() {

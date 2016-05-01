@@ -469,7 +469,7 @@ func deleteUser(c *gin.Context) {
 		usersCache = make(map[string][]string)
 		userPositionCache = make(map[string]UserPositionJSON)
 
-		c.JSON(http.StatusOK, gin.H{"message": "Changed name of " + strconv.Itoa(numChanges) + " things", "success": true})
+		c.JSON(http.StatusOK, gin.H{"message": "Deletes " + strconv.Itoa(numChanges) + " things " + " with user " + user, "success": true})
 	} else {
 		c.JSON(http.StatusOK, gin.H{"success": false, "message": "Error parsing request"})
 	}

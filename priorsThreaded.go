@@ -62,7 +62,7 @@ func worker(id int, jobs <-chan jobA, results chan<- resultA) {
 }
 
 // optimizePriorsThreaded generates the optimized prior data for Naive-Bayes classification.
-func optimizePriorsThreaded(group string) {
+func optimizePriorsThreaded(group string) error {
 	// Debug.Println("Optimizing priors for " + group)
 	// generate the fingerprintsInMemory
 	fingerprintsInMemory := make(map[string]Fingerprint)
@@ -70,7 +70,7 @@ func optimizePriorsThreaded(group string) {
 	db, err := bolt.Open(path.Join(RuntimeArgs.SourcePath, group+".db"), 0600, nil)
 	if err != nil {
 		log.Fatal(err)
-		return
+		return err
 	}
 	err = db.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte("fingerprints"))
@@ -86,7 +86,7 @@ func optimizePriorsThreaded(group string) {
 	})
 	db.Close()
 	if err != nil {
-		return
+		return err
 	}
 
 	var ps = *NewFullParameters()
@@ -231,6 +231,8 @@ func optimizePriorsThreaded(group string) {
 	// Debug.Println(getUsers(group))
 	go saveParameters(group, ps)
 	psCache[group] = ps
+
+	return nil
 }
 
 func optimizePriorsThreadedNot(group string) {
