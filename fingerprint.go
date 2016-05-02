@@ -213,5 +213,5 @@ func trackFingerprint(jsonFingerprint Fingerprint) (string, bool, string, map[st
 		})
 		go sendMQTTLocation(string(mqttMessage), jsonFingerprint.Group, jsonFingerprint.Username)
 	}
-	return "Calculated location: " + locationGuess + "(" + strconv.FormatFloat(bayes[locationGuess], 'E', -1, 64) + ")", true, locationGuess, bayes
+	return "Calculated location: " + locationGuess + "(" + strconv.FormatInt(int64(bayes[locationGuess]*100), 64) + ")", true, locationGuess, bayes
 }
