@@ -98,6 +98,17 @@ Options:`)
 		os.Exit(1)
 	}
 
+	er := dumpFingerprintsSVM("testdb")
+	if er != nil {
+		fmt.Println(er)
+		panic(er)
+	}
+	er = calculateSVM("testdb")
+	if er != nil {
+		fmt.Println(er)
+		panic(er)
+	}
+	os.Exit(1)
 	// Setup Gin-Gonic
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.Default()
