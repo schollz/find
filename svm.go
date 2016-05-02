@@ -168,10 +168,10 @@ func calculateSVM(group string) error {
 		}
 	}
 
-	tempFileTrain := RandStringBytesMaskImprSrc(6) + ".learning"
-	tempFileTest := RandStringBytesMaskImprSrc(6) + ".testing"
-	tempFileOut := RandStringBytesMaskImprSrc(6) + ".out"
-	tempFileFull := RandStringBytesMaskImprSrc(6) + ".full"
+	tempFileFull := RandStringBytesMaskImprSrc(16) + ".full"
+	tempFileTrain := RandStringBytesMaskImprSrc(16) + ".learning"
+	tempFileTest := RandStringBytesMaskImprSrc(16) + ".testing"
+	tempFileOut := RandStringBytesMaskImprSrc(16) + ".out"
 	d1 := []byte(learningSet)
 	err = ioutil.WriteFile(tempFileTrain, d1, 0644)
 	if err != nil {
@@ -234,7 +234,7 @@ func calculateSVM(group string) error {
 	}
 
 	cmd = "svm-train"
-	args = "-s 0 -t 0 -b 1 " + tempFileTrain + " " + tempFileTrain + ".model"
+	args = "-s 0 -t 0 -b 1 " + tempFileTrain + ".scaled " + tempFileTrain + ".model"
 	Debug.Println(cmd, args)
 	if _, err = exec.Command(cmd, strings.Split(args, " ")...).Output(); err != nil {
 		panic(err)
