@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"math"
 	"math/rand"
 	"os"
 	"os/exec"
@@ -339,7 +340,7 @@ func classify(jsonFingerprint Fingerprint) (string, map[string]float64) {
 			bestLocation = locationsFromID[labels[i]]
 			bestP = Pval
 		}
-		P[locationsFromID[labels[i]]] = Pval
+		P[locationsFromID[labels[i]]] = math.Log(float64(Pval))
 	}
 	os.Remove(tempFileTest)
 	os.Remove(tempFileTest + ".scaled")
