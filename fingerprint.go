@@ -186,8 +186,8 @@ func trackFingerprint(jsonFingerprint Fingerprint) (string, bool, string, map[st
 			}
 		}
 	}
-	locationGuess, bayes := calculatePosterior(jsonFingerprint, *NewFullParameters())
-	// locationGuess, bayes := classify(jsonFingerprint)
+	//locationGuess, bayes := calculatePosterior(jsonFingerprint, *NewFullParameters())
+	locationGuess, bayes := classify(jsonFingerprint)
 	jsonFingerprint.Location = locationGuess
 	putFingerprintIntoDatabase(jsonFingerprint, "fingerprints-track")
 	positions := [][]string{}
