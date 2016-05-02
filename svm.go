@@ -154,14 +154,16 @@ func calculateSVM(group string) error {
 	list := rand.Perm(len(lines))
 	learningSet := ""
 	testingSet := ""
+	fullSet := ""
 	for i, _ := range list {
 		if len(lines[list[i]]) == 0 {
 			continue
 		}
 		if i < len(list)/2 {
 			learningSet = learningSet + lines[list[i]] + "\n"
+			fullSet = fullSet + lines[list[i]] + "\n"
 		} else {
-			learningSet = learningSet + lines[list[i]] + "\n"
+			fullSet = fullSet + lines[list[i]] + "\n"
 			testingSet = testingSet + lines[list[i]] + "\n"
 		}
 	}
@@ -169,6 +171,7 @@ func calculateSVM(group string) error {
 	tempFileTrain := RandStringBytesMaskImprSrc(6) + ".learning"
 	tempFileTest := RandStringBytesMaskImprSrc(6) + ".testing"
 	tempFileOut := RandStringBytesMaskImprSrc(6) + ".out"
+	tempFileFull := RandStringBytesMaskImprSrc(6) + ".full"
 	d1 := []byte(learningSet)
 	err = ioutil.WriteFile(tempFileTrain, d1, 0644)
 	if err != nil {
@@ -177,6 +180,12 @@ func calculateSVM(group string) error {
 
 	d1 = []byte(testingSet)
 	err = ioutil.WriteFile(tempFileTest, d1, 0644)
+	if err != nil {
+		panic(err)
+	}
+
+	d1 = []byte(fullSet)
+	err = ioutil.WriteFile(tempFileFull, d1, 0644)
 	if err != nil {
 		panic(err)
 	}
@@ -205,15 +214,34 @@ func calculateSVM(group string) error {
 		panic(err)
 	}
 
+	cmd = "svm-scale"
+	args = "-l 0 -u 1 " + tempFileFull
+	Debug.Println(cmd, args)
+	outCmd, err = exec.Command(cmd, strings.Split(args, " ")...).Output()
+	if err != nil {
+		panic(err)
+	}
+	err = ioutil.WriteFile(tempFileFull+".scaled", outCmd, 0644)
+	if err != nil {
+		panic(err)
+	}
+
 	cmd = "svm-train"
-	args = "-s 0 -t 0 -b 1 " + tempFileTrain + " data/" + group + ".model"
+	args = "-s 0 -t 0 -b 1 " + tempFileFull + " data/" + group + ".model"
+	Debug.Println(cmd, args)
+	if _, err = exec.Command(cmd, strings.Split(args, " ")...).Output(); err != nil {
+		panic(err)
+	}
+
+	cmd = "svm-train"
+	args = "-s 0 -t 0 -b 1 " + tempFileTrain + " " + tempFileTrain + ".model"
 	Debug.Println(cmd, args)
 	if _, err = exec.Command(cmd, strings.Split(args, " ")...).Output(); err != nil {
 		panic(err)
 	}
 
 	cmd = "svm-predict"
-	args = "-b 1 " + tempFileTest + " data/" + group + ".model " + tempFileOut
+	args = "-b 1 " + tempFileTest + " " + tempFileTrain + ".model " + tempFileOut
 	Debug.Println(cmd, args)
 	outCmd, err = exec.Command(cmd, strings.Split(args, " ")...).Output()
 	if err != nil {
