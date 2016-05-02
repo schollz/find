@@ -259,6 +259,7 @@ func classify(jsonFingerprint Fingerprint) (string, map[string]float64) {
 
 	svmData := makeSVMLine(jsonFingerprint, macs, locations)
 	if len(svmData) < 5 {
+		Warning.Println(svmData)
 		return "", make(map[string]float64)
 	}
 	Debug.Println(svmData)
