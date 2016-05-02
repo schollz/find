@@ -261,6 +261,7 @@ func classify(jsonFingerprint Fingerprint) (string, map[string]float64) {
 	if len(svmData) < 5 {
 		return "", make(map[string]float64)
 	}
+	Debug.Println(svmData)
 
 	tempFileTest := RandStringBytesMaskImprSrc(6) + ".testing"
 	tempFileOut := RandStringBytesMaskImprSrc(6) + ".out"
