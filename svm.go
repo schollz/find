@@ -206,14 +206,14 @@ func calculateSVM(group string) error {
 	}
 
 	cmd = "svm-train"
-	args = "-s 0 -t 0 -b 1 " + tempFileTrain + ".scaled data/" + group + ".model"
+	args = "-s 0 -t 0 -b 1 " + tempFileTrain + " data/" + group + ".model"
 	Debug.Println(cmd, args)
 	if _, err = exec.Command(cmd, strings.Split(args, " ")...).Output(); err != nil {
 		panic(err)
 	}
 
 	cmd = "svm-predict"
-	args = "-b 1 " + tempFileTest + ".scaled data/" + group + ".model " + tempFileOut
+	args = "-b 1 " + tempFileTest + " data/" + group + ".model " + tempFileOut
 	Debug.Println(cmd, args)
 	outCmd, err = exec.Command(cmd, strings.Split(args, " ")...).Output()
 	if err != nil {
@@ -284,7 +284,7 @@ func classify(jsonFingerprint Fingerprint) (string, map[string]float64) {
 	}
 
 	cmd = "svm-predict"
-	args = "-b 1 " + tempFileTest + ".scaled data/" + jsonFingerprint.Group + ".model " + tempFileOut
+	args = "-b 1 " + tempFileTest + " data/" + jsonFingerprint.Group + ".model " + tempFileOut
 	outCmd, err = exec.Command(cmd, strings.Split(args, " ")...).Output()
 	if err != nil {
 		panic(err)
