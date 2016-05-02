@@ -234,7 +234,7 @@ func calculateSVM(group string) error {
 	}
 
 	cmd = "svm-train"
-	args = "-s 0 -t 0 -b 1 " + tempFileTrain + ".scaled " + tempFileTrain + ".model"
+	args = "-s 0 -t 0 -b 1 " + tempFileTrain + " " + tempFileTrain + ".model"
 	Debug.Println(cmd, args)
 	if _, err = exec.Command(cmd, strings.Split(args, " ")...).Output(); err != nil {
 		panic(err)
