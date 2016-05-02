@@ -155,7 +155,7 @@ func calculateSVM(group string) error {
 	learningSet := ""
 	testingSet := ""
 	fullSet := ""
-	for i, _ := range list {
+	for i := range list {
 		if len(lines[list[i]]) == 0 {
 			continue
 		}
@@ -253,6 +253,8 @@ func calculateSVM(group string) error {
 	os.Remove(tempFileTrain + ".scaled")
 	os.Remove(tempFileTest)
 	os.Remove(tempFileTest + ".scaled")
+	os.Remove(tempFileFull)
+	os.Remove(tempFileFull + ".scaled")
 	os.Remove(tempFileOut)
 	return nil
 }
