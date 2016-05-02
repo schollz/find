@@ -236,6 +236,8 @@ func classify(jsonFingerprint Fingerprint) {
 	defer db.Close()
 
 	var locations map[string]int
+	var macs map[string]int
+	var locationsFromID map[string]string
 	err = db.View(func(tx *bolt.Tx) error {
 		// Assume bucket exists and has keys
 		b := tx.Bucket([]byte("resources"))
@@ -244,21 +246,76 @@ func classify(jsonFingerprint Fingerprint) {
 		}
 		v := b.Get([]byte("locations"))
 		json.Unmarshal(v, &locations)
+		v = b.Get([]byte("locationsFromID"))
+		json.Unmarshal(v, &locationsFromID)
+		v = b.Get([]byte("macs"))
+		json.Unmarshal(v, &macs)
 		return err
 	})
 	if err != nil {
 		panic(err)
 	}
 
+	svmData := makeSVMLine(jsonFingerprint, macs, locations)
+
+	tempFileTest := RandStringBytesMaskImprSrc(6) + ".testing"
+	tempFileOut := RandStringBytesMaskImprSrc(6) + ".out"
+	d1 := []byte(svmData)
+	err = ioutil.WriteFile(tempFileTest, d1, 0644)
+	if err != nil {
+		panic(err)
+	}
+
+	cmd := "svm-scale"
+	args := "-l 0 -u 1 " + tempFileTest
+	Debug.Println(cmd, args)
+	outCmd, err := exec.Command(cmd, strings.Split(args, " ")...).Output()
+	if err != nil {
+		panic(err)
+	}
+	err = ioutil.WriteFile(tempFileTest+".scaled", outCmd, 0644)
+	if err != nil {
+		panic(err)
+	}
+
+	cmd = "svm-predict"
+	args = "-b 1 " + tempFileTest + ".scaled data/" + jsonFingerprint.Group + ".model " + tempFileOut
+	Debug.Println(cmd, args)
+	outCmd, err = exec.Command(cmd, strings.Split(args, " ")...).Output()
+	if err != nil {
+		panic(err)
+	}
+
+	dat, err := ioutil.ReadFile(tempFileOut)
+	if err != nil {
+		panic(err)
+	}
+	lines := strings.Split(string(dat), "\n")
+	labels := strings.Split(lines[0], " ")
+	probabilities := strings.Split(lines[1], " ")
+	for i := range labels {
+		if i == 0 {
+			continue
+		}
+		fmt.Print(locationsFromID[labels[i]], probabilities[i])
+	}
+	os.Remove(tempFileTest)
+	os.Remove(tempFileTest + ".scaled")
+	os.Remove(tempFileOut)
 }
 
 func makeSVMLine(v2 Fingerprint, macs map[string]int, locations map[string]int) string {
 	svmData := ""
-	svmData = svmData + strconv.Itoa(locations[v2.Location]) + " "
-
+	if _, ok := locations[v2.Location]; ok {
+		svmData = svmData + strconv.Itoa(locations[v2.Location]) + " "
+	} else {
+		svmData = svmData + "1 "
+	}
 	m := make(map[int]int)
 	for _, fingerprint := range v2.WifiFingerprint {
-		m[macs[fingerprint.Mac]] = fingerprint.Rssi
+		if _, ok := macs[fingerprint.Mac]; ok {
+			m[macs[fingerprint.Mac]] = fingerprint.Rssi
+		}
 	}
 	var keys []int
 	for k := range m {
