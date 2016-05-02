@@ -228,7 +228,7 @@ func calculateSVM(group string) error {
 	return nil
 }
 
-func classify(jsonFingerprint Fingerprint) {
+func classify(jsonFingerprint Fingerprint) (string, map[string]float64) {
 	db, err := bolt.Open(path.Join(RuntimeArgs.SourcePath, jsonFingerprint.Group+".db"), 0755, nil)
 	if err != nil {
 		panic(err)
@@ -257,6 +257,9 @@ func classify(jsonFingerprint Fingerprint) {
 	}
 
 	svmData := makeSVMLine(jsonFingerprint, macs, locations)
+	if len(svmData) < 5 {
+		return "", make(map[string]float64)
+	}
 
 	tempFileTest := RandStringBytesMaskImprSrc(6) + ".testing"
 	tempFileOut := RandStringBytesMaskImprSrc(6) + ".out"
@@ -268,7 +271,6 @@ func classify(jsonFingerprint Fingerprint) {
 
 	cmd := "svm-scale"
 	args := "-l 0 -u 1 " + tempFileTest
-	Debug.Println(cmd, args)
 	outCmd, err := exec.Command(cmd, strings.Split(args, " ")...).Output()
 	if err != nil {
 		panic(err)
@@ -280,7 +282,6 @@ func classify(jsonFingerprint Fingerprint) {
 
 	cmd = "svm-predict"
 	args = "-b 1 " + tempFileTest + ".scaled data/" + jsonFingerprint.Group + ".model " + tempFileOut
-	Debug.Println(cmd, args)
 	outCmd, err = exec.Command(cmd, strings.Split(args, " ")...).Output()
 	if err != nil {
 		panic(err)
@@ -293,15 +294,24 @@ func classify(jsonFingerprint Fingerprint) {
 	lines := strings.Split(string(dat), "\n")
 	labels := strings.Split(lines[0], " ")
 	probabilities := strings.Split(lines[1], " ")
+	P := make(map[string]float64)
+	bestLocation := ""
+	bestP := float64(0)
 	for i := range labels {
 		if i == 0 {
 			continue
 		}
-		fmt.Print(locationsFromID[labels[i]], probabilities[i])
+		Pval, _ := strconv.ParseFloat(probabilities[i], 64)
+		if Pval > bestP {
+			bestLocation = locationsFromID[labels[i]]
+			bestP = Pval
+		}
+		P[locationsFromID[labels[i]]] = Pval
 	}
 	os.Remove(tempFileTest)
 	os.Remove(tempFileTest + ".scaled")
 	os.Remove(tempFileOut)
+	return bestLocation, P
 }
 
 func makeSVMLine(v2 Fingerprint, macs map[string]int, locations map[string]int) string {
