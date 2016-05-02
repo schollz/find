@@ -311,6 +311,7 @@ func classify(jsonFingerprint Fingerprint) (string, map[string]float64) {
 	os.Remove(tempFileTest)
 	os.Remove(tempFileTest + ".scaled")
 	os.Remove(tempFileOut)
+	Debug.Println(P)
 	return bestLocation, P
 }
 
