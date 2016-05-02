@@ -161,6 +161,7 @@ func calculateSVM(group string) error {
 		if i < len(list)/2 {
 			learningSet = learningSet + lines[list[i]] + "\n"
 		} else {
+			learningSet = learningSet + lines[list[i]] + "\n"
 			testingSet = testingSet + lines[list[i]] + "\n"
 		}
 	}
