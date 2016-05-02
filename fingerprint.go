@@ -214,5 +214,9 @@ func trackFingerprint(jsonFingerprint Fingerprint) (string, bool, string, map[st
 		})
 		go sendMQTTLocation(string(mqttMessage), jsonFingerprint.Group, jsonFingerprint.Username)
 	}
-	return "Calculated location: " + locationGuess + " (" + strconv.Itoa(int(100*math.Exp(bayes[locationGuess]))) + "%)", true, locationGuess, bayes
+	percentGuess := int(100 * math.Exp(bayes[locationGuess]))
+	if percentGuess > 100 {
+		percentGuess = percentGuess / 10
+	}
+	return "Calculated location: " + locationGuess + " (" + strconv.Itoa(percentGuess) + "%)", true, locationGuess, bayes
 }
