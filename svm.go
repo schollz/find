@@ -325,6 +325,7 @@ func classify(jsonFingerprint Fingerprint) (string, map[string]float64) {
 	if err != nil {
 		panic(err)
 	}
+	Debug.Println(string(dat))
 	lines := strings.Split(string(dat), "\n")
 	labels := strings.Split(lines[0], " ")
 	probabilities := strings.Split(lines[1], " ")
