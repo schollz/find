@@ -350,12 +350,6 @@ func classify(jsonFingerprint Fingerprint) (string, map[string]float64) {
 }
 
 func makeSVMLine(v2 Fingerprint, macs map[string]int, locations map[string]int) string {
-	svmData := ""
-	if _, ok := locations[v2.Location]; ok {
-		svmData = svmData + strconv.Itoa(locations[v2.Location]) + " "
-	} else {
-		svmData = svmData + "1 "
-	}
 	m := make(map[int]int)
 	for _, fingerprint := range v2.WifiFingerprint {
 		if _, ok := macs[fingerprint.Mac]; ok {
@@ -367,10 +361,69 @@ func makeSVMLine(v2 Fingerprint, macs map[string]int, locations map[string]int) 
 		keys = append(keys, k)
 	}
 	sort.Ints(keys)
-	for _, k := range keys {
-		svmData = svmData + strconv.Itoa(k) + ":" + strconv.Itoa(m[k]) + " "
+
+	svmData := ""
+	for i := 0; i < 8; i++ {
+		if _, ok := locations[v2.Location]; ok {
+			svmData = svmData + strconv.Itoa(locations[v2.Location]) + " "
+		} else {
+			svmData = svmData + "1 "
+		}
+		for _, k := range keys {
+			svmData = svmData + strconv.Itoa(k) + ":" + strconv.Itoa(m[k]) + " "
+		}
 	}
-	return svmData + "\n"
+	svmData = svmData + "\n"
+
+	for i := 0; i < 4; i++ {
+		if _, ok := locations[v2.Location]; ok {
+			svmData = svmData + strconv.Itoa(locations[v2.Location]) + " "
+		} else {
+			svmData = svmData + "1 "
+		}
+		for _, k := range keys {
+			svmData = svmData + strconv.Itoa(k) + ":" + strconv.Itoa(m[k]-1) + " "
+		}
+	}
+	svmData = svmData + "\n"
+
+	for i := 0; i < 4; i++ {
+		if _, ok := locations[v2.Location]; ok {
+			svmData = svmData + strconv.Itoa(locations[v2.Location]) + " "
+		} else {
+			svmData = svmData + "1 "
+		}
+		for _, k := range keys {
+			svmData = svmData + strconv.Itoa(k) + ":" + strconv.Itoa(m[k]+1) + " "
+		}
+	}
+	svmData = svmData + "\n"
+
+	for i := 0; i < 1; i++ {
+		if _, ok := locations[v2.Location]; ok {
+			svmData = svmData + strconv.Itoa(locations[v2.Location]) + " "
+		} else {
+			svmData = svmData + "1 "
+		}
+		for _, k := range keys {
+			svmData = svmData + strconv.Itoa(k) + ":" + strconv.Itoa(m[k]-2) + " "
+		}
+	}
+	svmData = svmData + "\n"
+
+	for i := 0; i < 1; i++ {
+		if _, ok := locations[v2.Location]; ok {
+			svmData = svmData + strconv.Itoa(locations[v2.Location]) + " "
+		} else {
+			svmData = svmData + "1 "
+		}
+		for _, k := range keys {
+			svmData = svmData + strconv.Itoa(k) + ":" + strconv.Itoa(m[k]+2) + " "
+		}
+	}
+	svmData = svmData + "\n"
+
+	return svmData
 }
 
 // cp ~/Documents/find/svm ./
