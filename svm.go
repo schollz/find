@@ -293,7 +293,7 @@ func classify(jsonFingerprint Fingerprint) (string, map[string]float64) {
 		Warning.Println(svmData)
 		return "", make(map[string]float64)
 	}
-	Debug.Println(svmData)
+	// Debug.Println(svmData)
 
 	tempFileTest := RandStringBytesMaskImprSrc(6) + ".testing"
 	tempFileOut := RandStringBytesMaskImprSrc(6) + ".out"
@@ -342,10 +342,10 @@ func classify(jsonFingerprint Fingerprint) (string, map[string]float64) {
 		}
 		P[locationsFromID[labels[i]]] = math.Log(float64(Pval))
 	}
-	// os.Remove(tempFileTest)
+	os.Remove(tempFileTest)
 	os.Remove(tempFileTest + ".scaled")
-	// os.Remove(tempFileOut)
-	Debug.Println(P)
+	os.Remove(tempFileOut)
+	// Debug.Println(P)
 	return bestLocation, P
 }
 
