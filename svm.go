@@ -372,8 +372,8 @@ func makeSVMLine(v2 Fingerprint, macs map[string]int, locations map[string]int) 
 		for _, k := range keys {
 			svmData = svmData + strconv.Itoa(k) + ":" + strconv.Itoa(m[k]) + " "
 		}
+		svmData = svmData + "\n"
 	}
-	svmData = svmData + "\n"
 
 	for i := 0; i < 4; i++ {
 		if _, ok := locations[v2.Location]; ok {
@@ -384,8 +384,8 @@ func makeSVMLine(v2 Fingerprint, macs map[string]int, locations map[string]int) 
 		for _, k := range keys {
 			svmData = svmData + strconv.Itoa(k) + ":" + strconv.Itoa(m[k]-1) + " "
 		}
+		svmData = svmData + "\n"
 	}
-	svmData = svmData + "\n"
 
 	for i := 0; i < 4; i++ {
 		if _, ok := locations[v2.Location]; ok {
@@ -396,8 +396,8 @@ func makeSVMLine(v2 Fingerprint, macs map[string]int, locations map[string]int) 
 		for _, k := range keys {
 			svmData = svmData + strconv.Itoa(k) + ":" + strconv.Itoa(m[k]+1) + " "
 		}
+		svmData = svmData + "\n"
 	}
-	svmData = svmData + "\n"
 
 	for i := 0; i < 1; i++ {
 		if _, ok := locations[v2.Location]; ok {
@@ -408,8 +408,8 @@ func makeSVMLine(v2 Fingerprint, macs map[string]int, locations map[string]int) 
 		for _, k := range keys {
 			svmData = svmData + strconv.Itoa(k) + ":" + strconv.Itoa(m[k]-2) + " "
 		}
+		svmData = svmData + "\n"
 	}
-	svmData = svmData + "\n"
 
 	for i := 0; i < 1; i++ {
 		if _, ok := locations[v2.Location]; ok {
@@ -420,8 +420,8 @@ func makeSVMLine(v2 Fingerprint, macs map[string]int, locations map[string]int) 
 		for _, k := range keys {
 			svmData = svmData + strconv.Itoa(k) + ":" + strconv.Itoa(m[k]+2) + " "
 		}
+		svmData = svmData + "\n"
 	}
-	svmData = svmData + "\n"
 
 	return svmData
 }
