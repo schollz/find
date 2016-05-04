@@ -342,9 +342,9 @@ func classify(jsonFingerprint Fingerprint) (string, map[string]float64) {
 		}
 		P[locationsFromID[labels[i]]] = math.Log(float64(Pval))
 	}
-	os.Remove(tempFileTest)
+	// os.Remove(tempFileTest)
 	os.Remove(tempFileTest + ".scaled")
-	os.Remove(tempFileOut)
+	// os.Remove(tempFileOut)
 	Debug.Println(P)
 	return bestLocation, P
 }
