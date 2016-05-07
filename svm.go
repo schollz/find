@@ -254,6 +254,7 @@ func calculateSVM(group string) error {
 	// os.Remove(tempFileTest + ".scaled")
 	// os.Remove(tempFileFull + ".scaled")
 	os.Remove(tempFileTrain)
+	os.Remove(tempFileTrain + ".model")
 	os.Remove(tempFileTest)
 	os.Remove(tempFileFull)
 	os.Remove(tempFileOut)
