@@ -391,6 +391,11 @@ function userLocPolling() {
                 var tuples = [];
                 for (var key2 in data['users'][key]['svm']) tuples.push([key2, data['users'][key]['svm'][key2]]);
                 vals = []
+                tuples.sort(function(a, b) {
+                    a = a[1];
+                    b = b[1];
+                    return a < b ? -1 : (a > b ? 1 : 0);
+                });
                 for (var i = tuples.length-1; i >=0; i--) {
                     var key = tuples[i][0];
                     var value = Math.round(Math.exp(tuples[i][1])*100);
