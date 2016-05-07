@@ -209,7 +209,7 @@ func trackFingerprint(jsonFingerprint Fingerprint) (string, bool, string, map[st
 	// Process SVM if needed
 	if RuntimeArgs.Svm {
 		locationGuess2, svmData2 := classify(jsonFingerprint)
-		percentGuess2 := int(100 * math.Exp(svmData[locationGuess2]))
+		percentGuess2 := int(100 * math.Exp(svmData2[locationGuess2]))
 		if percentGuess2 > 100 {
 			percentGuess2 = percentGuess2 / 10
 		}
