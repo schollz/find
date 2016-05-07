@@ -186,19 +186,19 @@ func trackFingerprint(jsonFingerprint Fingerprint) (string, bool, string, map[st
 			}
 		}
 	}
-	//locationGuess, bayes := calculatePosterior(jsonFingerprint, *NewFullParameters())
-	locationGuess, bayes := classify(jsonFingerprint)
-	jsonFingerprint.Location = locationGuess
+	locationGuess1, bayes := calculatePosterior(jsonFingerprint, *NewFullParameters())
+	locationGuess2, bayes2 := classify(jsonFingerprint)
+	jsonFingerprint.Location = locationGuess1
 	putFingerprintIntoDatabase(jsonFingerprint, "fingerprints-track")
 	positions := [][]string{}
 	positions1 := []string{}
 	positions2 := []string{}
-	positions1 = append(positions1, locationGuess)
+	positions1 = append(positions1, locationGuess1)
 	positions2 = append(positions2, " ")
 	positions = append(positions, positions1)
 	positions = append(positions, positions2)
 	var userJSON UserPositionJSON
-	userJSON.Location = locationGuess
+	userJSON.Location = locationGuess1
 	userJSON.Bayes = bayes
 	userJSON.Time = time.Now().String()
 	userPositionCache[strings.ToLower(jsonFingerprint.Group)+strings.ToLower(jsonFingerprint.Username)] = userJSON
@@ -209,14 +209,23 @@ func trackFingerprint(jsonFingerprint Fingerprint) (string, bool, string, map[st
 			Bayes         map[string]float64 `json:"bayes"`
 		}
 		mqttMessage, _ := json.Marshal(FingerprintResponse{
-			LocationGuess: locationGuess,
+			LocationGuess: locationGuess1,
 			Bayes:         bayes,
 		})
 		go sendMQTTLocation(string(mqttMessage), jsonFingerprint.Group, jsonFingerprint.Username)
 	}
-	percentGuess := int(100 * math.Exp(bayes[locationGuess]))
-	if percentGuess > 100 {
-		percentGuess = percentGuess / 10
+	percentGuess1 := float64(0)
+	total := float64(0)
+	for _, locBayes := range bayes {
+		total += math.Exp(locBayes)
+		if locBayes > percentGuess1 {
+			percentGuess1 = locBayes
+		}
 	}
-	return "Calculated location: " + locationGuess + " (" + strconv.Itoa(percentGuess) + "%)", true, locationGuess, bayes
+	percentGuess1 = percentGuess1 / total
+	percentGuess2 := int(100 * math.Exp(bayes2[locationGuess2]))
+	if percentGuess2 > 100 {
+		percentGuess2 = percentGuess2 / 10
+	}
+	return "NB: " + locationGuess1 + " (" + strconv.Itoa(int(percentGuess1*100.0)) + "%)" + ", SVM: " + locationGuess2 + " (" + strconv.Itoa(int(percentGuess2*100.0)) + "%)", true, locationGuess1, bayes
 }
