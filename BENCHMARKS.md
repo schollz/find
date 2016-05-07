@@ -1,3 +1,31 @@
+# Benchmarks 05/07/2016
+
+Current coverage (`go test -cover`): 34.1%.
+
+To test first start process on one terminal `./gofind`, and then in another window `./testing/testdb.sh`. Then you can close `./gofind` and run with `go test -bench=. -test.benchmem`.
+
+### i7-3370 @ 3.4GHz
+
+2,058 fingerprints
+```
+BenchmarkTrackFingerprintRoute-8             100          15239873 ns/op         1520979 B/op        386 allocs/op
+BenchmarkLearnFingerprintRoute-8             100          14811166 ns/op         1523019 B/op        337 allocs/op
+BenchmarkPutFingerprintInDatabase-8          100          18666458 ns/op         1498315 B/op        237 allocs/op
+BenchmarkGetFingerprintInDatabase-8         1000           2126121 ns/op           53762 B/op         97 allocs/op
+BenchmarkLoadFingerprint-8                100000             15466 ns/op            2457 B/op         32 allocs/op
+BenchmarkLoadCompressedFingerprint-8       30000             80320 ns/op           44846 B/op         40 allocs/op
+BenchmarkDumpFingerprint-8                200000             11307 ns/op            2372 B/op         44 allocs/op
+BenchmarkDumpCompressedFingerprint-8         500           3260405 ns/op         1463900 B/op        127 allocs/op
+BenchmarkLoadParameters-8                    100          22610022 ns/op         2662599 B/op       3769 allocs/op
+BenchmarkGetParameters-8                     100          14269609 ns/op          952125 B/op       5592 allocs/op
+BenchmarkCalculatePosteriors1-8            30000             49136 ns/op            2712 B/op         12 allocs/op
+BenchmarkOptimizePriors-8                      3         364207766 ns/op        33952237 B/op      57270 allocs/op
+BenchmarkOptimizePriorsThreaded-8              5         234406160 ns/op        32756854 B/op      60000 allocs/op
+BenchmarkOptimizePriorsThreadedNot-8           5         248316460 ns/op        32395744 B/op      51277 allocs/op
+BenchmarkCrossValidation-8                   100          26085247 ns/op         1025146 B/op       4295 allocs/op
+BenchmarkCalculatePriors-8                   100          14561229 ns/op          482638 B/op       1405 allocs/op
+```
+
 # Benchmarks 05/01/2016
 
 Current coverage (`go test -cover`): 34.1%.
@@ -23,6 +51,7 @@ BenchmarkOptimizePriorsThreadedNot-8          10         183357620 ns/op        
 BenchmarkCrossValidation-8                   100          16531952 ns/op          819349 B/op       3355 allocs/op
 BenchmarkCalculatePriors-8                   200           9649543 ns/op          371202 B/op       1109 allocs/op
 ```
+
 
 
 
