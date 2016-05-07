@@ -159,7 +159,7 @@ func learnFingerprint(jsonFingerprint Fingerprint) (string, bool) {
 	return message, true
 }
 
-func trackFingerprint(jsonFingerprint Fingerprint) (string, bool, string, map[string]float64) {
+func trackFingerprint(jsonFingerprint Fingerprint) (string, bool, string, map[string]float64, map[string]float64) {
 	bayes := make(map[string]float64)
 	cleanFingerprint(&jsonFingerprint)
 	if !groupExists(jsonFingerprint.Group) || len(jsonFingerprint.Group) == 0 {
@@ -178,7 +178,9 @@ func trackFingerprint(jsonFingerprint Fingerprint) (string, bool, string, map[st
 			isLearning[group] = false
 			optimizePriorsThreaded(group)
 			dumpFingerprintsSVM(group)
-			calculateSVM(group)
+			if RuntimeArgs.Svm {
+				calculateSVM(group)
+			}
 			if _, ok := usersCache[group]; ok {
 				if len(usersCache[group]) == 0 {
 					usersCache[group] = append([]string{}, strings.ToLower(jsonFingerprint.Username))
@@ -187,7 +189,6 @@ func trackFingerprint(jsonFingerprint Fingerprint) (string, bool, string, map[st
 		}
 	}
 	locationGuess1, bayes := calculatePosterior(jsonFingerprint, *NewFullParameters())
-	locationGuess2, bayes2 := classify(jsonFingerprint)
 	jsonFingerprint.Location = locationGuess1
 	putFingerprintIntoDatabase(jsonFingerprint, "fingerprints-track")
 	positions := [][]string{}
@@ -223,9 +224,14 @@ func trackFingerprint(jsonFingerprint Fingerprint) (string, bool, string, map[st
 		}
 	}
 	percentGuess1 = math.Exp(bayes[locationGuess1]) / total * 100.0
-	percentGuess2 := int(100 * math.Exp(bayes2[locationGuess2]))
-	if percentGuess2 > 100 {
-		percentGuess2 = percentGuess2 / 10
+	if RuntimeArgs.Svm {
+		locationGuess2, svmData := classify(jsonFingerprint)
+		percentGuess2 := int(100 * math.Exp(bayes2[locationGuess2]))
+		if percentGuess2 > 100 {
+			percentGuess2 = percentGuess2 / 10
+		}
+		return "NB: " + locationGuess1 + " (" + strconv.Itoa(int(percentGuess1)) + "%)" + ", SVM: " + locationGuess2 + " (" + strconv.Itoa(int(percentGuess2)) + "%)", true, locationGuess1, bayes, svmData
+	} else {
+		return "NB: " + locationGuess1 + " (" + strconv.Itoa(int(percentGuess1)) + "%)", true, locationGuess1, bayes, make(map[string]float64)
 	}
-	return "NB: " + locationGuess1 + " (" + strconv.Itoa(int(percentGuess1)) + "%)" + ", SVM: " + locationGuess2 + " (" + strconv.Itoa(int(percentGuess2)) + "%)", true, locationGuess1, bayes
 }

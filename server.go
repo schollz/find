@@ -13,6 +13,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"os/exec"
 	"path"
 	"strings"
 
@@ -36,6 +37,7 @@ var RuntimeArgs struct {
 	MqttAdminPassword string
 	Dump              string
 	Mqtt              bool
+	Svm               bool
 }
 
 // VersionNum keeps track of the version
@@ -88,6 +90,7 @@ Options:`)
 		RuntimeArgs.Mqtt = false
 	}
 
+	// Check whether we are just dumping the database
 	if len(RuntimeArgs.Dump) > 0 {
 		err := dumpFingerprints(strings.ToLower(RuntimeArgs.Dump))
 		if err == nil {
@@ -96,6 +99,24 @@ Options:`)
 			log.Fatal(err)
 		}
 		os.Exit(1)
+	}
+
+	// Check whether SVM libraries are available
+	_, err := exec.Command("svm-scale", "").Output()
+	if err != nil {
+		RuntimeArgs.Svm = false
+		fmt.Println("SVM is not detected.")
+		fmt.Println(`To install:
+sudo apt-get install g++
+wget http://www.csie.ntu.edu.tw/~cjlin/cgi-bin/libsvm.cgi?+http://www.csie.ntu.edu.tw/~cjlin/libsvm+tar.gz
+tar -xvf libsvm-3.18.tar.gz
+cd libsvm-3.18
+make
+cp svm-scale ../
+cp svm-predict ../
+cp svm-train ../`)
+	} else {
+		RuntimeArgs.Svm = true
 	}
 
 	// Setup Gin-Gonic

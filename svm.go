@@ -191,44 +191,44 @@ func calculateSVM(group string) error {
 		panic(err)
 	}
 
-	cmd := "svm-scale"
-	args := "-l 0 -u 1 " + tempFileTrain
-	Debug.Println(cmd, args)
-	outCmd, err := exec.Command(cmd, strings.Split(args, " ")...).Output()
-	if err != nil {
-		panic(err)
-	}
-	err = ioutil.WriteFile(tempFileTrain+".scaled", outCmd, 0644)
-	if err != nil {
-		panic(err)
-	}
+	// cmd := "svm-scale"
+	// args := "-l 0 -u 1 " + tempFileTrain
+	// Debug.Println(cmd, args)
+	// outCmd, err := exec.Command(cmd, strings.Split(args, " ")...).Output()
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// err = ioutil.WriteFile(tempFileTrain+".scaled", outCmd, 0644)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	//
+	// cmd = "svm-scale"
+	// args = "-l 0 -u 1 " + tempFileTest
+	// Debug.Println(cmd, args)
+	// outCmd, err = exec.Command(cmd, strings.Split(args, " ")...).Output()
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// err = ioutil.WriteFile(tempFileTest+".scaled", outCmd, 0644)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	//
+	// cmd = "svm-scale"
+	// args = "-l 0 -u 1 " + tempFileFull
+	// Debug.Println(cmd, args)
+	// outCmd, err = exec.Command(cmd, strings.Split(args, " ")...).Output()
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// err = ioutil.WriteFile(tempFileFull+".scaled", outCmd, 0644)
+	// if err != nil {
+	// 	panic(err)
+	// }
 
-	cmd = "svm-scale"
-	args = "-l 0 -u 1 " + tempFileTest
-	Debug.Println(cmd, args)
-	outCmd, err = exec.Command(cmd, strings.Split(args, " ")...).Output()
-	if err != nil {
-		panic(err)
-	}
-	err = ioutil.WriteFile(tempFileTest+".scaled", outCmd, 0644)
-	if err != nil {
-		panic(err)
-	}
-
-	cmd = "svm-scale"
-	args = "-l 0 -u 1 " + tempFileFull
-	Debug.Println(cmd, args)
-	outCmd, err = exec.Command(cmd, strings.Split(args, " ")...).Output()
-	if err != nil {
-		panic(err)
-	}
-	err = ioutil.WriteFile(tempFileFull+".scaled", outCmd, 0644)
-	if err != nil {
-		panic(err)
-	}
-
-	cmd = "svm-train"
-	args = "-s 0 -t 0 -b 1 " + tempFileFull + " data/" + group + ".model"
+	cmd := "svm-train"
+	args := "-s 0 -t 0 -b 1 " + tempFileFull + " data/" + group + ".model"
 	Debug.Println(cmd, args)
 	if _, err = exec.Command(cmd, strings.Split(args, " ")...).Output(); err != nil {
 		panic(err)
@@ -244,18 +244,18 @@ func calculateSVM(group string) error {
 	cmd = "svm-predict"
 	args = "-b 1 " + tempFileTest + " " + tempFileTrain + ".model " + tempFileOut
 	Debug.Println(cmd, args)
-	outCmd, err = exec.Command(cmd, strings.Split(args, " ")...).Output()
+	outCmd, err := exec.Command(cmd, strings.Split(args, " ")...).Output()
 	if err != nil {
 		panic(err)
 	}
 	fmt.Println(string(outCmd))
 
+	// os.Remove(tempFileTrain + ".scaled")
+	// os.Remove(tempFileTest + ".scaled")
+	// os.Remove(tempFileFull + ".scaled")
 	os.Remove(tempFileTrain)
-	os.Remove(tempFileTrain + ".scaled")
 	os.Remove(tempFileTest)
-	os.Remove(tempFileTest + ".scaled")
 	os.Remove(tempFileFull)
-	os.Remove(tempFileFull + ".scaled")
 	os.Remove(tempFileOut)
 	return nil
 }
@@ -303,20 +303,20 @@ func classify(jsonFingerprint Fingerprint) (string, map[string]float64) {
 		panic(err)
 	}
 
-	cmd := "svm-scale"
-	args := "-l 0 -u 1 " + tempFileTest
-	outCmd, err := exec.Command(cmd, strings.Split(args, " ")...).Output()
-	if err != nil {
-		panic(err)
-	}
-	err = ioutil.WriteFile(tempFileTest+".scaled", outCmd, 0644)
-	if err != nil {
-		panic(err)
-	}
+	// cmd := "svm-scale"
+	// args := "-l 0 -u 1 " + tempFileTest
+	// outCmd, err := exec.Command(cmd, strings.Split(args, " ")...).Output()
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// err = ioutil.WriteFile(tempFileTest+".scaled", outCmd, 0644)
+	// if err != nil {
+	// 	panic(err)
+	// }
 
-	cmd = "svm-predict"
-	args = "-b 1 " + tempFileTest + " data/" + jsonFingerprint.Group + ".model " + tempFileOut
-	outCmd, err = exec.Command(cmd, strings.Split(args, " ")...).Output()
+	cmd := "svm-predict"
+	args := "-b 1 " + tempFileTest + " data/" + jsonFingerprint.Group + ".model " + tempFileOut
+	_, err = exec.Command(cmd, strings.Split(args, " ")...).Output()
 	if err != nil {
 		panic(err)
 	}
@@ -344,7 +344,7 @@ func classify(jsonFingerprint Fingerprint) (string, map[string]float64) {
 		P[locationsFromID[labels[i]]] = math.Log(float64(Pval))
 	}
 	os.Remove(tempFileTest)
-	os.Remove(tempFileTest + ".scaled")
+	// os.Remove(tempFileTest + ".scaled")
 	os.Remove(tempFileOut)
 	// Debug.Println(P)
 	return bestLocation, P
