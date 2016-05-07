@@ -262,7 +262,7 @@ func calculateSVM(group string) error {
 }
 
 func classify(jsonFingerprint Fingerprint) (string, map[string]float64) {
-	if _, err := os.Stat(path.Join(RuntimeArgs.SourcePath, jsonFingerprint.Group+".model")); os.IsNotExist(err) {
+	if _, err := os.Stat(path.Join(RuntimeArgs.SourcePath, strings.ToLower(jsonFingerprint.Group)+".model")); os.IsNotExist(err) {
 		return "", make(map[string]float64)
 	}
 	db, err := bolt.Open(path.Join(RuntimeArgs.SourcePath, jsonFingerprint.Group+".db"), 0755, nil)
