@@ -35,6 +35,7 @@ type UserPositionJSON struct {
 	Time     interface{}        `json:"time"`
 	Location interface{}        `json:"location"`
 	Bayes    map[string]float64 `json:"bayes"`
+	Svm      map[string]float64 `json:"svm"`
 }
 
 func getCurrentPositionOfUser(group string, user string) UserPositionJSON {
@@ -74,6 +75,10 @@ func getCurrentPositionOfUser(group string, user string) UserPositionJSON {
 		location, bayes := calculatePosterior(fullJSON, *NewFullParameters())
 		userJSON.Location = location
 		userJSON.Bayes = bayes
+		// Process SVM if needed
+		if RuntimeArgs.Svm {
+			_, userJSON.Svm = classify(fullJSON)
+		}
 	}
 	userPositionCache[group+user] = userJSON
 	return userJSON
