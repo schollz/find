@@ -377,15 +377,10 @@ function userLocPolling() {
                 console.log(data['users'][key]['svm'])
                 var tuples = [];
                 for (var key2 in data['users'][key]['svm']) tuples.push([key2, data['users'][key]['svm'][key2]]);
-                total = 0;
-                for (var i = tuples.length-1; i >=0; i--) {
-                    var value = Math.exp(tuples[i][1]);
-                    total += value;
-                }
                 vals = []
                 for (var i = tuples.length-1; i >=0; i--) {
                     var key = tuples[i][0];
-                    var value = Math.round(Math.exp(tuples[i][1])/total*100);
+                    var value = Math.round(Math.exp(tuples[i][1])*100);
                     if (value > 10) {
                       vals.push(value + "% " + key)
                     }
