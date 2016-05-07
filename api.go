@@ -94,6 +94,7 @@ func calculate(c *gin.Context) {
 		optimizePriorsThreaded(strings.ToLower(group))
 		Debug.Println(RuntimeArgs.Svm)
 		if RuntimeArgs.Svm {
+			dumpFingerprintsSVM(strings.ToLower(group))
 			err := calculateSVM(strings.ToLower(group))
 			if err != nil {
 				Warning.Println("Encountered error when calculating SVM")

@@ -178,8 +178,8 @@ func trackFingerprint(jsonFingerprint Fingerprint) (string, bool, string, map[st
 			group := strings.ToLower(jsonFingerprint.Group)
 			isLearning[group] = false
 			optimizePriorsThreaded(group)
-			dumpFingerprintsSVM(group)
 			if RuntimeArgs.Svm {
+				dumpFingerprintsSVM(group)
 				calculateSVM(group)
 			}
 			if _, ok := usersCache[group]; ok {
