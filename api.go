@@ -92,6 +92,9 @@ func calculate(c *gin.Context) {
 			return
 		}
 		optimizePriorsThreaded(strings.ToLower(group))
+		if RuntimeArgs.Svm {
+			calculateSVM(strings.ToLower(group))
+		}
 		c.JSON(http.StatusOK, gin.H{"message": "Parameters optimized.", "success": true})
 	} else {
 		c.JSON(http.StatusOK, gin.H{"success": false, "message": "Error parsing request"})
