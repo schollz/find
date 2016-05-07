@@ -101,6 +101,7 @@ func calculate(c *gin.Context) {
 				Warning.Println(err)
 			}
 		}
+		userPositionCache = make(map[string]UserPositionJSON)
 		c.JSON(http.StatusOK, gin.H{"message": "Parameters optimized.", "success": true})
 	} else {
 		c.JSON(http.StatusOK, gin.H{"success": false, "message": "Error parsing request"})
