@@ -66,7 +66,7 @@ func main() {
 	flag.StringVar(&RuntimeArgs.MqttAdminPassword, "mqttadminpass", "", "admin to read all messages")
 	flag.StringVar(&RuntimeArgs.MosquittoPID, "mosquitto", "", "mosquitto PID")
 	flag.StringVar(&RuntimeArgs.Dump, "dump", "", "group to dump to folder")
-	flag.StringVar(&RuntimeArgs.Message, "message", "", "message to display to all userse")
+	flag.StringVar(&RuntimeArgs.Message, "message", "", "message to display to all users")
 	flag.CommandLine.Usage = func() {
 		fmt.Println(`find (version ` + VersionNum + `)
 run this to start the server and then visit localhost at the port you specify
@@ -102,6 +102,12 @@ Options:`)
 			log.Fatal(err)
 		}
 		os.Exit(1)
+	}
+
+	// Check if there is a message from the admin
+	if _, err := os.Stat(path.Join(RuntimeArgs.Cwd, "message.txt")); err == nil {
+		messageByte, _ := ioutil.ReadFile(path.Join(RuntimeArgs.Cwd, "message.txt"))
+		RuntimeArgs.Message = string(messageByte)
 	}
 
 	// Check whether SVM libraries are available
