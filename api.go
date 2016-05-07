@@ -92,8 +92,13 @@ func calculate(c *gin.Context) {
 			return
 		}
 		optimizePriorsThreaded(strings.ToLower(group))
+		Debug.Println(RuntimeArgs.Svm)
 		if RuntimeArgs.Svm {
-			calculateSVM(strings.ToLower(group))
+			err := calculateSVM(strings.ToLower(group))
+			if err != nil {
+				Warning.Println("Encountered error when calculating SVM")
+				Warning.Println(err)
+			}
 		}
 		c.JSON(http.StatusOK, gin.H{"message": "Parameters optimized.", "success": true})
 	} else {
