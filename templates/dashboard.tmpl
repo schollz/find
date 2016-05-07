@@ -257,6 +257,7 @@
             <div class="panel-body">
               <p id="lastSeen{{$index}}" title="Shows the last time and place of user when you are tracking."><strong>Last seen:</strong> {{ $user.Time }} at {{ $user.Location }}</p>
               <p id="bayes{{$index}}" title="Shows the exponential Bayesian scores when you are tracking."><strong>Confidence:</strong> ...loading...</strong></p>
+              <p id="svm{{$index}}" title="Shows the SVM scores when you are tracking."><strong>Confidence:</strong> ...loading...</strong></p>
             </div>
           </div>
         </div>
@@ -374,6 +375,31 @@ function userLocPolling() {
                 }
                 console.log(vals.join())
                $(jq('#bayes' + userkey)).html("<strong>Confidence:</strong> " + vals.join())
+
+
+               for (var key2 in data['users'][key]['svm']) tuples.push([key2, data['users'][key]['svm'][key2]]);
+
+               tuples.sort(function(a, b) {
+                   a = a[1];
+                   b = b[1];
+
+                   return a < b ? -1 : (a > b ? 1 : 0);
+               });
+               total = 0;
+               for (var i = tuples.length-1; i >=0; i--) {
+                   var value = Math.exp(tuples[i][1]);
+                   total += value;
+               }
+               vals = []
+               for (var i = tuples.length-1; i >=0; i--) {
+                   var key = tuples[i][0];
+                   var value = Math.round(Math.exp(tuples[i][1])/total*100);
+                   if (value > 10) {
+                     vals.push(value + "% " + key)
+                   }
+               }
+               console.log(vals.join())
+              $(jq('#svm' + userkey)).html("<strong>Confidence:</strong> " + vals.join())
 
 
               }
