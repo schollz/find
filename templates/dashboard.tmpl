@@ -350,14 +350,12 @@ function userLocPolling() {
                 console.log(data['users'][key])
                 $(jq('#lastSeen' + key)).html("<strong>Last seen:</strong> " + data['users'][key]['time'] + " at " + data['users'][key]['location']);
                 // $('#bayes' + key).text("Bayes: " + JSON.stringify(data['users'][key]['bayes']));
+
                 var tuples = [];
-
                 for (var key2 in data['users'][key]['bayes']) tuples.push([key2, data['users'][key]['bayes'][key2]]);
-
                 tuples.sort(function(a, b) {
                     a = a[1];
                     b = b[1];
-
                     return a < b ? -1 : (a > b ? 1 : 0);
                 });
                 total = 0;
@@ -376,15 +374,8 @@ function userLocPolling() {
                 console.log(vals.join())
                $(jq('#bayes' + userkey)).html("<strong>Confidence:</strong> " + vals.join())
 
-              var tuples = [];
+               var tuples = [];
                for (var key2 in data['users'][key]['svm']) tuples.push([key2, data['users'][key]['svm'][key2]]);
-
-               tuples.sort(function(a, b) {
-                   a = a[1];
-                   b = b[1];
-
-                   return a < b ? -1 : (a > b ? 1 : 0);
-               });
                total = 0;
                for (var i = tuples.length-1; i >=0; i--) {
                    var value = Math.exp(tuples[i][1]);
