@@ -227,5 +227,5 @@ func trackFingerprint(jsonFingerprint Fingerprint) (string, bool, string, map[st
 	if percentGuess2 > 100 {
 		percentGuess2 = percentGuess2 / 10
 	}
-	return "NB: " + locationGuess1 + " (" + strconv.Itoa(int(percentGuess1*100.0)) + "%)" + ", SVM: " + locationGuess2 + " (" + strconv.Itoa(int(percentGuess2*100.0)) + "%)", true, locationGuess1, bayes
+	return "NB: " + locationGuess1 + " (" + strconv.Itoa(int(percentGuess1*100.0)) + "%)" + ", SVM: " + locationGuess2 + " (" + strconv.Itoa(int(percentGuess2)) + "%)", true, locationGuess1, bayes
 }
