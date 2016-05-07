@@ -53,7 +53,7 @@ func init() {
 }
 
 func main() {
-	VersionNum = "2.0"
+	VersionNum = "2.1"
 	// _, executableFile, _, _ := runtime.Caller(0) // get full path of this file
 
 	// Bing flags for changing parameters of FIND
