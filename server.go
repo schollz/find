@@ -13,6 +13,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"os/exec"
 	"path"
 	"strings"
 
@@ -35,7 +36,9 @@ var RuntimeArgs struct {
 	MosquittoPID      string
 	MqttAdminPassword string
 	Dump              string
+	Message           string
 	Mqtt              bool
+	Svm               bool
 }
 
 // VersionNum keeps track of the version
@@ -46,6 +49,7 @@ func init() {
 	cwd, _ := os.Getwd()
 	RuntimeArgs.SourcePath = path.Join(cwd, "data")
 	RuntimeArgs.Cwd = cwd
+	RuntimeArgs.Message = ""
 }
 
 func main() {
@@ -62,6 +66,7 @@ func main() {
 	flag.StringVar(&RuntimeArgs.MqttAdminPassword, "mqttadminpass", "", "admin to read all messages")
 	flag.StringVar(&RuntimeArgs.MosquittoPID, "mosquitto", "", "mosquitto PID")
 	flag.StringVar(&RuntimeArgs.Dump, "dump", "", "group to dump to folder")
+	flag.StringVar(&RuntimeArgs.Message, "message", "", "message to display to all userse")
 	flag.CommandLine.Usage = func() {
 		fmt.Println(`find (version ` + VersionNum + `)
 run this to start the server and then visit localhost at the port you specify
@@ -88,6 +93,7 @@ Options:`)
 		RuntimeArgs.Mqtt = false
 	}
 
+	// Check whether we are just dumping the database
 	if len(RuntimeArgs.Dump) > 0 {
 		err := dumpFingerprints(strings.ToLower(RuntimeArgs.Dump))
 		if err == nil {
@@ -96,6 +102,24 @@ Options:`)
 			log.Fatal(err)
 		}
 		os.Exit(1)
+	}
+
+	// Check whether SVM libraries are available
+	cmdOut, _ := exec.Command("svm-scale", "").CombinedOutput()
+	if len(cmdOut) == 0 {
+		RuntimeArgs.Svm = false
+		fmt.Println("SVM is not detected.")
+		fmt.Println(`To install:
+sudo apt-get install g++
+wget http://www.csie.ntu.edu.tw/~cjlin/cgi-bin/libsvm.cgi?+http://www.csie.ntu.edu.tw/~cjlin/libsvm+tar.gz
+tar -xvf libsvm-3.18.tar.gz
+cd libsvm-3.18
+make
+cp svm-scale ../
+cp svm-predict ../
+cp svm-train ../`)
+	} else {
+		RuntimeArgs.Svm = true
 	}
 
 	// Setup Gin-Gonic
@@ -118,6 +142,8 @@ Options:`)
 			"ErrorMessage": "Please login first.",
 		})
 	})
+
+	// r.PUT("/message", putMessage)
 
 	// Routes for logging in and viewing dashboards (routes.go)
 	r.GET("/", slash)
@@ -166,3 +192,14 @@ Options:`)
 		r.Run(RuntimeArgs.Port)
 	}
 }
+
+// // putMessage usage: curl -G -X PUT "http://localhost:8003/message" --data-urlencode "text=hello world"
+// func putMessage(c *gin.Context) {
+// 	newText := c.DefaultQuery("text", "none")
+// 	if newText != "none" {
+// 		RuntimeArgs.Message = newText
+// 		c.JSON(http.StatusOK, gin.H{"success": true, "message": "Message set as '" + newText + "'"})
+// 	} else {
+// 		c.JSON(http.StatusOK, gin.H{"success": false, "message": "Error parsing request"})
+// 	}
+// }

@@ -210,6 +210,16 @@
   <!-- Page Content -->
   <div class="container">
 
+    {{ if .Message }}
+    <div class="row">
+      <div class="col-lg-12">
+          <center>
+          <div class="alert alert-info" role="alert">{{ .Message }}</div>
+        </center>
+      </div>
+    </div>
+    {{ end }}
+
 
     <div class="row">
       <div class="col-lg-12">
@@ -259,7 +269,8 @@
             </div>
             <div class="panel-body">
               <p id="lastSeen{{$index}}" title="Shows the last time and place of user when you are tracking."><strong>Last seen:</strong> {{ $user.Time }} at {{ $user.Location }}</p>
-              <p id="bayes{{$index}}" title="Shows the exponential Bayesian scores when you are tracking."><strong>Confidence:</strong> ...loading...</strong></p>
+              <p id="bayes{{$index}}" title="Shows the exponential Bayesian scores when you are tracking."></p>
+              <p id="svm{{$index}}" title="Shows the SVM scores when you are tracking."></p>
             </div>
           </div>
         </div>
@@ -352,14 +363,12 @@ function userLocPolling() {
                 console.log(data['users'][key])
                 $(jq('#lastSeen' + key)).html("<strong>Last seen:</strong> " + data['users'][key]['time'] + " at " + data['users'][key]['location']);
                 // $('#bayes' + key).text("Bayes: " + JSON.stringify(data['users'][key]['bayes']));
+
                 var tuples = [];
-
                 for (var key2 in data['users'][key]['bayes']) tuples.push([key2, data['users'][key]['bayes'][key2]]);
-
                 tuples.sort(function(a, b) {
                     a = a[1];
                     b = b[1];
-
                     return a < b ? -1 : (a > b ? 1 : 0);
                 });
                 total = 0;
@@ -369,14 +378,30 @@ function userLocPolling() {
                 }
                 vals = []
                 for (var i = tuples.length-1; i >=0; i--) {
-                    var key = tuples[i][0];
+                    var key4 = tuples[i][0];
                     var value = Math.round(Math.exp(tuples[i][1])/total*100);
+                    if (value > 10) {
+                      vals.push(value + "% " + key4)
+                    }
+                }
+                console.log(vals.join())
+               $(jq('#bayes' + userkey)).html("<strong>Naive-Bayes:</strong> " + vals.join())
+              if (data['users'][key]['svm'] != undefined && Object.keys(data['users'][key]['svm']).length > 0) {
+                console.log(data['users'][key]['svm'])
+                var tuples = [];
+                for (var key2 in data['users'][key]['svm']) tuples.push([key2, data['users'][key]['svm'][key2]]);
+                vals = []
+                for (var i = tuples.length-1; i >=0; i--) {
+                    var key = tuples[i][0];
+                    var value = Math.round(Math.exp(tuples[i][1])*100);
                     if (value > 10) {
                       vals.push(value + "% " + key)
                     }
                 }
                 console.log(vals.join())
-               $(jq('#bayes' + userkey)).html("<strong>Confidence:</strong> " + vals.join())
+               $(jq('#svm' + userkey)).html("<strong>SVM:</strong> " + vals.join())
+              }
+
 
 
               }

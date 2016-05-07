@@ -35,6 +35,7 @@ type UserPositionJSON struct {
 	Time     interface{}        `json:"time"`
 	Location interface{}        `json:"location"`
 	Bayes    map[string]float64 `json:"bayes"`
+	Svm      map[string]float64 `json:"svm"`
 }
 
 func getCurrentPositionOfUser(group string, user string) UserPositionJSON {
@@ -74,6 +75,10 @@ func getCurrentPositionOfUser(group string, user string) UserPositionJSON {
 		location, bayes := calculatePosterior(fullJSON, *NewFullParameters())
 		userJSON.Location = location
 		userJSON.Bayes = bayes
+		// Process SVM if needed
+		if RuntimeArgs.Svm {
+			_, userJSON.Svm = classify(fullJSON)
+		}
 	}
 	userPositionCache[group+user] = userJSON
 	return userJSON
@@ -87,6 +92,16 @@ func calculate(c *gin.Context) {
 			return
 		}
 		optimizePriorsThreaded(strings.ToLower(group))
+		Debug.Println(RuntimeArgs.Svm)
+		if RuntimeArgs.Svm {
+			dumpFingerprintsSVM(strings.ToLower(group))
+			err := calculateSVM(strings.ToLower(group))
+			if err != nil {
+				Warning.Println("Encountered error when calculating SVM")
+				Warning.Println(err)
+			}
+		}
+		userPositionCache = make(map[string]UserPositionJSON)
 		c.JSON(http.StatusOK, gin.H{"message": "Parameters optimized.", "success": true})
 	} else {
 		c.JSON(http.StatusOK, gin.H{"success": false, "message": "Error parsing request"})
