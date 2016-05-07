@@ -102,10 +102,8 @@ Options:`)
 	}
 
 	// Check whether SVM libraries are available
-	cmdOut, err := exec.Command("svm-scale", "").CombinedOutput()
-	if err != nil {
-		fmt.Println(len(cmdOut))
-		fmt.Println(err)
+	cmdOut, _ := exec.Command("svm-scale", "").CombinedOutput()
+	if len(cmdOut) == 0 {
 		RuntimeArgs.Svm = false
 		fmt.Println("SVM is not detected.")
 		fmt.Println(`To install:
