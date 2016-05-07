@@ -118,9 +118,9 @@ func putFingerprintIntoDatabase(res Fingerprint, database string) error {
 func trackFingerprintPOST(c *gin.Context) {
 	var jsonFingerprint Fingerprint
 	if c.BindJSON(&jsonFingerprint) == nil {
-		message, success, locationGuess, bayes := trackFingerprint(jsonFingerprint)
+		message, success, locationGuess, bayes, svm := trackFingerprint(jsonFingerprint)
 		if success {
-			c.JSON(http.StatusOK, gin.H{"message": message, "success": true, "location": locationGuess, "bayes": bayes})
+			c.JSON(http.StatusOK, gin.H{"message": message, "success": true, "location": locationGuess, "bayes": bayes, "svm": svm})
 		} else {
 			c.JSON(http.StatusOK, gin.H{"message": message, "success": false})
 		}
@@ -163,13 +163,13 @@ func trackFingerprint(jsonFingerprint Fingerprint) (string, bool, string, map[st
 	bayes := make(map[string]float64)
 	cleanFingerprint(&jsonFingerprint)
 	if !groupExists(jsonFingerprint.Group) || len(jsonFingerprint.Group) == 0 {
-		return "You should insert fingerprints before tracking", false, "", bayes
+		return "You should insert fingerprints before tracking", false, "", bayes, make(map[string]float64)
 	}
 	if len(jsonFingerprint.WifiFingerprint) == 0 {
-		return "No fingerprints found to track, see API", false, "", bayes
+		return "No fingerprints found to track, see API", false, "", bayes, make(map[string]float64)
 	}
 	if len(jsonFingerprint.Username) == 0 {
-		return "No username defined, see API", false, "", bayes
+		return "No username defined, see API", false, "", bayes, make(map[string]float64)
 	}
 	if wasLearning, ok := isLearning[strings.ToLower(jsonFingerprint.Group)]; ok {
 		if wasLearning {
@@ -226,7 +226,7 @@ func trackFingerprint(jsonFingerprint Fingerprint) (string, bool, string, map[st
 	percentGuess1 = math.Exp(bayes[locationGuess1]) / total * 100.0
 	if RuntimeArgs.Svm {
 		locationGuess2, svmData := classify(jsonFingerprint)
-		percentGuess2 := int(100 * math.Exp(bayes2[locationGuess2]))
+		percentGuess2 := int(100 * math.Exp(svmData[locationGuess2]))
 		if percentGuess2 > 100 {
 			percentGuess2 = percentGuess2 / 10
 		}
