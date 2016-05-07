@@ -376,7 +376,7 @@ function userLocPolling() {
                 console.log(vals.join())
                $(jq('#bayes' + userkey)).html("<strong>Confidence:</strong> " + vals.join())
 
-
+              var tuples = [];
                for (var key2 in data['users'][key]['svm']) tuples.push([key2, data['users'][key]['svm'][key2]]);
 
                tuples.sort(function(a, b) {
