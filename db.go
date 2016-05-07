@@ -21,9 +21,8 @@ import (
 func groupExists(group string) bool {
 	if _, err := os.Stat(path.Join(RuntimeArgs.SourcePath, strings.ToLower(group)+".db")); os.IsNotExist(err) {
 		return false
-	} else {
-		return true
 	}
+	return true
 }
 
 func renameNetwork(group string, oldName string, newName string) {

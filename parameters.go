@@ -90,6 +90,7 @@ func NewResultsParameters() *ResultsParameters {
 	}
 }
 
+// NewPersistentParameters returns the peristent parameters initialization
 func NewPersistentParameters() *PersistentParameters {
 	return &PersistentParameters{
 		NetworkRenamed: make(map[string][]string),
@@ -115,16 +116,16 @@ func saveParameters(group string, res FullParameters) error {
 	defer db.Close()
 
 	err = db.Update(func(tx *bolt.Tx) error {
-		bucket, err := tx.CreateBucketIfNotExists([]byte("resources"))
-		if err != nil {
-			return fmt.Errorf("create bucket: %s", err)
+		bucket, err2 := tx.CreateBucketIfNotExists([]byte("resources"))
+		if err2 != nil {
+			return fmt.Errorf("create bucket: %s", err2)
 		}
 
-		err = bucket.Put([]byte("fullParameters"), dumpParameters(res))
-		if err != nil {
-			return fmt.Errorf("could add to bucket: %s", err)
+		err2 = bucket.Put([]byte("fullParameters"), dumpParameters(res))
+		if err2 != nil {
+			return fmt.Errorf("could add to bucket: %s", err2)
 		}
-		return err
+		return err2
 	})
 	return err
 }
@@ -184,17 +185,17 @@ func savePersistentParameters(group string, res PersistentParameters) error {
 	defer db.Close()
 
 	err = db.Update(func(tx *bolt.Tx) error {
-		bucket, err := tx.CreateBucketIfNotExists([]byte("resources"))
-		if err != nil {
+		bucket, err2 := tx.CreateBucketIfNotExists([]byte("resources"))
+		if err2 != nil {
 			return fmt.Errorf("create bucket: %s", err)
 		}
 
 		jsonByte, _ := json.Marshal(res)
-		err = bucket.Put([]byte("persistentParameters"), jsonByte)
-		if err != nil {
+		err2 = bucket.Put([]byte("persistentParameters"), jsonByte)
+		if err2 != nil {
 			return fmt.Errorf("could add to bucket: %s", err)
 		}
-		return err
+		return err2
 	})
 	Debug.Println("Saved")
 	return err
@@ -262,7 +263,6 @@ func getParameters(group string, ps *FullParameters, fingerprintsInMemory map[st
 
 	// Rename the NetworkMacs
 	if len(persistentPs.NetworkRenamed) > 0 {
-		fmt.Println("Figuring out the renaming...")
 		newNames := []string{}
 		for k := range persistentPs.NetworkRenamed {
 			newNames = append(newNames, k)
@@ -346,16 +346,16 @@ func setMixinOverride(group string, mixin float64) error {
 	}
 
 	err = db.Update(func(tx *bolt.Tx) error {
-		bucket, err := tx.CreateBucketIfNotExists([]byte("resources"))
-		if err != nil {
-			return fmt.Errorf("create bucket: %s", err)
+		bucket, err2 := tx.CreateBucketIfNotExists([]byte("resources"))
+		if err2 != nil {
+			return fmt.Errorf("create bucket: %s", err2)
 		}
 
-		err = bucket.Put([]byte("mixinOverride"), []byte(strconv.FormatFloat(mixin, 'E', -1, 64)))
-		if err != nil {
-			return fmt.Errorf("could add to bucket: %s", err)
+		err2 = bucket.Put([]byte("mixinOverride"), []byte(strconv.FormatFloat(mixin, 'E', -1, 64)))
+		if err2 != nil {
+			return fmt.Errorf("could add to bucket: %s", err2)
 		}
-		return err
+		return err2
 	})
 	return err
 }

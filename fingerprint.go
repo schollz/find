@@ -98,19 +98,19 @@ func putFingerprintIntoDatabase(res Fingerprint, database string) error {
 	defer db.Close()
 
 	err = db.Update(func(tx *bolt.Tx) error {
-		bucket, err := tx.CreateBucketIfNotExists([]byte(database))
-		if err != nil {
-			return fmt.Errorf("create bucket: %s", err)
+		bucket, err2 := tx.CreateBucketIfNotExists([]byte(database))
+		if err2 != nil {
+			return fmt.Errorf("create bucket: %s", err2)
 		}
 
 		if res.Timestamp == 0 {
 			res.Timestamp = time.Now().UnixNano()
 		}
-		err = bucket.Put([]byte(strconv.FormatInt(res.Timestamp, 10)), dumpFingerprint(res))
-		if err != nil {
-			return fmt.Errorf("could add to bucket: %s", err)
+		err2 = bucket.Put([]byte(strconv.FormatInt(res.Timestamp, 10)), dumpFingerprint(res))
+		if err2 != nil {
+			return fmt.Errorf("could add to bucket: %s", err2)
 		}
-		return err
+		return err2
 	})
 	return err
 }
