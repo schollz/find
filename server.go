@@ -102,7 +102,7 @@ Options:`)
 	}
 
 	// Check whether SVM libraries are available
-	cmdOut, err := exec.Command("svm-scale", "").Output()
+	cmdOut, err := exec.Command("svm-scale", "").CombinedOutput()
 	if err != nil {
 		fmt.Println(len(cmdOut))
 		fmt.Println(err)
