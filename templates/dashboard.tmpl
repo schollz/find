@@ -365,15 +365,14 @@ function userLocPolling() {
                 }
                 vals = []
                 for (var i = tuples.length-1; i >=0; i--) {
-                    var key = tuples[i][0];
+                    var key4 = tuples[i][0];
                     var value = Math.round(Math.exp(tuples[i][1])/total*100);
                     if (value > 10) {
-                      vals.push(value + "% " + key)
+                      vals.push(value + "% " + key4)
                     }
                 }
                 console.log(vals.join())
                $(jq('#bayes' + userkey)).html("<strong>Confidence:</strong> " + vals.join())
-
               if (data['users'][key]['svm'] != undefined) {
                 console.log(data['users'][key]['svm'])
                 var tuples = [];
