@@ -204,7 +204,7 @@ func trackFingerprint(jsonFingerprint Fingerprint) (string, bool, string, map[st
 	putFingerprintIntoDatabase(jsonFingerprint, "fingerprints-track")
 
 	Debug.Println("Tracking fingerprint containing " + strconv.Itoa(len(jsonFingerprint.WifiFingerprint)) + " APs for " + jsonFingerprint.Username + " (" + jsonFingerprint.Group + ") at " + jsonFingerprint.Location + " (guess)")
-	message := "NB: " + locationGuess1 + " (" + strconv.Itoa(int(percentGuess1)) + "%)"
+	message := "Current location: " + locationGuess1 + " (" + strconv.Itoa(int(percentGuess1)) + "% confidence)"
 
 	// Process SVM if needed
 	if RuntimeArgs.Svm {
@@ -213,7 +213,7 @@ func trackFingerprint(jsonFingerprint Fingerprint) (string, bool, string, map[st
 		if percentGuess2 > 100 {
 			percentGuess2 = percentGuess2 / 10
 		}
-		message = "NB: " + locationGuess1 + " (" + strconv.Itoa(int(percentGuess1)) + "%)" + ", SVM: " + locationGuess2 + " (" + strconv.Itoa(int(percentGuess2)) + "%)"
+		//message = "NB: " + locationGuess1 + " (" + strconv.Itoa(int(percentGuess1)) + "%)" + ", SVM: " + locationGuess2 + " (" + strconv.Itoa(int(percentGuess2)) + "%)"
 		svmData = svmData2
 	}
 
