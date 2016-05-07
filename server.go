@@ -36,6 +36,7 @@ var RuntimeArgs struct {
 	MosquittoPID      string
 	MqttAdminPassword string
 	Dump              string
+	Message           string
 	Mqtt              bool
 	Svm               bool
 }
@@ -48,6 +49,7 @@ func init() {
 	cwd, _ := os.Getwd()
 	RuntimeArgs.SourcePath = path.Join(cwd, "data")
 	RuntimeArgs.Cwd = cwd
+	RuntimeArgs.Message = ""
 }
 
 func main() {
@@ -64,6 +66,7 @@ func main() {
 	flag.StringVar(&RuntimeArgs.MqttAdminPassword, "mqttadminpass", "", "admin to read all messages")
 	flag.StringVar(&RuntimeArgs.MosquittoPID, "mosquitto", "", "mosquitto PID")
 	flag.StringVar(&RuntimeArgs.Dump, "dump", "", "group to dump to folder")
+	flag.StringVar(&RuntimeArgs.Message, "message", "", "message to display to all userse")
 	flag.CommandLine.Usage = func() {
 		fmt.Println(`find (version ` + VersionNum + `)
 run this to start the server and then visit localhost at the port you specify
@@ -140,6 +143,8 @@ cp svm-train ../`)
 		})
 	})
 
+	// r.PUT("/message", putMessage)
+
 	// Routes for logging in and viewing dashboards (routes.go)
 	r.GET("/", slash)
 	r.GET("/login", slashLogin)
@@ -187,3 +192,14 @@ cp svm-train ../`)
 		r.Run(RuntimeArgs.Port)
 	}
 }
+
+// // putMessage usage: curl -G -X PUT "http://localhost:8003/message" --data-urlencode "text=hello world"
+// func putMessage(c *gin.Context) {
+// 	newText := c.DefaultQuery("text", "none")
+// 	if newText != "none" {
+// 		RuntimeArgs.Message = newText
+// 		c.JSON(http.StatusOK, gin.H{"success": true, "message": "Message set as '" + newText + "'"})
+// 	} else {
+// 		c.JSON(http.StatusOK, gin.H{"success": false, "message": "Error parsing request"})
+// 	}
+// }

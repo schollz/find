@@ -207,6 +207,16 @@
   <!-- Page Content -->
   <div class="container">
 
+    {{ if .Message }}
+    <div class="row">
+      <div class="col-lg-12">
+          <center>
+          <div class="alert alert-info" role="alert">{{ .Message }}</div>
+        </center>
+      </div>
+    </div>
+    {{ end }}
+
 
     <div class="row">
       <div class="col-lg-12">

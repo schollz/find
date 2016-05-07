@@ -123,9 +123,10 @@ func slashDashboard(c *gin.Context) {
 		}
 	}
 	c.HTML(http.StatusOK, "dashboard.tmpl", gin.H{
-		"Group": group,
-		"Dash":  dash,
-		"Users": people,
+		"Message": RuntimeArgs.Message,
+		"Group":   group,
+		"Dash":    dash,
+		"Users":   people,
 	})
 }
 
