@@ -383,7 +383,7 @@ function userLocPolling() {
                 }
                 console.log(vals.join())
                $(jq('#bayes' + userkey)).html("<strong>Naive-Bayes:</strong> " + vals.join())
-              if (data['users'][key]['svm'] != undefined) {
+              if (data['users'][key]['svm'] != undefined && length(data['users'][key]['svm']) > 0) {
                 console.log(data['users'][key]['svm'])
                 var tuples = [];
                 for (var key2 in data['users'][key]['svm']) tuples.push([key2, data['users'][key]['svm'][key2]]);
