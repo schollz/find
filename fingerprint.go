@@ -204,7 +204,7 @@ func trackFingerprint(jsonFingerprint Fingerprint) (string, bool, string, map[st
 	putFingerprintIntoDatabase(jsonFingerprint, "fingerprints-track")
 
 	Debug.Println("Tracking fingerprint containing " + strconv.Itoa(len(jsonFingerprint.WifiFingerprint)) + " APs for " + jsonFingerprint.Username + " (" + jsonFingerprint.Group + ") at " + jsonFingerprint.Location + " (guess)")
-	message := "Current location: " + locationGuess1 + " (" + strconv.Itoa(int(percentGuess1)) + "% confidence)"
+	message := "Current location: " + locationGuess1 //+ " (" + strconv.Itoa(int(percentGuess1)) + "% confidence)"
 
 	// Process SVM if needed
 	if RuntimeArgs.Svm {
