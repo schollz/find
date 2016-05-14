@@ -221,7 +221,7 @@ func trackFingerprint(jsonFingerprint Fingerprint) (string, bool, string, map[st
 	if RuntimeArgs.Mqtt {
 		type FingerprintResponse struct {
 			LocationGuess string             `json:"location"`
-			Timestamp     int64              `json:"timestamp"`
+			Timestamp     int64              `json:"time"`
 			Bayes         map[string]float64 `json:"bayes"`
 			Svm           map[string]float64 `json:"svm"`
 		}
