@@ -49,7 +49,6 @@ func getCurrentPositionOfUser(group string, user string) UserPositionJSON {
 		log.Fatal(err)
 	}
 	var userJSON UserPositionJSON
-	var fullJSON Fingerprint
 	err = db.View(func(tx *bolt.Tx) error {
 		// Assume bucket exists and has keys
 		b := tx.Bucket([]byte("fingerprints-track"))
