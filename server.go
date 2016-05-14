@@ -74,7 +74,6 @@ run this to start the server and then visit localhost at the port you specify
 Example: 'find yourserver.com'
 Example: 'find -p :8080 localhost:8080'
 Example: 'find -s /var/run/find.sock'
-Example: 'find -db /var/lib/find/db.bolt localhost:8003'
 Example: 'find -p :8080 -crt ssl/server.crt -key ssl/server.key localhost:8080'
 Options:`)
 		flag.CommandLine.PrintDefaults()
