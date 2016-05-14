@@ -64,22 +64,19 @@ func getCurrentPositionOfUser(group string, user string) UserPositionJSON {
 				timestampUnixNano, _ := strconv.ParseInt(timestampString, 10, 64)
 				UTCfromUnixNano := time.Unix(0, timestampUnixNano)
 				userJSON.Time = UTCfromUnixNano.String()
-				fullJSON = v2
+				location, bayes := calculatePosterior(v2, *NewFullParameters())
+				userJSON.Location = location
+				userJSON.Bayes = bayes
+				// Process SVM if needed
+				if RuntimeArgs.Svm {
+					_, userJSON.Svm = classify(v2)
+				}
 				return nil
 			}
 		}
 		return fmt.Errorf("User " + user + " not found")
 	})
 	db.Close()
-	if err == nil {
-		location, bayes := calculatePosterior(fullJSON, *NewFullParameters())
-		userJSON.Location = location
-		userJSON.Bayes = bayes
-		// Process SVM if needed
-		if RuntimeArgs.Svm {
-			_, userJSON.Svm = classify(fullJSON)
-		}
-	}
 	userPositionCache[group+user] = userJSON
 	return userJSON
 }
