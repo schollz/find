@@ -48,6 +48,7 @@ func getCurrentPositionOfUser(group string, user string) UserPositionJSON {
 	if err != nil {
 		log.Fatal(err)
 	}
+	var userFingerprint Fingerprint
 	var userJSON UserPositionJSON
 	err = db.View(func(tx *bolt.Tx) error {
 		// Assume bucket exists and has keys
@@ -63,19 +64,20 @@ func getCurrentPositionOfUser(group string, user string) UserPositionJSON {
 				timestampUnixNano, _ := strconv.ParseInt(timestampString, 10, 64)
 				UTCfromUnixNano := time.Unix(0, timestampUnixNano)
 				userJSON.Time = UTCfromUnixNano.String()
-				location, bayes := calculatePosterior(v2, *NewFullParameters())
-				userJSON.Location = location
-				userJSON.Bayes = bayes
-				// Process SVM if needed
-				if RuntimeArgs.Svm {
-					_, userJSON.Svm = classify(v2)
-				}
+				userFingerprint = v2
 				return nil
 			}
 		}
 		return fmt.Errorf("User " + user + " not found")
 	})
 	db.Close()
+	location, bayes := calculatePosterior(userFingerprint, *NewFullParameters())
+	userJSON.Location = location
+	userJSON.Bayes = bayes
+	// Process SVM if needed
+	if RuntimeArgs.Svm {
+		_, userJSON.Svm = classify(userFingerprint)
+	}
 	userPositionCache[group+user] = userJSON
 	return userJSON
 }
