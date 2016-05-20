@@ -8,6 +8,7 @@ pages:
   - 'API': index.md
   - 'FAQ': faq.md
   - 'MQTT': mqtt.md
+  - 'SVM': svm.md
   - 'Photon': photon.md
   - 'Hass': hass.md
   - 'Privacy Policy': privacy.md
