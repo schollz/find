@@ -78,6 +78,10 @@ $ ./find
 
 ```
 
+If you'd like to add (experimental) SVM support, please [see the SVM docs](https://doc.internalpositioning.com/svm/).
+
+If you'd like to add MQTT support, please [see the MQTT docs](https://doc.internalpositioning.com/mqtt/).
+
 #### Client
 
 The client gathers WiFi fingerprints and sends them to the server. There are two clients - one for an Android smartphone, and one for a WiFi-enabled computer. Check out the individual repos to get started on either/both:
