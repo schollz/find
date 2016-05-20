@@ -117,12 +117,12 @@ Options:`)
 		fmt.Println(`To install:
 sudo apt-get install g++
 wget http://www.csie.ntu.edu.tw/~cjlin/cgi-bin/libsvm.cgi?+http://www.csie.ntu.edu.tw/~cjlin/libsvm+tar.gz
-tar -xvf libsvm-3.18.tar.gz
-cd libsvm-3.18
+tar -xvf libsvm-*.tar.gz
+cd libsvm-*
 make
-cp svm-scale ../
-cp svm-predict ../
-cp svm-train ../`)
+cp svm-scale /usr/local/bin/
+cp svm-predict /usr/local/bin/
+cp svm-train /usr/local/bin/`)
 	} else {
 		RuntimeArgs.Svm = true
 	}
