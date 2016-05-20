@@ -38,10 +38,10 @@ bitnami  PID  0.0  0.0  30968  1136 ?  Ss  09:19  0:00 mosquitto -c /path/to/fin
 Now, you can startup **FIND**:
 
 ```bash
-./find -mqtt ADDRESS:1883 -mqttadmin ADMIN -mqttadminpass ADMIN_PASS -mosquitto PID -p :PORT ADDRESS:PORT
+./find -mqtt ADDRESS:1883 -mqttadmin ADMIN -mqttadminpass ADMIN_PASS -mosquitto `pgrep mosquitto` -p :PORT ADDRESS:PORT
 ```
 
-The `ADDRESS` and `PORT` is the address and port your using for **FIND**. The `PID` is the `mosquitto` PID. The `ADMIN` and the `ADMIN_PASS` are your secret name and password to access read/write access to every MQTT channel. Make sure these are not simple enough to guess.
+The `ADDRESS` and `PORT` is the address and port your using for **FIND**. The `pgrep mosquitto` is for getting the `mosquitto` PID, which is used to send SIGHUP to reload the passwd file. The `ADMIN` and the `ADMIN_PASS` are your secret name and password to access read/write access to every MQTT channel. Make sure these are not simple enough to guess.
 
 That's it!
 
