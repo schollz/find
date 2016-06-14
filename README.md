@@ -86,7 +86,7 @@ If you'd like to add MQTT support, please [see the MQTT docs](https://doc.intern
 
 The client gathers WiFi fingerprints and sends them to the server. There are two clients - one for an Android smartphone, and one for a WiFi-enabled computer. Check out the individual repos to get started on either/both:
 - [FIND app client](https://github.com/schollz/find/tree/android)
-- [FIND program client](https://github.com/schollz/find/tree/android)
+- [FIND program client](https://github.com/schollz/find/tree/fingerprint)
 
 # Usage
 
