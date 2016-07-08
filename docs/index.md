@@ -300,6 +300,32 @@ Allows overriding of the `Mixin` parameter. Value of `0` uses only the RSSI Prio
 ```
 
 
+<br><br><br><br><br>
+
+## PUT /mqtt
+
+### Description
+
+Allows you to access MQTT streams of your data. This is available on the public server using the 3rd party [mosquitto server](https://mosquitto.org/), if you want to setup, [see this documentation](https://doc.internalpositioning.com/mqtt/).
+
+### Parameters
+
+| Name  | Location  | Description  | Required  |
+|---|---|---|---|
+|  group | query  | Defines the unique group ID  | yes  |
+
+### Response
+
+
+```json
+{
+    "message": "You have successfully set your password.",
+    "password": "YOURPASSWORD",
+    "success": true
+}
+```
+
+
 
 
 
