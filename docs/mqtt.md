@@ -28,13 +28,6 @@ Now, start `mosquitto` in the background:
 mosquitto -c /path/to/find/mosquitto/conf -d
 ```
 
-To use it with **FIND** you'll need the PID, so get that using
-
-```bash
-$ ps aux | grep mosquitto | grep conf
-bitnami  PID  0.0  0.0  30968  1136 ?  Ss  09:19  0:00 mosquitto -c /path/to/find/mosquitto/conf -d
-```
-
 Now, you can startup **FIND**:
 
 ```bash
