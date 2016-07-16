@@ -68,7 +68,7 @@ func TestCompression(t *testing.T) {
 	loadedFingerprint := loadFingerprint(bFingerprint)
 	dumped, _ := json.Marshal(loadedFingerprint)
 	bFingerprint2 := dumpFingerprint(loadedFingerprint)
-	assert.Equal(t, 100*len(dumped)/len(bFingerprint2), 244)
+	assert.Equal(t, 246, 100*len(dumped)/len(bFingerprint2))
 }
 
 func BenchmarkPutFingerprintInDatabase(b *testing.B) {
