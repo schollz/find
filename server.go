@@ -47,7 +47,6 @@ var VersionNum string
 // init initiates the paths in RuntimeArgs
 func init() {
 	cwd, _ := os.Getwd()
-	RuntimeArgs.SourcePath = path.Join(cwd, "data")
 	RuntimeArgs.Cwd = cwd
 	RuntimeArgs.Message = ""
 }
@@ -61,12 +60,13 @@ func main() {
 	flag.StringVar(&RuntimeArgs.Socket, "s", "", "unix socket")
 	flag.StringVar(&RuntimeArgs.ServerCRT, "crt", "", "location of ssl crt")
 	flag.StringVar(&RuntimeArgs.ServerKey, "key", "", "location of ssl key")
-	flag.StringVar(&RuntimeArgs.MqttServer, "mqtt", "", "turn on MQTT message passing")
+	flag.StringVar(&RuntimeArgs.MqttServer, "mqtt", "", "ADDRESS:PORT of mosquitto server")
 	flag.StringVar(&RuntimeArgs.MqttAdmin, "mqttadmin", "", "admin to read all messages")
 	flag.StringVar(&RuntimeArgs.MqttAdminPassword, "mqttadminpass", "", "admin to read all messages")
-	flag.StringVar(&RuntimeArgs.MosquittoPID, "mosquitto", "", "mosquitto PID")
+	flag.StringVar(&RuntimeArgs.MosquittoPID, "mosquitto", "", "mosquitto PID (`pgrep mosquitto`)")
 	flag.StringVar(&RuntimeArgs.Dump, "dump", "", "group to dump to folder")
 	flag.StringVar(&RuntimeArgs.Message, "message", "", "message to display to all users")
+	flag.StringVar(&RuntimeArgs.SourcePath, "data", "", "path to data folder")
 	flag.CommandLine.Usage = func() {
 		fmt.Println(`find (version ` + VersionNum + `)
 run this to start the server and then visit localhost at the port you specify
@@ -83,6 +83,11 @@ Options:`)
 	if RuntimeArgs.ExternalIP == "" {
 		RuntimeArgs.ExternalIP = GetLocalIP() + RuntimeArgs.Port
 	}
+
+	if RuntimeArgs.SourcePath == "" {
+		RuntimeArgs.SourcePath = path.Join(RuntimeArgs.Cwd, "data")
+	}
+	fmt.Println(RuntimeArgs.SourcePath)
 
 	// Check whether all the MQTT variables are passed to initiate the MQTT routines
 	if len(RuntimeArgs.MqttServer) > 0 && len(RuntimeArgs.MqttAdmin) > 0 && len(RuntimeArgs.MosquittoPID) > 0 {
