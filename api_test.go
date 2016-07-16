@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"net/http/httptest"
@@ -15,11 +14,10 @@ import (
 
 func init() {
 	gin.SetMode(gin.ReleaseMode)
-	out, err := exec.Command("cp", []string{"data/testdb.db.backup", "data/testdb.db"}...).Output()
+	_, err := exec.Command("cp", []string{"data/testdb.db.backup", "data/testdb.db"}...).Output()
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(out)
 }
 
 func TestCalculate(t *testing.T) {
@@ -62,7 +60,6 @@ func TestGetUserLocations2(t *testing.T) {
 	req, _ := http.NewRequest("GET", "/foo?group=testdb&user=zack", nil)
 	resp := httptest.NewRecorder()
 	router.ServeHTTP(resp, req)
-
 	assert.Equal(t, strings.Contains(resp.Body.String(), "{\"message\":\"Correctly found locations.\""), true)
 }
 

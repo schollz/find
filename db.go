@@ -54,7 +54,6 @@ func getUsers(group string) []string {
 	}
 
 	uniqueUsers := []string{}
-
 	db, err := bolt.Open(path.Join(RuntimeArgs.SourcePath, group+".db"), 0600, nil)
 	if err != nil {
 		log.Fatal(err)

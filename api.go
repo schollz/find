@@ -90,7 +90,6 @@ func calculate(c *gin.Context) {
 			return
 		}
 		optimizePriorsThreaded(strings.ToLower(group))
-		Debug.Println(RuntimeArgs.Svm)
 		if RuntimeArgs.Svm {
 			dumpFingerprintsSVM(strings.ToLower(group))
 			err := calculateSVM(strings.ToLower(group))
@@ -182,7 +181,6 @@ func putMixinOverride(c *gin.Context) {
 	group := strings.ToLower(c.DefaultQuery("group", "noneasdf"))
 	newMixin := c.DefaultQuery("mixin", "none")
 	if group != "noneasdf" {
-		fmt.Println(group, newMixin)
 		newMixinFloat, err := strconv.ParseFloat(newMixin, 64)
 		if err == nil {
 			err2 := setMixinOverride(group, newMixinFloat)
@@ -205,7 +203,7 @@ func editNetworkName(c *gin.Context) {
 	oldname := c.DefaultQuery("oldname", "none")
 	newname := c.DefaultQuery("newname", "none")
 	if group != "noneasdf" {
-		fmt.Println("Attempting renaming ", group, oldname, newname)
+		Debug.Println("Attempting renaming ", group, oldname, newname)
 		renameNetwork(group, oldname, newname)
 		optimizePriors(group)
 		c.JSON(http.StatusOK, gin.H{"success": true, "message": "Finished"})
@@ -509,7 +507,6 @@ func whereAmI(c *gin.Context) {
 			c := b.Cursor()
 			for k, v := c.Last(); k != nil; k, v = c.Prev() {
 				v2 := loadFingerprint(v)
-				fmt.Println(string(k), v2.Username)
 				if v2.Username == jsonData.User {
 					locations = append(locations, v2.Location)
 				}

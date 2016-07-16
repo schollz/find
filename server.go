@@ -48,6 +48,7 @@ var VersionNum string
 func init() {
 	cwd, _ := os.Getwd()
 	RuntimeArgs.Cwd = cwd
+	RuntimeArgs.SourcePath = path.Join(RuntimeArgs.Cwd, "data")
 	RuntimeArgs.Message = ""
 }
 
