@@ -15,22 +15,26 @@ import (
 )
 
 func dumpFingerprints(group string) error {
-	err := os.MkdirAll("dump-"+group, 0664)
+	// Debug.Println("Making dump-" + group + " directory")
+	err := os.MkdirAll(path.Join(RuntimeArgs.SourcePath, "dump-"+group), 0777)
 	if err != nil {
 		return err
 	}
 
+	// Debug.Println("Opening db")
 	db, err := bolt.Open(path.Join(RuntimeArgs.SourcePath, group+".db"), 0664, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer db.Close()
 
-	// Dump the learning fingerprints
-	f, err := os.OpenFile(path.Join("dump-"+group, "learning"), os.O_WRONLY|os.O_CREATE, 0664)
+	// Debug.Println("Opening file for learning fingerprints")
+	// Debug.Println(path.Join(RuntimeArgs.SourcePath, "dump-"+group, "learning"))
+	f, err := os.OpenFile(path.Join(RuntimeArgs.SourcePath, "dump-"+group, "learning"), os.O_WRONLY|os.O_CREATE, 0664)
 	if err != nil {
 		return err
 	}
+	// Debug.Println("Writing fingerprints to file")
 	db.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte("fingerprints"))
 		c := b.Cursor()
@@ -43,11 +47,12 @@ func dumpFingerprints(group string) error {
 	})
 	f.Close()
 
-	// Dump the tracking fingerprints
-	f, err = os.OpenFile(path.Join("dump-"+group, "tracking"), os.O_WRONLY|os.O_CREATE, 0664)
+	// Debug.Println("Opening file for tracking fingerprints")
+	f, err = os.OpenFile(path.Join(RuntimeArgs.SourcePath, "dump-"+group, "tracking"), os.O_WRONLY|os.O_CREATE, 0664)
 	if err != nil {
 		return err
 	}
+	// Debug.Println("Writing fingerprints to file")
 	db.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte("fingerprints-track"))
 		c := b.Cursor()
@@ -59,6 +64,7 @@ func dumpFingerprints(group string) error {
 		return nil
 	})
 	f.Close()
+	// Debug.Println("Returning")
 
 	return nil
 }
