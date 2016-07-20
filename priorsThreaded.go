@@ -230,7 +230,7 @@ func optimizePriorsThreaded(group string) error {
 	usersCache = make(map[string][]string)
 	// Debug.Println(getUsers(group))
 	go saveParameters(group, ps)
-	psCache[group] = ps
+	go setPsCache(group, ps)
 
 	return nil
 }
@@ -369,6 +369,6 @@ func optimizePriorsThreadedNot(group string) {
 		crossValidation(group, n, &ps, fingerprintsInMemory, fingerprintsOrdering)
 	}
 	go saveParameters(group, ps)
-	psCache[group] = ps
+	go setPsCache(group, ps)
 	// Debug.Println("Analyzed ", totalJobs, " fingerprints")
 }

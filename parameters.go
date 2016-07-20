@@ -131,8 +131,9 @@ func saveParameters(group string, res FullParameters) error {
 }
 
 func openParameters(group string) (FullParameters, error) {
-	if _, ok := psCache[group]; ok {
-		return psCache[group], nil
+	psCached, ok := getPsCache(group)
+	if ok {
+		return psCached, nil
 	}
 
 	var ps = *NewFullParameters()
@@ -152,7 +153,8 @@ func openParameters(group string) (FullParameters, error) {
 		ps = loadParameters(v)
 		return nil
 	})
-	psCache[group] = ps
+
+	setPsCache(group, ps)
 	return ps, err
 }
 
