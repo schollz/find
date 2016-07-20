@@ -6,12 +6,22 @@
 
 package main
 
-import "time"
+import (
+	"sync"
+	"time"
+)
 
-var psCache map[string]FullParameters
-var usersCache map[string][]string
-var userPositionCache map[string]UserPositionJSON
-var isLearning map[string]bool
+var counter = struct {
+	sync.RWMutex
+	ps           map[string]FullParameters
+	users        map[string][]string
+	userPosition map[string]UserPositionJSON
+	isLearning   map[string]bool
+}{isLearning: make(map[string]bool),
+	ps:           make(map[string]FullParameters),
+	users:        make(map[string][]string),
+	userPosition: make(map[string]UserPositionJSON),
+}
 
 func init() {
 	go clearCache()
@@ -19,10 +29,6 @@ func init() {
 
 func clearCache() {
 	for {
-		isLearning = make(map[string]bool)
-		psCache = make(map[string]FullParameters)
-		usersCache = make(map[string][]string)
-		userPositionCache = make(map[string]UserPositionJSON)
 		time.Sleep(time.Minute * 10)
 	}
 }
