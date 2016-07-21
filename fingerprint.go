@@ -182,11 +182,7 @@ func trackFingerprint(jsonFingerprint Fingerprint) (string, bool, string, map[st
 				dumpFingerprintsSVM(group)
 				calculateSVM(group)
 			}
-			if _, ok := usersCache[group]; ok {
-				if len(usersCache[group]) == 0 {
-					usersCache[group] = append([]string{}, strings.ToLower(jsonFingerprint.Username))
-				}
-			}
+			appendUserCache(group, jsonFingerprint.Username)
 		}
 	}
 	locationGuess1, bayes := calculatePosterior(jsonFingerprint, *NewFullParameters())

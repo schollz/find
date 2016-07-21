@@ -49,7 +49,8 @@ func renameNetwork(group string, oldName string, newName string) {
 }
 
 func getUsers(group string) []string {
-	if val, ok := usersCache[group]; ok {
+	val, ok := getUserCache(group)
+	if ok {
 		return val
 	}
 
@@ -76,7 +77,7 @@ func getUsers(group string) []string {
 		return nil
 	})
 
-	usersCache[group] = uniqueUsers
+	go setUserCache(group, uniqueUsers)
 	return uniqueUsers
 }
 

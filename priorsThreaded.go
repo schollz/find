@@ -227,8 +227,9 @@ func optimizePriorsThreaded(group string) error {
 		ps.Priors[n].Special["VarabilityCutoff"] = bestCutoff[n]
 		crossValidation(group, n, &ps, fingerprintsInMemory, fingerprintsOrdering)
 	}
-	usersCache = make(map[string][]string)
+
 	// Debug.Println(getUsers(group))
+	go resetCache("usersCache")
 	go saveParameters(group, ps)
 	go setPsCache(group, ps)
 

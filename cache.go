@@ -7,6 +7,7 @@
 package main
 
 import (
+	"strings"
 	"sync"
 	"time"
 )
@@ -16,7 +17,11 @@ var psCache = struct {
 	m map[string]FullParameters
 }{m: make(map[string]FullParameters)}
 
-var usersCache map[string][]string
+var usersCache = struct {
+	sync.RWMutex
+	m map[string][]string
+}{m: make(map[string][]string)}
+
 var userPositionCache map[string]UserPositionJSON
 var isLearning map[string]bool
 
@@ -31,10 +36,43 @@ func clearCache() {
 		psCache.Lock()
 		psCache.m = make(map[string]FullParameters)
 		psCache.Unlock()
-		usersCache = make(map[string][]string)
+		usersCache.Lock()
+		usersCache.m = make(map[string][]string)
+		usersCache.Unlock()
 		userPositionCache = make(map[string]UserPositionJSON)
 		time.Sleep(time.Second * 10)
 	}
+}
+
+func resetCache(cache string) {
+	if cache == "userCache" {
+		usersCache.Lock()
+		usersCache.m = make(map[string][]string)
+		usersCache.Unlock()
+	}
+}
+
+func getUserCache(group string) ([]string, bool) {
+	Debug.Println("Getting userCache")
+	usersCache.RLock()
+	cached, ok := usersCache.m[group]
+	usersCache.RUnlock()
+	return cached, ok
+}
+
+func appendUserCache(group string, user string) {
+	usersCache.Lock()
+	if _, ok := usersCache.m[group]; ok {
+		if len(usersCache.m[group]) == 0 {
+			usersCache.m[group] = append([]string{}, strings.ToLower(user))
+		}
+	}
+	usersCache.Unlock()
+}
+func setUserCache(group string, users []string) {
+	usersCache.Lock()
+	usersCache.m[group] = users
+	usersCache.Unlock()
 }
 
 func getPsCache(group string) (FullParameters, bool) {

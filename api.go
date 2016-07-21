@@ -368,7 +368,7 @@ func editUserName(c *gin.Context) {
 		numChanges += len(toUpdate)
 
 		// reset the cache (cache.go)
-		usersCache = make(map[string][]string)
+		go resetCache("usersCache")
 		userPositionCache = make(map[string]UserPositionJSON)
 
 		c.JSON(http.StatusOK, gin.H{"message": "Changed name of " + strconv.Itoa(numChanges) + " things", "success": true})
@@ -477,7 +477,7 @@ func deleteUser(c *gin.Context) {
 		db.Close()
 
 		// reset the cache (cache.go)
-		usersCache = make(map[string][]string)
+		go resetCache("usersCache")
 		userPositionCache = make(map[string]UserPositionJSON)
 
 		c.JSON(http.StatusOK, gin.H{"message": "Deletes " + strconv.Itoa(numChanges) + " things " + " with user " + user, "success": true})
