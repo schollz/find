@@ -38,7 +38,7 @@ func init() {
 
 func clearCache() {
 	for {
-		Debug.Println("Resetting cache")
+		//Debug.Println("Resetting cache")
 		go resetCache("isLearning")
 		go resetCache("psCache")
 		go resetCache("userCache")
@@ -68,7 +68,7 @@ func resetCache(cache string) {
 }
 
 func getLearningCache(group string) (bool, bool) {
-	Debug.Println("getLearningCache")
+	//Debug.Println("getLearningCache")
 	isLearning.RLock()
 	cached, ok := isLearning.m[group]
 	isLearning.RUnlock()
@@ -82,7 +82,7 @@ func setLearningCache(group string, val bool) {
 }
 
 func getUserCache(group string) ([]string, bool) {
-	Debug.Println("Getting userCache")
+	//Debug.Println("Getting userCache")
 	usersCache.RLock()
 	cached, ok := usersCache.m[group]
 	usersCache.RUnlock()
@@ -106,7 +106,7 @@ func appendUserCache(group string, user string) {
 }
 
 func getPsCache(group string) (FullParameters, bool) {
-	Debug.Println("Getting pscache")
+	//Debug.Println("Getting pscache")
 	psCache.RLock()
 	psCached, ok := psCache.m[group]
 	psCache.RUnlock()
@@ -114,7 +114,7 @@ func getPsCache(group string) (FullParameters, bool) {
 }
 
 func setPsCache(group string, ps FullParameters) {
-	Debug.Println("Setting pscache")
+	//Debug.Println("Setting pscache")
 	psCache.Lock()
 	psCache.m[group] = ps
 	psCache.Unlock()
@@ -122,7 +122,7 @@ func setPsCache(group string, ps FullParameters) {
 }
 
 func getUserPositionCache(group string) (UserPositionJSON, bool) {
-	Debug.Println("getUserPositionCache")
+	//Debug.Println("getUserPositionCache")
 	userPositionCache.RLock()
 	cached, ok := userPositionCache.m[group]
 	userPositionCache.RUnlock()
@@ -130,7 +130,7 @@ func getUserPositionCache(group string) (UserPositionJSON, bool) {
 }
 
 func setUserPositionCache(group string, p UserPositionJSON) {
-	Debug.Println("setUserPositionCache")
+	//Debug.Println("setUserPositionCache")
 	userPositionCache.Lock()
 	userPositionCache.m[group] = p
 	userPositionCache.Unlock()
