@@ -154,7 +154,7 @@ func learnFingerprint(jsonFingerprint Fingerprint) (string, bool) {
 		return "No fingerprints found to insert, see API", false
 	}
 	putFingerprintIntoDatabase(jsonFingerprint, "fingerprints")
-	isLearning[strings.ToLower(jsonFingerprint.Group)] = true
+	setLearningCache(strings.ToLower(jsonFingerprint.Group), true)
 	message := "Inserted fingerprint containing " + strconv.Itoa(len(jsonFingerprint.WifiFingerprint)) + " APs for " + jsonFingerprint.Username + " at " + jsonFingerprint.Location
 	return message, true
 }
@@ -172,11 +172,12 @@ func trackFingerprint(jsonFingerprint Fingerprint) (string, bool, string, map[st
 	if len(jsonFingerprint.Username) == 0 {
 		return "No username defined, see API", false, "", bayes, make(map[string]float64)
 	}
-	if wasLearning, ok := isLearning[strings.ToLower(jsonFingerprint.Group)]; ok {
+	wasLearning, ok := getLearningCache(strings.ToLower(jsonFingerprint.Group))
+	if ok {
 		if wasLearning {
 			Debug.Println("Was learning, calculating priors")
 			group := strings.ToLower(jsonFingerprint.Group)
-			isLearning[group] = false
+			setLearningCache(group, false)
 			optimizePriorsThreaded(group)
 			if RuntimeArgs.Svm {
 				dumpFingerprintsSVM(group)

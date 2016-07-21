@@ -27,7 +27,10 @@ var userPositionCache = struct {
 	m map[string]UserPositionJSON
 }{m: make(map[string]UserPositionJSON)}
 
-var isLearning map[string]bool
+var isLearning = struct {
+	sync.RWMutex
+	m map[string]bool
+}{m: make(map[string]bool)}
 
 func init() {
 	go clearCache()
@@ -36,12 +39,10 @@ func init() {
 func clearCache() {
 	for {
 		Debug.Println("Resetting cache")
-		isLearning = make(map[string]bool)
-		psCache.Lock()
-		psCache.m = make(map[string]FullParameters)
-		psCache.Unlock()
-		resetCache("userCache")
-		resetCache("userPositionCache")
+		go resetCache("isLearning")
+		go resetCache("psCache")
+		go resetCache("userCache")
+		go resetCache("userPositionCache")
 		time.Sleep(time.Second * 10)
 	}
 }
@@ -55,7 +56,29 @@ func resetCache(cache string) {
 		userPositionCache.Lock()
 		userPositionCache.m = make(map[string]UserPositionJSON)
 		userPositionCache.Unlock()
+	} else if cache == "psCache" {
+		psCache.Lock()
+		psCache.m = make(map[string]FullParameters)
+		psCache.Unlock()
+	} else if cache == "isLearning" {
+		isLearning.Lock()
+		isLearning.m = make(map[string]bool)
+		isLearning.Unlock()
 	}
+}
+
+func getLearningCache(group string) (bool, bool) {
+	Debug.Println("getLearningCache")
+	isLearning.RLock()
+	cached, ok := isLearning.m[group]
+	isLearning.RUnlock()
+	return cached, ok
+}
+
+func setLearningCache(group string, val bool) {
+	isLearning.Lock()
+	isLearning.m[group] = val
+	isLearning.Unlock()
 }
 
 func getUserCache(group string) ([]string, bool) {
@@ -66,6 +89,12 @@ func getUserCache(group string) ([]string, bool) {
 	return cached, ok
 }
 
+func setUserCache(group string, users []string) {
+	usersCache.Lock()
+	usersCache.m[group] = users
+	usersCache.Unlock()
+}
+
 func appendUserCache(group string, user string) {
 	usersCache.Lock()
 	if _, ok := usersCache.m[group]; ok {
@@ -73,11 +102,6 @@ func appendUserCache(group string, user string) {
 			usersCache.m[group] = append([]string{}, strings.ToLower(user))
 		}
 	}
-	usersCache.Unlock()
-}
-func setUserCache(group string, users []string) {
-	usersCache.Lock()
-	usersCache.m[group] = users
 	usersCache.Unlock()
 }
 
