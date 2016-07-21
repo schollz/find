@@ -22,7 +22,11 @@ var usersCache = struct {
 	m map[string][]string
 }{m: make(map[string][]string)}
 
-var userPositionCache map[string]UserPositionJSON
+var userPositionCache = struct {
+	sync.RWMutex
+	m map[string]UserPositionJSON
+}{m: make(map[string]UserPositionJSON)}
+
 var isLearning map[string]bool
 
 func init() {
@@ -36,10 +40,8 @@ func clearCache() {
 		psCache.Lock()
 		psCache.m = make(map[string]FullParameters)
 		psCache.Unlock()
-		usersCache.Lock()
-		usersCache.m = make(map[string][]string)
-		usersCache.Unlock()
-		userPositionCache = make(map[string]UserPositionJSON)
+		resetCache("userCache")
+		resetCache("userPositionCache")
 		time.Sleep(time.Second * 10)
 	}
 }
@@ -49,6 +51,10 @@ func resetCache(cache string) {
 		usersCache.Lock()
 		usersCache.m = make(map[string][]string)
 		usersCache.Unlock()
+	} else if cache == "userPositionCache" {
+		userPositionCache.Lock()
+		userPositionCache.m = make(map[string]UserPositionJSON)
+		userPositionCache.Unlock()
 	}
 }
 
@@ -88,5 +94,21 @@ func setPsCache(group string, ps FullParameters) {
 	psCache.Lock()
 	psCache.m[group] = ps
 	psCache.Unlock()
+	return
+}
+
+func getUserPositionCache(group string) (UserPositionJSON, bool) {
+	Debug.Println("getUserPositionCache")
+	userPositionCache.RLock()
+	cached, ok := userPositionCache.m[group]
+	userPositionCache.RUnlock()
+	return cached, ok
+}
+
+func setUserPositionCache(group string, p UserPositionJSON) {
+	Debug.Println("setUserPositionCache")
+	userPositionCache.Lock()
+	userPositionCache.m[group] = p
+	userPositionCache.Unlock()
 	return
 }

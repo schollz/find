@@ -41,7 +41,8 @@ type UserPositionJSON struct {
 func getCurrentPositionOfUser(group string, user string) UserPositionJSON {
 	group = strings.ToLower(group)
 	user = strings.ToLower(user)
-	if val, ok := userPositionCache[group+user]; ok {
+	val, ok := getUserPositionCache(group + user)
+	if ok {
 		return val
 	}
 	db, err := bolt.Open(path.Join(RuntimeArgs.SourcePath, group+".db"), 0600, nil)
@@ -78,7 +79,7 @@ func getCurrentPositionOfUser(group string, user string) UserPositionJSON {
 	if RuntimeArgs.Svm {
 		_, userJSON.Svm = classify(userFingerprint)
 	}
-	userPositionCache[group+user] = userJSON
+	go setUserPositionCache(group+user, userJSON)
 	return userJSON
 }
 
@@ -98,7 +99,7 @@ func calculate(c *gin.Context) {
 				Warning.Println(err)
 			}
 		}
-		userPositionCache = make(map[string]UserPositionJSON)
+		resetCache("userPositionCache")
 		c.JSON(http.StatusOK, gin.H{"message": "Parameters optimized.", "success": true})
 	} else {
 		c.JSON(http.StatusOK, gin.H{"success": false, "message": "Error parsing request"})
@@ -369,7 +370,7 @@ func editUserName(c *gin.Context) {
 
 		// reset the cache (cache.go)
 		go resetCache("usersCache")
-		userPositionCache = make(map[string]UserPositionJSON)
+		go resetCache("userPositionCache")
 
 		c.JSON(http.StatusOK, gin.H{"message": "Changed name of " + strconv.Itoa(numChanges) + " things", "success": true})
 	} else {
@@ -478,7 +479,7 @@ func deleteUser(c *gin.Context) {
 
 		// reset the cache (cache.go)
 		go resetCache("usersCache")
-		userPositionCache = make(map[string]UserPositionJSON)
+		go resetCache("userPositionCache")
 
 		c.JSON(http.StatusOK, gin.H{"message": "Deletes " + strconv.Itoa(numChanges) + " things " + " with user " + user, "success": true})
 	} else {

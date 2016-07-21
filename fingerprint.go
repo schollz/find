@@ -236,7 +236,7 @@ func trackFingerprint(jsonFingerprint Fingerprint) (string, bool, string, map[st
 	userJSON.Bayes = bayes
 	userJSON.Svm = svmData
 	userJSON.Time = time.Now().String()
-	userPositionCache[strings.ToLower(jsonFingerprint.Group)+strings.ToLower(jsonFingerprint.Username)] = userJSON
+	go setUserPositionCache(strings.ToLower(jsonFingerprint.Group)+strings.ToLower(jsonFingerprint.Username), userJSON)
 
 	return message, true, locationGuess1, bayes, svmData
 
