@@ -248,7 +248,6 @@ func calculateSVM(group string) error {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(string(outCmd))
 
 	// os.Remove(tempFileTrain + ".scaled")
 	// os.Remove(tempFileTest + ".scaled")
