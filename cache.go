@@ -6,9 +6,16 @@
 
 package main
 
-import "time"
+import (
+	"sync"
+	"time"
+)
 
-var psCache map[string]FullParameters
+var psCache = struct {
+	sync.RWMutex
+	m map[string]FullParameters
+}{m: make(map[string]FullParameters)}
+
 var usersCache map[string][]string
 var userPositionCache map[string]UserPositionJSON
 var isLearning map[string]bool
@@ -19,10 +26,29 @@ func init() {
 
 func clearCache() {
 	for {
+		Debug.Println("Resetting cache")
 		isLearning = make(map[string]bool)
-		psCache = make(map[string]FullParameters)
+		psCache.Lock()
+		psCache.m = make(map[string]FullParameters)
+		psCache.Unlock()
 		usersCache = make(map[string][]string)
 		userPositionCache = make(map[string]UserPositionJSON)
-		time.Sleep(time.Minute * 10)
+		time.Sleep(time.Second * 10)
 	}
+}
+
+func getPsCache(group string) (FullParameters, bool) {
+	Debug.Println("Getting pscache")
+	psCache.RLock()
+	psCached, ok := psCache.m[group]
+	psCache.RUnlock()
+	return psCached, ok
+}
+
+func setPsCache(group string, ps FullParameters) {
+	Debug.Println("Setting pscache")
+	psCache.Lock()
+	psCache.m[group] = ps
+	psCache.Unlock()
+	return
 }
