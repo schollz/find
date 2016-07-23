@@ -7,6 +7,7 @@ site_author: Zack
 pages:
   - 'Quickstart': index.md
   - 'Setup': setup.md
+  - 'API': api.md
   - 'FAQ': faq.md
   - 'Home Automation': ha.md
   - 'Privacy Policy': privacy.md
