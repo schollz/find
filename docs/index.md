@@ -14,7 +14,7 @@ The system is built on two main components - [a server](https://ml.internalposit
 
 # Quickstart
 
-If you'd like to install things yourself, see [INSTALL.md](https://github.com/schollz/find/blob/master/INSTALL.md). You don't need to do this to try FIND, though.
+If you'd like to install things yourself, see [Setup documentation](https://doc.internalpositioning.com/setup/). You don't need to do this to try FIND, though.
 
 ## 1. Download the software
 
