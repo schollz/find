@@ -10,10 +10,6 @@
 
 <a href="https://www.internalpositioning.com/"><img src="https://raw.githubusercontent.com/schollz/find/master/static/splash.gif"></a>
 
-*FIND is now 100% open-source.*
-
-*Note for past users, the codebase has been completely rewritten in Golang so [things are ~100x faster](https://github.com/schollz/find/blob/master/BENCHMARKS.md#python-vs-go), smarter, and more secure. The [Python3 version will stay available](https://github.com/schollz/find/tree/python3), but it is no longer supported. Development will now be focused on this version.*
-
 **Keywords**: indoor GPS, WiFi positioning, indoor mapping, indoor navigation, indoor positioning
 
 # About
@@ -42,104 +38,41 @@ If you'd like to install things yourself, see [INSTALL.md](https://github.com/sc
 
 ## 1. Download the software
 
-Android users: [download the current version of the app](https://play.google.com/store/apps/details?id=com.hcp.find). *[Sorry iPhone users](https://github.com/schollz/find/blob/master/FAQ.md#can-i-use-an-iphone) but the Apple store prevents apps that access WiFi information, so I will be unable to release a iPhone version.*
+**Android users:** [download the current version of the app](https://play.google.com/store/apps/details?id=com.hcp.find). *Sorry iPhone users but  [the Apple store prevents apps that access WiFi information](https://github.com/schollz/find/blob/master/FAQ.md#can-i-use-an-iphone), so I will be unable to release a iPhone version.*
 
-Computer users: you can [download the current version of the fingerprinting program](https://github.com/schollz/find/releases/tag/v0.4client), available for Rasbperry Pi, OSX, Linux, and Windows.
+**Computer users:** you can [download the current version of the fingerprinting program](https://github.com/schollz/find/releases/tag/v0.4client), available for Rasbperry Pi, OSX, Linux, and Windows.
 
 
 ## 2. Gather fingerprint data
 
 First, to get started using **FIND** you will need to gather fingerprint data in your locations.
 
-### Android users
-
-When you start up the app you will be asked for a username (enter whatever you want) and you'll be assigned a unique group name. Simply click "Learn" and you'll be prompted for a location name. After you enter a location, the app will connect to the server and then submit fingerprints.
-
+**Android users:** When you start up the app you will be asked for a username (enter whatever you want) and you'll be assigned a unique group name. Simply click "Learn" and you'll be prompted for a location name. After you enter a location, the app will connect to the server and then submit fingerprints.
 
 <center>
 <img src="https://i.imgur.com/fbcYom5.png" width="200px" />
 <img src="https://i.imgur.com/Ab9eXIk.png" width="200px" />
 </center>
+<br>
 
 
+**Computer users:** To start learning locations simply use `./fingerprint -e`.
 
-### Computer users
-
-To start learning locations simply use
-
-```bash
-./fingerprint -e
-```
 
 
 ## 3. Track yourself
 
 Once you've collected data in a few locations, you can track yourself.
 
-### Android users
+**Android users:** Just press the "Track" button when you're ready to track.
 
-Just press the "Track" button when you're ready to track.
-
-### Computer users
-
-Type in
-
-```
-./fingerprint
-```
-
-to start tracking yourself.
+**Computer users:** Type in `./fingerprint` to start tracking yourself.
 
 
-# Contributing
+# More information
 
-Pull requests are welcome. Checkout [the latest issues](https://github.com/schollz/find/issues) to see what needs being done, or add your own cool thing.
+See the documentation at https://doc.internalpositioning.com.
 
-If you find a bug or need help with something, feel free to contact:
-
-* Email: [zack@hypercubeplatforms.com](mailto:zack@hypercubeplatforms.com)
-* Twitter: [@zack_118](https://twitter.com/intent/tweet?screen_name=zack_118)
-* Gitter: [Join room](https://gitter.im/schollz/find)
-* Github Issues: [Open an issue](https://github.com/schollz/find/issues/new)
-
-# Acknowledgements
-
-<img src="https://i.imgur.com/Ze51DJ6.png" width="180px" /> Funding from [Duke University Colab](https://colab.duke.edu/)
-
-Thanks to [tscholl2](https://github.com/tscholl2), [sjsafranek](https://github.com/sjsafranek), and [jschools](https://github.com/jschools) for their help in guiding the development of **FIND** and creating the early versions of FIND with me! Thanks to Rishabh Rajgarhia and [CanvasJS](http://canvasjs.com/) for help implementing a nice graph. Thanks [arafsheikh](https://github.com/arafsheikh) for adding interface selection, [Pugio](https://github.com/Pugio) and [ScottSWu](https://github.com/ScottSWu) for adding OS X/Windows support for the fingerprint program, including a better [Windows scanning utility](https://github.com/ScottSWu/windows-wlan-util/releases)! Thanks [Thom-x](https://github.com/Thom-x) for the Dockerfile. Thanks [certifiedloud](https://github.com/certifiedloud) for implementing the change to `DELETE` requests and implementing sockets for unix. Thanks [bebus77](https://github.com/bebus77) for making a awesome generic struct for OS support on the fingerprinting program! Thanks [christoph-wagner](https://github.com/Christoph-Wagner) for help with polling interval on app. Thanks to [patorjk](http://patorjk.com/software/taag/) and [asciiworld](http://www.asciiworld.com/) for the ASCII art. Thanks to [Imgur](https://imgur.com/a/yjvci) for [hosting](https://imgur.com/a/3yGjV) images.
+### Donate
 
 Like this? Help me keep it alive [by donating $5](https://www.paypal.me/ZackScholl/5.00) to [pay for server costs](http://rpiai.com/donate/).
-
-# License
-
-## FIND
-
-**FIND** is a Framework for Internal Navigation and Discovery.
-
-Copyright (C) 2015-2016 Zack Scholl
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the [GNU Affero General Public License](LICENSE) for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see [GNU Affero General Public License here](https://www.gnu.org/licenses/agpl.html).
-
-## CanvasJS
-
-**FIND** uses [CanvasJS](http://canvasjs.com/). Note that you will have to buy the appropriate CanvasJS License if you use this software for commercial purposes. CanvasJS has the following Dual Licensing Model:
-
-### Commercial License
-
-Commercial use of CanvasJS requires you to purchase a license. Without a commercial license you can use it for evaluation purposes only. Please refer to the following link for further details: http://canvasjs.com/.
-
-### Free for Non-Commercial Use
-
-For non-commercial purposes you can use the software for free under Creative Commons Attribution-NonCommercial 3.0 License.
-
-A credit Link is added to the bottom right of the chart which should be preserved. Refer to the following link for further details on the same: http://creativecommons.org/licenses/by-nc/3.0/deed.en_US.
