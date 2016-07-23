@@ -5,12 +5,10 @@ site_description: API documentation for schollz/find, a Framework for Internal P
 site_url: https://docs.internalpositioning.com
 site_author: Zack
 pages:
-  - 'API': index.md
+  - 'Quickstart': index.md
+  - 'Setup': setup.md
   - 'FAQ': faq.md
-  - 'MQTT': mqtt.md
-  - 'SVM': svm.md
-  - 'Photon': photon.md
-  - 'Hass': hass.md
+  - 'Home Automation': ha.md
   - 'Privacy Policy': privacy.md
 
 extra_javascript:

@@ -1,356 +1,49 @@
-# API
-
-
-**The server for FIND allows manipulation of fingerprints directly through these API routes. Most useful is likely the [/location](/#get-location) route which gathers
-the most recent location for a user.**
-
-
-
 [![](https://raw.githubusercontent.com/schollz/find/master/static/splash.gif)](https://www.internalpositioning.com/)
 
 
 
+**Keywords**: indoor GPS, WiFi positioning, indoor mapping, indoor navigation, indoor positioning
 
+# About
 
+**The Framework for Internal Navigation and Discovery** (_FIND_) allows you to use your (Android) smartphone or WiFi-enabled computer (laptop or Raspberry Pi or etc.) to determine your position within your home or office. You can easily use this system in place of motion sensors as its resolution will allow your phone to distinguish whether you are in the living room, the kitchen or the bedroom, etc. The position information can then be used in a variety of ways including home automation, way-finding, or tracking!
+<blockquote>Simply put, FIND will allow you to replace <em>tons</em> of motion sensors with a <em>single</em> smartphone!</blockquote>
 
+The system is built on two main components - [a server](https://ml.internalpositioning.com/) and a fingerprinting device. The fingerprinting device ([computer program](https://github.com/schollz/find/releases/tag/v0.4client) or [android app](https://play.google.com/store/apps/details?id=com.hcp.find)) sends the specified data to the machine learning server which stores the fingerprints and analyzes them. It then returns the result to the device and stores the result on the server for accessing via a web browser or triggering via hooks.
 
 
-<br><br><br><br><br>
+# Quickstart
 
+If you'd like to install things yourself, see [INSTALL.md](https://github.com/schollz/find/blob/master/INSTALL.md). You don't need to do this to try FIND, though.
 
+## 1. Download the software
 
+**Android users:** [download the current version of the app](https://play.google.com/store/apps/details?id=com.hcp.find). *Sorry iPhone users but  [the Apple store prevents apps that access WiFi information](https://github.com/schollz/find/blob/master/FAQ.md#can-i-use-an-iphone), so I will be unable to release a iPhone version.*
 
+**Computer users:** you can [download the current version of the fingerprinting program](https://github.com/schollz/find/releases/tag/v0.4client), available for Rasbperry Pi, OSX, Linux, and Windows.
 
 
-## POST /learn
+## 2. Gather fingerprint data
 
-### Description
+First, to get started using **FIND** you will need to gather fingerprint data in your locations.
 
-Submit a fingerprint to be used for learning the classification of the location. The information for the fingerprint is gathered from the WiFi client - either the App or the program.
+**Android users:** When you start up the app you will be asked for a username (enter whatever you want) and you'll be assigned a unique group name. Simply click "Learn" and you'll be prompted for a location name. After you enter a location, the app will connect to the server and then submit fingerprints.
 
-### Parameters
+<center>
+<img src="https://i.imgur.com/fbcYom5.png" width="200px" />
+<img src="https://i.imgur.com/Ab9eXIk.png" width="200px" />
+</center>
+<br>
 
-#### POST
 
-```json
-{
-   "group":"some group",
-   "username":"some user",
-   "location":"some place",
-   "time":12309123,
-   "wifi-fingerprint":[
-      {
-         "mac":"AA:AA:AA:AA:AA:AA",
-         "rssi":-45
-      },
-      {
-         "mac":"BB:BB:BB:BB:BB:BB",
-         "rssi":-55
-      }
-   ]
-}
-```
+**Computer users:** To start learning locations simply use `./fingerprint -e`.
 
-### Response
 
-```json
-{
-    "success": true,
-    "message": "Inserted fingerprint containing 23 APs for zack at zakhome floor 2 office"
-}
-```
 
+## 3. Track yourself
 
+Once you've collected data in a few locations, you can track yourself.
 
+**Android users:** Just press the "Track" button when you're ready to track.
 
-
-
-
-
-
-
-
-
-
-
-
-
-<br><br><br><br><br>
-
-
-
-## POST /track
-
-Submit a fingerprint to be used for classifying the location. The information for the fingerprint is gathered from the WiFi client - either the App or the program.
-
-### Parameters
-
-#### POST
-
-```json
-{
-   "group":"some group",
-   "username":"some user",
-   "location":"some place",
-   "time":12309123,
-   "wifi-fingerprint":[
-      {
-         "mac":"AA:AA:AA:AA:AA:AA",
-         "rssi":-45
-      },
-      {
-         "mac":"BB:BB:BB:BB:BB:BB",
-         "rssi":-55
-     }
-   ]
-}
-```
-
-### Response
-
-```json
-{
-    "success": true,
-    "message": "Calculated location: zakhome floor 2 office",
-    "location": "zakhome floor 2 office",
-    "bayes": {
-        "zakhome floor 1 kitchen": 0.07353831034486494,
-        "zakhome floor 2 bedroom": -0.9283974092154644,
-        "zakhome floor 2 office": 0.8548590988705993
-    }
-}
-
-```
-
-
-
-
-
-
-
-
-
-<br><br><br><br><br>
-
-## GET /calculate
-
-### Description
-
-Recalculates the priors for the database for the `group`.
-
-
-### Parameters
-
-
-| Name  | Location  | Description  | Required  |
-|---|---|---|---|
-|  group | query  | Defines the unique group ID  | yes  |
-
-### Response
-
-```json
-{
-  "message":"Parameters optimized",
-  "success":true
-}
-```
-
-
-
-
-
-
-
-<br><br><br><br><br>
-
-
-## GET /location
-
-### Description
-
-Gets the locations for the specified user(s) in the specified group.
-
-
-### Parameters
-
-
-| Name  | Location  | Description  | Required  |
-|---|---|---|---|
-|  group | query  | Defines the unique group ID  | yes  |
-| user | query | Specifies a user to get location | no |
-| users | query | Specifies multiple users `users=X,Y,Z` to get histories | no |
-
-### Response
-
-If `user` or `users` are not specified, then the location of all users are returned.
-
-```json
-{
-   "message":"Correctly found locations.",
-   "success":true,
-   "users":{
-      "morpheus":[
-         {
-            "time":"2016-04-18 15:59:38.146929368 -0400 EDT",
-            "location":"office",
-            "bayes":{
-               "bed bath":-1.0796283868148098,
-               "bedroom":-0.3253323338565688,
-               "car":-0.11084494825121938,
-               "dining":-0.21592336935362944,
-               "kitchen":0.7779455402822841,
-               "living":-0.5328733505357962,
-               "office":1.486656848529739
-            }
-         }
-      ],
-      "zack":[
-         {
-            "time":"2016-04-20 07:27:47.960140659 -0400 EDT",
-            "location":"office",
-            "bayes":{
-               "bed bath":-1.028454724759723,
-               "bedroom":0.1239023145100694,
-               "car":-0.1493711750580678,
-               "dining":-0.4237049232002753,
-               "kitchen":0.6637176338607336,
-               "living":-0.701636080467658,
-               "office":1.515546955114921
-            }
-         }
-      ]
-   }
-}
-```
-
-<br><br><br><br><br>
-
-## DELETE /username
-
-### Description
-
-Deletes all the tracking fingerprints for specified user in the specified group.
-
-### Parameters
-
-
-| Name  | Location  | Description  | Required  |
-|---|---|---|---|
-|  group | query  | Defines the unique group ID  | yes  |
-| user | query | Specifies a user  | yes |
-
-### Response
-
-```json
-{
-  "success":true,
-  "message":"Deleted user Y"
-}
-```
-
-<br><br><br><br><br>
-
-## DELETE /locations
-
-### Description
-
-Bulk delete locations
-
-### Parameters
-
-| Name  | Location  | Description  | Required  |
-|---|---|---|---|
-|  group | query  | Defines the unique group ID  | yes  |
-| names | query | Enter locations seperated by commas, e.g. locations=X,Y,Z  | yes |
-
-### Response
-
-```json
-{
-  "success":true,
-  "message":"Deleted X locations"
-}
-```
-
-
-
-<br><br><br><br><br>
-
-## PUT /mixin
-
-### Description
-
-Allows overriding of the `Mixin` parameter. Value of `0` uses only the RSSI Priors, while value of `1` uses only the Mac prevalence statistics.
-
-### Parameters
-
-| Name  | Location  | Description  | Required  |
-|---|---|---|---|
-|  group | query  | Defines the unique group ID  | yes  |
-| mixin | query | Specifiy a value between 0 and 1 to activate, or -1 to deactivate  | yes |
-
-### Response
-
-
-```json
-{
-  "message":"Overriding mixin for testdb, now set to 1",
-  "success":true
-}
-```
-
-
-<br><br><br><br><br>
-
-## PUT /mqtt
-
-### Description
-
-Allows you to access MQTT streams of your data. This is available on the public server using the 3rd party [mosquitto server](https://mosquitto.org/), if you want to setup, [see this documentation](https://doc.internalpositioning.com/mqtt/).
-
-### Parameters
-
-| Name  | Location  | Description  | Required  |
-|---|---|---|---|
-|  group | query  | Defines the unique group ID  | yes  |
-
-### Response
-
-
-```json
-{
-    "message": "You have successfully set your password.",
-    "password": "YOURPASSWORD",
-    "success": true
-}
-```
-
-
-
-
-
-
-
-<br><br><br><br><br>
-
-## GET /status
-
-### Description
-
-Returns status of the server and some information about the computer.
-
-### Parameters
-
-None.
-
-### Response
-
-
-```json
-{
-  "num_cores":1,
-  "registered":"2016-04-16 14:55:34.483803377 -0400 EDT",
-  "status":"standard",
-  "uptime":35109.225647597
-}
-```
+**Computer users:** Type in `./fingerprint` to start tracking yourself.
