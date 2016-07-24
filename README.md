@@ -34,11 +34,13 @@ More questions? See the [unabbreviated FAQ](https://github.com/schollz/find/blob
 
 # Quickstart
 
-If you'd like to install things yourself, see [INSTALL.md](https://github.com/schollz/find/blob/master/INSTALL.md). You don't need to do this to try FIND, though.
+If you'd like to install things yourself, see [the documentation](https://doc.internalpositioning.com/setup/). You don't need to do this to try it though. Follow the 3 steps below to get started quickly.
 
 ## 1. Download the software
 
 **Android users:** [download the current version of the app](https://play.google.com/store/apps/details?id=com.hcp.find). *Sorry iPhone users but  [the Apple store prevents apps that access WiFi information](https://github.com/schollz/find/blob/master/FAQ.md#can-i-use-an-iphone), so I will be unable to release a iPhone version.*
+
+**OR**
 
 **Computer users:** you can [download the current version of the fingerprinting program](https://github.com/schollz/find/releases/tag/v0.4client), available for Rasbperry Pi, OSX, Linux, and Windows.
 
