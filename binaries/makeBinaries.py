@@ -32,7 +32,7 @@ darwin    amd64
 linux    arm"""
 
 arches = arches.split("\n")
-version = "2.1b"
+version = "2.2"
 try:
     os.system("rm -rf builds")
 except:
