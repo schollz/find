@@ -72,9 +72,9 @@ func loadFingerprint(jsonByte []byte) Fingerprint {
 }
 
 func cleanFingerprint(res *Fingerprint) {
-	res.Group = strings.ToLower(res.Group)
-	res.Location = strings.ToLower(res.Location)
-	res.Username = strings.ToLower(res.Username)
+	res.Group = strings.TrimSpace(strings.ToLower(res.Group))
+	res.Location = strings.TrimSpace(strings.ToLower(res.Location))
+	res.Username = strings.TrimSpace(strings.ToLower(res.Username))
 	deleteIndex := -1
 	for r := range res.WifiFingerprint {
 		if res.WifiFingerprint[r].Rssi >= 0 { // https://stackoverflow.com/questions/15797920/how-to-convert-wifi-signal-strength-from-quality-percent-to-rssi-dbm
