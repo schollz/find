@@ -43,6 +43,8 @@ var RuntimeArgs struct {
 
 // VersionNum keeps track of the version
 var VersionNum string
+var BuildTime string
+var Build string
 
 // init initiates the paths in RuntimeArgs
 func init() {
@@ -53,9 +55,10 @@ func init() {
 }
 
 func main() {
-	VersionNum = "2.2"
 	// _, executableFile, _, _ := runtime.Caller(0) // get full path of this file
-
+	if len(Build) == 0 {
+		Build = "devdevdevdevdevdevdev"
+	}
 	// Bing flags for changing parameters of FIND
 	flag.StringVar(&RuntimeArgs.Port, "p", ":8003", "port to bind")
 	flag.StringVar(&RuntimeArgs.Socket, "s", "", "unix socket")
@@ -69,7 +72,7 @@ func main() {
 	flag.StringVar(&RuntimeArgs.Message, "message", "", "message to display to all users")
 	flag.StringVar(&RuntimeArgs.SourcePath, "data", "", "path to data folder")
 	flag.CommandLine.Usage = func() {
-		fmt.Println(`find (version ` + VersionNum + `)
+		fmt.Println(`find (version ` + VersionNum + ` (` + Build[0:8] + `), built ` + BuildTime + `)
 run this to start the server and then visit localhost at the port you specify
 (see parameters).
 Example: 'find yourserver.com'
@@ -194,11 +197,11 @@ cp svm-train /usr/local/bin/`)
 	if RuntimeArgs.Socket != "" {
 		r.RunUnix(RuntimeArgs.Socket)
 	} else if RuntimeArgs.ServerCRT != "" && RuntimeArgs.ServerKey != "" {
-		fmt.Println("(version " + VersionNum + ") is up and running on https://" + RuntimeArgs.ExternalIP)
+		fmt.Println(`(version ` + VersionNum + ` build ` + Build[0:8] + `) is up and running on https://` + RuntimeArgs.ExternalIP)
 		fmt.Println("-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----")
 		r.RunTLS(RuntimeArgs.Port, RuntimeArgs.ServerCRT, RuntimeArgs.ServerKey)
 	} else {
-		fmt.Println("(version " + VersionNum + ") is up and running on http://" + RuntimeArgs.ExternalIP)
+		fmt.Println(`(version ` + VersionNum + ` build ` + Build[0:8] + `) is up and running on http://` + RuntimeArgs.ExternalIP)
 		fmt.Println("-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----")
 		r.Run(RuntimeArgs.Port)
 	}
