@@ -89,6 +89,10 @@ func setupLogging() {
 	}
 }
 
+var VersionNum string
+var Build string
+var BuildTime string
+
 func main() {
 	var f Fingerprint
 	var times int
@@ -96,10 +100,14 @@ func main() {
 	var wlan_interface string
 	var osConfig OSConfig
 
+	if len(Build) == 0 {
+		Build = "devdevdevdevdevdev"
+	}
+
 	app := cli.NewApp()
-	app.Name = "fingerprint"
+	app.Name = "findclient"
 	app.Usage = "client for sending WiFi fingerprints to a FIND server"
-	app.Version = "0.2"
+	app.Version = VersionNum + " " + Build[0:7]
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
 			Name:  "server,s",

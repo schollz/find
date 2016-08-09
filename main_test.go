@@ -32,7 +32,7 @@ func ExampleSendFingerprintServerOnlineTrack() {
 		fmt.Println(err)
 	}
 	fmt.Println(response)
-	// Output: Calculated location: zakhome floor 2 office
+	// Output: Current location: zakhome floor 2 office
 }
 
 func ExampleSendFingerprintServerOffline() {
