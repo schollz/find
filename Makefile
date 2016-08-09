@@ -31,22 +31,15 @@ clean:
 
 .PHONY: binaries
 binaries:
-	rm -rf binaries
-	mkdir binaries
-	env GOOS=linux GOARCH=amd64 go build ${LDFLAGS} -o binaries/sdees
-	zip -j binaries/sdees_linux_amd64.zip binaries/sdees
-	rm binaries/sdees
-	env GOOS=linux GOARCH=arm go build ${LDFLAGS} -o binaries/sdees
-	zip -j binaries/sdees_linux_arm.zip binaries/sdees
-	rm binaries/sdees
-	env GOOS=linux GOARCH=arm64 go build ${LDFLAGS} -o binaries/sdees
-	zip -j binaries/sdees_linux_arm64.zip binaries/sdees
-	rm binaries/sdees
-	wget ftp://ftp.vim.org/pub/vim/pc/vim74w32.zip
-	unzip vim74w32.zip
-	mv vim/vim74/vim.exe ./binaries/
-	env GOOS=windows GOARCH=amd64 go build ${LDFLAGS} -o binaries/sdees.exe
-	zip -j binaries/sdees_windows_amd64.zip binaries/sdees.exe binaries/vim.exe
-	rm -rf binaries/vim.exe
-	rm -rf ./vim/
-	rm binaries/sdees.exe
+	rm -rf builds
+	mkdir builds
+	# Build Windows
+	env GOOS=windows GOARCH=amd64 go build ${LDFLAGS} -o findserver.exe -v *.go
+	zip -r find_${VERSION}_windows_amd64.zip findserver.exe LICENSE ./templates/* ./data/.datagoeshere ./static/*
+	mv find_${VERSION}_windows_amd64.zip builds/
+	rm findserver.exe
+	# Build Linux
+	env GOOS=linux GOARCH=amd64 go build ${LDFLAGS} -o findserver -v *.go
+	zip -r find_${VERSION}_linux_amd64.zip findserver LICENSE ./templates/* ./data/.datagoeshere ./static/*
+	mv find_${VERSION}_linux_amd64.zip builds/
+	rm findserver
