@@ -183,11 +183,13 @@ cp svm-train /usr/local/bin/`)
 	r.DELETE("/location", deleteLocation)
 	r.DELETE("/locations", deleteLocations)
 	r.DELETE("/user", deleteUser)
+	r.DELETE("/database", deleteDatabase)
 	r.GET("/calculate", calculate)
 	r.GET("/status", getStatus)
 	r.GET("/userlocs", userLocations) // to be deprecated
 	r.GET("/whereami", whereAmI)      // to be deprecated
 	r.PUT("/mixin", putMixinOverride)
+	r.PUT("/database", migrateDatabase)
 
 	// Load and display the logo
 	dat, _ := ioutil.ReadFile("./static/logo.txt")

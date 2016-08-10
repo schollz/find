@@ -178,6 +178,71 @@ func getUserLocations(c *gin.Context) {
 	}
 }
 
+func migrateDatabase(c *gin.Context) {
+	fromDB := strings.ToLower(c.DefaultQuery("from", "noneasdf"))
+	toDB := strings.ToLower(c.DefaultQuery("to", "noneasdf"))
+	Debug.Printf("Migrating %s to %s.\n", fromDB, toDB)
+	if !exists(path.Join(RuntimeArgs.SourcePath, fromDB+".db")) {
+		c.JSON(http.StatusOK, gin.H{"success": false, "message": "Can't migrate from " + fromDB + ", it does not exist."})
+		return
+	}
+	if !exists(path.Join(RuntimeArgs.SourcePath, toDB)) {
+		CopyFile(path.Join(RuntimeArgs.SourcePath, fromDB+".db"), path.Join(RuntimeArgs.SourcePath, toDB+".db"))
+	} else {
+		db, err := bolt.Open(path.Join(RuntimeArgs.SourcePath, fromDB+".db"), 0664, nil)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer db.Close()
+
+		db2, err := bolt.Open(path.Join(RuntimeArgs.SourcePath, toDB+".db"), 0664, nil)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer db2.Close()
+
+		db2.Update(func(tx *bolt.Tx) error {
+			bucket, err := tx.CreateBucketIfNotExists([]byte("fingerprints"))
+			if err != nil {
+				return fmt.Errorf("create bucket: %s", err)
+			}
+
+			db.View(func(tx *bolt.Tx) error {
+				b := tx.Bucket([]byte("fingerprints"))
+				c := b.Cursor()
+				for k, v := c.First(); k != nil; k, v = c.Next() {
+					bucket.Put(k, v)
+				}
+				return nil
+			})
+			return nil
+		})
+
+		db2.Update(func(tx *bolt.Tx) error {
+			bucket, err := tx.CreateBucketIfNotExists([]byte("fingerprints-track"))
+			if err != nil {
+				return fmt.Errorf("create bucket: %s", err)
+			}
+
+			db.View(func(tx *bolt.Tx) error {
+				b := tx.Bucket([]byte("fingerprints-track"))
+				c := b.Cursor()
+				for k, v := c.First(); k != nil; k, v = c.Next() {
+					bucket.Put(k, v)
+				}
+				return nil
+			})
+			return nil
+		})
+	}
+	c.JSON(http.StatusOK, gin.H{"success": true, "message": "Successfully migrated " + fromDB + " to " + toDB})
+}
+
+func deleteDatabase(c *gin.Context) {
+	group := strings.TrimSpace(strings.ToLower(c.DefaultQuery("group", "noneasdf")))
+	Debug.Println(group)
+}
+
 func putMixinOverride(c *gin.Context) {
 	group := strings.ToLower(c.DefaultQuery("group", "noneasdf"))
 	newMixin := c.DefaultQuery("mixin", "none")

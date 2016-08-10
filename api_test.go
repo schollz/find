@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"os/exec"
 	"strings"
 	"testing"
@@ -18,6 +19,18 @@ func init() {
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+func TestMigrateDatabase(t *testing.T) {
+	router := gin.New()
+	router.PUT("/foo", migrateDatabase)
+
+	req, _ := http.NewRequest("PUT", "/foo?from=testdb&to=newdb", nil)
+	resp := httptest.NewRecorder()
+	router.ServeHTTP(resp, req)
+
+	assert.Equal(t, resp.Body.String(), "{\"message\":\"Successfully migrated testdb to newdb\",\"success\":true}\n")
+	os.Remove("data/newdb.db")
 }
 
 func TestCalculate(t *testing.T) {
