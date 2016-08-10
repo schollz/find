@@ -73,12 +73,9 @@ func main() {
 	flag.StringVar(&RuntimeArgs.SourcePath, "data", "", "path to data folder")
 	flag.CommandLine.Usage = func() {
 		fmt.Println(`find (version ` + VersionNum + ` (` + Build[0:8] + `), built ` + BuildTime + `)
-run this to start the server and then visit localhost at the port you specify
-(see parameters).
-Example: 'find yourserver.com'
-Example: 'find -p :8080 localhost:8080'
-Example: 'find -s /var/run/find.sock'
-Example: 'find -p :8080 -crt ssl/server.crt -key ssl/server.key localhost:8080'
+Example: 'findserver yourserver.com'
+Example: 'findserver -p :8080 localhost:8080'
+Example (mosquitto): 'findserver -mqtt 127.0.0.1:1883 -mqttadmin admin -mqttadminpass somepass -mosquitto ` + "`pgrep mosquitto`" + `
 Options:`)
 		flag.CommandLine.PrintDefaults()
 	}
