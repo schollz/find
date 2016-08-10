@@ -1,26 +1,10 @@
 # API
 
-
-**The server for FIND allows manipulation of fingerprints directly through these API routes. Most useful is likely the [/location](/#get-location) route which gathers
-the most recent location for a user.**
-
-
+**The server for FIND allows manipulation of fingerprints directly through these API routes. Most useful is likely the [/location](/#get-location) route which gathers the most recent location for a user.**
 
 [![](https://raw.githubusercontent.com/schollz/find/master/static/splash.gif)](https://www.internalpositioning.com/)
 
-
-
-
-
-
-
-
 <br><br><br><br><br>
-
-
-
-
-
 
 ## POST /learn
 
@@ -60,24 +44,7 @@ Submit a fingerprint to be used for learning the classification of the location.
 }
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <br><br><br><br><br>
-
-
 
 ## POST /track
 
@@ -119,16 +86,7 @@ Submit a fingerprint to be used for classifying the location. The information fo
         "zakhome floor 2 office": 0.8548590988705993
     }
 }
-
 ```
-
-
-
-
-
-
-
-
 
 <br><br><br><br><br>
 
@@ -138,13 +96,11 @@ Submit a fingerprint to be used for classifying the location. The information fo
 
 Recalculates the priors for the database for the `group`.
 
-
 ### Parameters
 
-
-| Name  | Location  | Description  | Required  |
-|---|---|---|---|
-|  group | query  | Defines the unique group ID  | yes  |
+Name  | Location | Description                 | Required
+----- | -------- | --------------------------- | --------
+group | query    | Defines the unique group ID | yes
 
 ### Response
 
@@ -155,14 +111,7 @@ Recalculates the priors for the database for the `group`.
 }
 ```
 
-
-
-
-
-
-
 <br><br><br><br><br>
-
 
 ## GET /location
 
@@ -170,15 +119,13 @@ Recalculates the priors for the database for the `group`.
 
 Gets the locations for the specified user(s) in the specified group.
 
-
 ### Parameters
 
-
-| Name  | Location  | Description  | Required  |
-|---|---|---|---|
-|  group | query  | Defines the unique group ID  | yes  |
-| user | query | Specifies a user to get location | no |
-| users | query | Specifies multiple users `users=X,Y,Z` to get histories | no |
+Name  | Location | Description                                             | Required
+----- | -------- | ------------------------------------------------------- | --------
+group | query    | Defines the unique group ID                             | yes
+user  | query    | Specifies a user to get location                        | no
+users | query    | Specifies multiple users `users=X,Y,Z` to get histories | no
 
 ### Response
 
@@ -233,11 +180,10 @@ Deletes all the tracking fingerprints for specified user in the specified group.
 
 ### Parameters
 
-
-| Name  | Location  | Description  | Required  |
-|---|---|---|---|
-|  group | query  | Defines the unique group ID  | yes  |
-| user | query | Specifies a user  | yes |
+Name  | Location | Description                 | Required
+----- | -------- | --------------------------- | --------
+group | query    | Defines the unique group ID | yes
+user  | query    | Specifies a user            | yes
 
 ### Response
 
@@ -258,10 +204,10 @@ Bulk delete locations
 
 ### Parameters
 
-| Name  | Location  | Description  | Required  |
-|---|---|---|---|
-|  group | query  | Defines the unique group ID  | yes  |
-| names | query | Enter locations seperated by commas, e.g. locations=X,Y,Z  | yes |
+Name  | Location | Description                                               | Required
+----- | -------- | --------------------------------------------------------- | --------
+group | query    | Defines the unique group ID                               | yes
+names | query    | Enter locations seperated by commas, e.g. locations=X,Y,Z | yes
 
 ### Response
 
@@ -272,7 +218,28 @@ Bulk delete locations
 }
 ```
 
+<br><br><br><br><br>
 
+## DELETE /database
+
+### Description
+
+Delete database and all associated data.
+
+### Parameters
+
+Name  | Location | Description                 | Required
+----- | -------- | --------------------------- | --------
+group | query    | Defines the unique group ID | yes
+
+### Response
+
+```json
+{
+  "success":true,
+  "message":"Successfully deleted X."
+}
+```
 
 <br><br><br><br><br>
 
@@ -284,13 +251,12 @@ Allows overriding of the `Mixin` parameter. Value of `0` uses only the RSSI Prio
 
 ### Parameters
 
-| Name  | Location  | Description  | Required  |
-|---|---|---|---|
-|  group | query  | Defines the unique group ID  | yes  |
-| mixin | query | Specifiy a value between 0 and 1 to activate, or -1 to deactivate  | yes |
+Name  | Location | Description                                                       | Required
+----- | -------- | ----------------------------------------------------------------- | --------
+group | query    | Defines the unique group ID                                       | yes
+mixin | query    | Specifiy a value between 0 and 1 to activate, or -1 to deactivate | yes
 
 ### Response
-
 
 ```json
 {
@@ -299,6 +265,29 @@ Allows overriding of the `Mixin` parameter. Value of `0` uses only the RSSI Prio
 }
 ```
 
+<br><br><br><br><br>
+
+## PUT /database
+
+### Description
+
+Migrate a database. This copies all the contents of one database to another. If the group does not exist, it will be created. The group that is migrated from is not deleted.
+
+### Parameters
+
+Name | Location | Description                                       | Required
+---- | -------- | ------------------------------------------------- | --------
+from | query    | Defines the unique group to migrate from          | yes
+to   | query    | Defines the unique group to migrate database into | yes
+
+### Response
+
+```json
+{
+  "message":"Successfully migrated X to Y",
+  "success":true
+}
+```
 
 <br><br><br><br><br>
 
@@ -310,12 +299,11 @@ Allows you to access MQTT streams of your data. This is available on the public 
 
 ### Parameters
 
-| Name  | Location  | Description  | Required  |
-|---|---|---|---|
-|  group | query  | Defines the unique group ID  | yes  |
+Name  | Location | Description                 | Required
+----- | -------- | --------------------------- | --------
+group | query    | Defines the unique group ID | yes
 
 ### Response
-
 
 ```json
 {
@@ -324,12 +312,6 @@ Allows you to access MQTT streams of your data. This is available on the public 
     "success": true
 }
 ```
-
-
-
-
-
-
 
 <br><br><br><br><br>
 
@@ -344,7 +326,6 @@ Returns status of the server and some information about the computer.
 None.
 
 ### Response
-
 
 ```json
 {
