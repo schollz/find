@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"path"
 	"runtime"
 	"strconv"
@@ -240,7 +241,12 @@ func migrateDatabase(c *gin.Context) {
 
 func deleteDatabase(c *gin.Context) {
 	group := strings.TrimSpace(strings.ToLower(c.DefaultQuery("group", "noneasdf")))
-	Debug.Println(group)
+	if exists(path.Join(RuntimeArgs.SourcePath, group+".db")) {
+		os.Remove(path.Join(RuntimeArgs.SourcePath, group+".db"))
+		c.JSON(http.StatusOK, gin.H{"success": true, "message": "Successfully deleted " + group})
+	} else {
+		c.JSON(http.StatusOK, gin.H{"success": false, "message": "Group does not exist"})
+	}
 }
 
 func putMixinOverride(c *gin.Context) {

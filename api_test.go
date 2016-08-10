@@ -33,6 +33,19 @@ func TestMigrateDatabase(t *testing.T) {
 	os.Remove("data/newdb.db")
 }
 
+func TestDeleteDatabase(t *testing.T) {
+	CopyFile("./data/testdb.db", "./data/deleteme.db")
+
+	router := gin.New()
+	router.DELETE("/foo", deleteDatabase)
+
+	req, _ := http.NewRequest("DELETE", "/foo?group=deleteme", nil)
+	resp := httptest.NewRecorder()
+	router.ServeHTTP(resp, req)
+
+	assert.Equal(t, resp.Body.String(), "{\"message\":\"Successfully deleted deleteme\",\"success\":true}\n")
+}
+
 func TestCalculate(t *testing.T) {
 	router := gin.New()
 	router.GET("/foo", calculate)
