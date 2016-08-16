@@ -21,6 +21,17 @@ func init() {
 	}
 }
 
+func TestGetStatus(t *testing.T) {
+	router := gin.New()
+	router.PUT("/foo", getStatus)
+
+	req, _ := http.NewRequest("PUT", "/foo", nil)
+	resp := httptest.NewRecorder()
+	router.ServeHTTP(resp, req)
+
+	assert.Equal(t, strings.Contains(resp.Body.String(), "\"success\":true"), true)
+}
+
 func TestMigrateDatabase(t *testing.T) {
 	router := gin.New()
 	router.PUT("/foo", migrateDatabase)

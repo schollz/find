@@ -95,7 +95,6 @@ func putFingerprintIntoDatabase(res Fingerprint, database string) error {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer db.Close()
 
 	err = db.Update(func(tx *bolt.Tx) error {
 		bucket, err2 := tx.CreateBucketIfNotExists([]byte(database))
@@ -112,6 +111,7 @@ func putFingerprintIntoDatabase(res Fingerprint, database string) error {
 		}
 		return err2
 	})
+	db.Close()
 	return err
 }
 
@@ -154,7 +154,7 @@ func learnFingerprint(jsonFingerprint Fingerprint) (string, bool) {
 		return "No fingerprints found to insert, see API", false
 	}
 	putFingerprintIntoDatabase(jsonFingerprint, "fingerprints")
-	setLearningCache(strings.ToLower(jsonFingerprint.Group), true)
+	go setLearningCache(strings.ToLower(jsonFingerprint.Group), true)
 	message := "Inserted fingerprint containing " + strconv.Itoa(len(jsonFingerprint.WifiFingerprint)) + " APs for " + jsonFingerprint.Username + " at " + jsonFingerprint.Location
 	return message, true
 }
@@ -177,13 +177,13 @@ func trackFingerprint(jsonFingerprint Fingerprint) (string, bool, string, map[st
 		if wasLearning {
 			Debug.Println("Was learning, calculating priors")
 			group := strings.ToLower(jsonFingerprint.Group)
-			setLearningCache(group, false)
+			go setLearningCache(group, false)
 			optimizePriorsThreaded(group)
 			if RuntimeArgs.Svm {
 				dumpFingerprintsSVM(group)
 				calculateSVM(group)
 			}
-			appendUserCache(group, jsonFingerprint.Username)
+			go appendUserCache(group, jsonFingerprint.Username)
 		}
 	}
 	locationGuess1, bayes := calculatePosterior(jsonFingerprint, *NewFullParameters())

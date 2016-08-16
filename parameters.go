@@ -154,7 +154,7 @@ func openParameters(group string) (FullParameters, error) {
 		return nil
 	})
 
-	setPsCache(group, ps)
+	go setPsCache(group, ps)
 	return ps, err
 }
 

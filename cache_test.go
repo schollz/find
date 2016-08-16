@@ -6,7 +6,36 @@ import (
 	"testing"
 
 	"github.com/boltdb/bolt"
+	"github.com/stretchr/testify/assert"
 )
+
+func TestUserCache(t *testing.T) {
+	setUserCache("zack", []string{"bob", "bill", "jane"})
+	users, _ := getUserCache("zack")
+	assert.Equal(t, users, []string{"bob", "bill", "jane"})
+}
+
+func TestResetCache(t *testing.T) {
+	setUserCache("zack", []string{"bob", "bill", "jane"})
+	resetCache("userCache")
+	_, ok := getUserCache("zack")
+	assert.Equal(t, ok, false)
+}
+
+func BenchmarkSetCache(b *testing.B) {
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		setUserCache("zack", []string{"bob", "bill", "jane"})
+	}
+}
+
+func BenchmarkResetCache(b *testing.B) {
+	setUserCache("zack", []string{"bob", "bill", "jane"})
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		resetCache("userCache)")
+	}
+}
 
 // BenchmarkCache needs to have precomputed parameters for testdb (run Optimize after loading testdb.sh)
 func BenchmarkGetPSCache(b *testing.B) {

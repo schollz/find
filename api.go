@@ -28,7 +28,7 @@ func init() {
 }
 
 func getStatus(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{"uptime": time.Since(startTime).Seconds(), "registered": startTime.String(), "status": "standard", "num_cores": runtime.NumCPU()})
+	c.JSON(http.StatusOK, gin.H{"uptime": time.Since(startTime).Seconds(), "registered": startTime.String(), "status": "standard", "num_cores": runtime.NumCPU(), "success": true})
 }
 
 // UserPositionJSON stores the a users time, location and bayes after calculatePosterior()
@@ -100,7 +100,7 @@ func calculate(c *gin.Context) {
 				Warning.Println(err)
 			}
 		}
-		resetCache("userPositionCache")
+		go resetCache("userPositionCache")
 		c.JSON(http.StatusOK, gin.H{"message": "Parameters optimized.", "success": true})
 	} else {
 		c.JSON(http.StatusOK, gin.H{"success": false, "message": "Error parsing request"})
