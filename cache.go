@@ -43,7 +43,7 @@ func clearCache() {
 		go resetCache("psCache")
 		go resetCache("userCache")
 		go resetCache("userPositionCache")
-		time.Sleep(time.Second * 10)
+		time.Sleep(time.Second * 600)
 	}
 }
 
