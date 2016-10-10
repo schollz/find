@@ -56,6 +56,20 @@ var jsonExample = `{
 	}]
 }`
 
+// Checks to see if the specified Mac is on the allowed list defined below
+func isAllowedMac(Mac string) bool {
+    switch Mac {
+    case
+		// Allowed APs MAC addresses
+		"00:04:96:71:f7:a1",
+		"00:04:96:71:f2:c1",
+		"00:04:96:71:f7:a0",
+		"00:04:96:71:f2:c0":
+		return true
+	}
+	return false
+}
+
 // compression 9 us -> 900 us
 func dumpFingerprint(res Fingerprint) []byte {
 	dumped, _ := res.MarshalJSON()
@@ -75,19 +89,17 @@ func cleanFingerprint(res *Fingerprint) {
 	res.Group = strings.TrimSpace(strings.ToLower(res.Group))
 	res.Location = strings.TrimSpace(strings.ToLower(res.Location))
 	res.Username = strings.TrimSpace(strings.ToLower(res.Username))
-	deleteIndex := -1
+	var allowedWifiFingerprints []Router = []Router {}
 	for r := range res.WifiFingerprint {
-		if res.WifiFingerprint[r].Rssi >= 0 { // https://stackoverflow.com/questions/15797920/how-to-convert-wifi-signal-strength-from-quality-percent-to-rssi-dbm
-			res.WifiFingerprint[r].Rssi = int(res.WifiFingerprint[r].Rssi/2) - 100
+		wifiFingerprint := res.WifiFingerprint[r]
+		if wifiFingerprint.Rssi >= 0 { // https://stackoverflow.com/questions/15797920/how-to-convert-wifi-signal-strength-from-quality-percent-to-rssi-dbm
+			wifiFingerprint.Rssi = int(wifiFingerprint.Rssi/2) - 100
 		}
-		if res.WifiFingerprint[r].Mac == "00:00:00:00:00:00" {
-			deleteIndex = r
+		if isAllowedMac(wifiFingerprint.Mac) {
+			allowedWifiFingerprints = append(allowedWifiFingerprints, wifiFingerprint)
 		}
 	}
-	if deleteIndex > -1 {
-		res.WifiFingerprint[deleteIndex] = res.WifiFingerprint[len(res.WifiFingerprint)-1]
-		res.WifiFingerprint = res.WifiFingerprint[:len(res.WifiFingerprint)-1]
-	}
+	res.WifiFingerprint = allowedWifiFingerprints
 }
 
 func putFingerprintIntoDatabase(res Fingerprint, database string) error {
