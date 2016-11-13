@@ -7,6 +7,7 @@ data/analysis/
 data/images/
 documentation/site
 find
+findserver
 
 __pycache__/
 www/sphinx-api/_build/
@@ -76,6 +77,7 @@ nohup.out
 # Databases
 *.db.*
 *.db
+data/*
 
 # Data
 *.p
