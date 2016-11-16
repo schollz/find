@@ -17,7 +17,7 @@ $(BINARY): $(SOURCES)
 	go get github.com/gin-gonic/gin
 	go get github.com/stretchr/testify/assert
 	go get github.com/pquerna/ffjson/fflib/v1
-	go get git.eclipse.org/gitroot/paho/org.eclipse.paho.mqtt.golang.git
+	go get github.com/eclipse/paho.mqtt.golang.git
 	go build ${LDFLAGS} -o ${BINARY} ${SOURCES}
 
 .PHONY: install
