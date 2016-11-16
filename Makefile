@@ -12,12 +12,12 @@ LDFLAGS=-ldflags "-X main.VersionNum=${VERSION} -X main.Build=${BUILD} -X main.B
 .DEFAULT_GOAL: $(BINARY)
 
 $(BINARY): $(SOURCES)
-	go get github.com/boltdb/bolt
-	go get github.com/gin-gonic/contrib/sessions
-	go get github.com/gin-gonic/gin
-	go get github.com/stretchr/testify/assert
-	go get github.com/pquerna/ffjson/fflib/v1
-	go get git.eclipse.org/gitroot/paho/org.eclipse.paho.mqtt.golang.git
+	go get -u -v github.com/boltdb/bolt
+	go get -u -v github.com/gin-gonic/contrib/sessions
+	go get -u -v github.com/gin-gonic/gin
+	go get -u -v github.com/stretchr/testify/assert
+	go get -u -v github.com/pquerna/ffjson/fflib/v1
+	go get -u -v github.com/schollz/org.eclipse.paho.mqtt.golang
 	go build ${LDFLAGS} -o ${BINARY} ${SOURCES}
 
 .PHONY: install
