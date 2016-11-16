@@ -20,7 +20,7 @@ import (
 	"github.com/boltdb/bolt"
 	"github.com/gin-gonic/gin"
 
-	MQTT "git.eclipse.org/gitroot/paho/org.eclipse.paho.mqtt.golang.git"
+	MQTT "github.com/schollz/org.eclipse.paho.mqtt.golang"
 )
 
 var adminClient *MQTT.Client
