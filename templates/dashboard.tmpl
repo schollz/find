@@ -380,8 +380,9 @@ function userLocPolling() {
                 for (var i = tuples.length-1; i >=0; i--) {
                     var key4 = tuples[i][0];
                     var value = Math.round(Math.exp(tuples[i][1])/total*100);
-                    if (value > 10) {
-                      vals.push(value + "% " + key4)
+                    vals.push(value + "% " + key4)
+                    if (vals.length > 2) {
+                      break
                     }
                 }
                 console.log(vals.join())
@@ -399,8 +400,9 @@ function userLocPolling() {
                 for (var i = tuples.length-1; i >=0; i--) {
                     var key = tuples[i][0];
                     var value = Math.round(Math.exp(tuples[i][1])*100);
-                    if (value > 10) {
-                      vals.push(value + "% " + key)
+                    vals.push(value + "% " + key)
+                    if (vals.length > 2) {
+                      break
                     }
                 }
                 console.log(vals.join())
