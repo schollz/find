@@ -183,6 +183,9 @@ func trackFingerprint(jsonFingerprint Fingerprint) (string, bool, string, map[st
 				dumpFingerprintsSVM(group)
 				calculateSVM(group)
 			}
+			if RuntimeArgs.RandomForests {
+				rfLearn(group)
+			}
 			go appendUserCache(group, jsonFingerprint.Username)
 		}
 	}
@@ -237,6 +240,9 @@ func trackFingerprint(jsonFingerprint Fingerprint) (string, bool, string, map[st
 	userJSON.Bayes = bayes
 	userJSON.Svm = svmData
 	userJSON.Time = time.Now().String()
+	if RuntimeArgs.RandomForests {
+		userJSON.Rf = rfClassify(strings.ToLower(jsonFingerprint.Group), jsonFingerprint)
+	}
 	go setUserPositionCache(strings.ToLower(jsonFingerprint.Group)+strings.ToLower(jsonFingerprint.Username), userJSON)
 
 	return message, true, locationGuess1, bayes, svmData

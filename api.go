@@ -37,6 +37,7 @@ type UserPositionJSON struct {
 	Location interface{}        `json:"location"`
 	Bayes    map[string]float64 `json:"bayes"`
 	Svm      map[string]float64 `json:"svm"`
+	Rf       map[string]float64 `json:"rf"`
 }
 
 func getCurrentPositionOfUser(group string, user string) UserPositionJSON {
@@ -80,6 +81,10 @@ func getCurrentPositionOfUser(group string, user string) UserPositionJSON {
 	if RuntimeArgs.Svm {
 		_, userJSON.Svm = classify(userFingerprint)
 	}
+	if RuntimeArgs.RandomForests {
+		userJSON.Rf = rfClassify(group, userFingerprint)
+		log.Println("%+v", userJSON.Rf)
+	}
 	go setUserPositionCache(group+user, userJSON)
 	return userJSON
 }
@@ -91,14 +96,18 @@ func calculate(c *gin.Context) {
 			c.JSON(http.StatusOK, gin.H{"message": "You should insert a fingerprint first, see documentation", "success": false})
 			return
 		}
-		optimizePriorsThreaded(strings.ToLower(group))
+		group = strings.ToLower(group)
+		optimizePriorsThreaded(group)
 		if RuntimeArgs.Svm {
-			dumpFingerprintsSVM(strings.ToLower(group))
-			err := calculateSVM(strings.ToLower(group))
+			dumpFingerprintsSVM(group)
+			err := calculateSVM(group)
 			if err != nil {
 				Warning.Println("Encountered error when calculating SVM")
 				Warning.Println(err)
 			}
+		}
+		if RuntimeArgs.RandomForests {
+			rfLearn(group)
 		}
 		go resetCache("userPositionCache")
 		c.JSON(http.StatusOK, gin.H{"message": "Parameters optimized.", "success": true})

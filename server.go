@@ -39,6 +39,7 @@ var RuntimeArgs struct {
 	Message           string
 	Mqtt              bool
 	Svm               bool
+	RandomForests     bool
 }
 
 // VersionNum keeps track of the version
@@ -71,6 +72,7 @@ func main() {
 	flag.StringVar(&RuntimeArgs.Dump, "dump", "", "group to dump to folder")
 	flag.StringVar(&RuntimeArgs.Message, "message", "", "message to display to all users")
 	flag.StringVar(&RuntimeArgs.SourcePath, "data", "", "path to data folder")
+	flag.BoolVar(&RuntimeArgs.RandomForests, "rf", false, "use random forests")
 	flag.CommandLine.Usage = func() {
 		fmt.Println(`find (version ` + VersionNum + ` (` + Build[0:8] + `), built ` + BuildTime + `)
 Example: 'findserver yourserver.com'
