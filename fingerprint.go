@@ -74,6 +74,7 @@ func loadFingerprint(jsonByte []byte) Fingerprint {
 		for i := range res.WifiFingerprint {
 			if ok2, ok := RuntimeArgs.FilterMacs[res.WifiFingerprint[i].Mac]; ok && ok2 {
 				newFingerprint[curNum] = res.WifiFingerprint[i]
+				newFingerprint[curNum].Mac = newFingerprint[curNum].Mac[0:len(newFingerprint[curNum].Mac)-1] + "0"
 				curNum++
 			}
 		}
