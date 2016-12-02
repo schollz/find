@@ -96,27 +96,110 @@ class RF(object):
 		predictionJson = {}
 		for i in range(len(prediction[0])):
 			predictionJson[self.nameY[i]] = prediction[0][i]
-		print(json.dumps(predictionJson,indent=2))
+		return predictionJson
 
 
+# import socket
+#
+#
+# TCP_IP = '127.0.0.1'
+# TCP_PORT = 5006
+# BUFFER_SIZE = 1024  # Normally 1024, but we want fast response
+#
+# s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+# s.bind((TCP_IP, TCP_PORT))
+# s.listen(1)
+#
+# while True:
+# 	conn, addr = s.accept()
+# 	print ('Connection address:', addr)
+# 	while 1:
+# 		data = conn.recv(BUFFER_SIZE)
+# 		if not data: break
+# 		data = data.decode('utf-8')
+# 		print ("received data:", data)
+# 		group = data.split('=')[0].strip()
+# 		filename = data.split('=')[1].strip()
+# 		randomF = RF()
+# 		payload = "error".encode('utf-8')
+# 		try:
+# 			payload = json.dumps(randomF.classify(group,filename+".rftemp")).encode('utf-8')
+# 		except:
+# 			pass
+#
+# 		conn.send(payload)  # echo
+# 	conn.close()
 
-# python3 rf.py groupName
-import time
-start_time = time.time()
-try:
-	# randomF = RF()
-	# randomF.classify(sys.argv[2],sys.argv[3])
-	# randomF.learn(fname,0.5) # file, and percentage of data to use to learn
-	if len(sys.argv)==2:
-		# Learn print("python3 rf.py groupName")
-		# Requires writing a file to disk, groupName.rf.json
+import socketserver
+
+class EchoRequestHandler(socketserver.BaseRequestHandler):
+
+	def handle(self):
+		# Echo the back to the client
+		data = self.request.recv(1024)
+		data = data.decode('utf-8')
+		if "=" not in data:
+			data += self.request.recv(1024).decode('utf-8')
+		print ("received data:", data)
+		group = data.split('=')[0].strip()
+		filename = data.split('=')[1].strip()
 		randomF = RF()
-		randomF.learn(sys.argv[1],0.7)
-	elif len(sys.argv)==3:
-		randomF = RF()
-		randomF.classify(sys.argv[1],sys.argv[2])
-	else:
-		print("error")
-except:
-	print("error")
-print("--- %s seconds ---" % (time.time() - start_time))
+		payload = "error".encode('utf-8')
+		try:
+			payload = json.dumps(randomF.classify(group,filename+".rftemp")).encode('utf-8')
+		except:
+			pass
+		self.request.send(payload)
+		return
+
+if __name__ == '__main__':
+	import socket
+	import threading
+
+	address = ('localhost', 5006) # let the kernel give us a port
+	server = socketserver.TCPServer(address, EchoRequestHandler)
+	ip, port = server.server_address # find out what port we were given
+	server.serve_forever()
+
+# from flask import Flask, request
+# app = Flask(__name__)
+#
+# @app.route('/learn')
+# def learn():
+# 	group = request.args.get('group', '')
+# 	if len(group) == 0:
+# 		return "error"
+# 	randomF = RF()
+# 	randomF.learn(group,0.7)
+# 	return 'done'
+#
+# @app.route('/track')
+# def track():
+# 	import time
+# 	start_time = time.time()
+# 	group = request.args.get('group', '')
+# 	if len(group) == 0:
+# 		return "error"
+# 	filename = request.args.get('filename', '')
+# 	if len(filename) == 0:
+# 		return "error"
+# 	randomF = RF()
+# 	print("--- %s seconds ---" % (time.time() - start_time))
+# 	return json.dumps(randomF.classify(group,filename+".rftemp"))
+# # python3 rf.py groupName
+# try:
+# 	# randomF = RF()
+# 	# randomF.classify(sys.argv[2],sys.argv[3])
+# 	# randomF.learn(fname,0.5) # file, and percentage of data to use to learn
+# 	if len(sys.argv)==2:
+# 		# Learn print("python3 rf.py groupName")
+# 		# Requires writing a file to disk, groupName.rf.json
+# 		randomF = RF()
+# 		randomF.learn(sys.argv[1],0.7)
+# 	elif len(sys.argv)==3:
+# 		randomF = RF()
+# 		randomF.classify(sys.argv[1],sys.argv[2])
+# 	else:
+# 		print("error")
+# except:
+# 	print("error")
