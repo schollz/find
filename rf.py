@@ -67,7 +67,7 @@ class RF(object):
 
 	def learn(self, dataFile,splitRatio):
 		self.get_data(dataFile,splitRatio)
-		clf = RandomForestClassifier(n_estimators=10, max_depth=None, 
+		clf = RandomForestClassifier(n_estimators=10, max_depth=None,
 								min_samples_split=2, random_state=0)
 		clf.fit(self.trainX, self.trainY)
 		score = clf.score(self.testX, self.testY)
@@ -101,6 +101,8 @@ class RF(object):
 
 
 # python3 rf.py groupName
+import time
+start_time = time.time()
 try:
 	# randomF = RF()
 	# randomF.classify(sys.argv[2],sys.argv[3])
@@ -117,3 +119,4 @@ try:
 		print("error")
 except:
 	print("error")
+print("--- %s seconds ---" % (time.time() - start_time))
