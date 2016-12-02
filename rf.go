@@ -1,18 +1,20 @@
 package main
 
 import (
+	"bufio"
 	"encoding/json"
 	"fmt"
-	"github.com/boltdb/bolt"
 	"io/ioutil"
 	"log"
 	"math/rand"
+	"net"
 	"os"
-	"os/exec"
 	"path"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/boltdb/bolt"
 )
 
 func RandomString(strlen int) string {
@@ -53,11 +55,12 @@ func rfLearn(group string) float64 {
 	f.Close()
 
 	// Do learning
-	out, err := exec.Command("python3", "rf.py", group).Output()
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println(string(out))
+	conn, _ := net.Dial("tcp", "127.0.0.1:5009")
+	// send to socket
+	fmt.Fprintf(conn, group+"=")
+	// listen for reply
+	out, _ := bufio.NewReader(conn).ReadString('\n')
+
 	classificationSuccess, err := strconv.ParseFloat(strings.TrimSpace(string(out)), 64)
 	if err != nil {
 		panic(err)
@@ -69,21 +72,26 @@ func rfLearn(group string) float64 {
 
 func rfClassify(group string, fingerprint Fingerprint) map[string]float64 {
 	var m map[string]float64
-	tempFile := RandomString(10) + ".json"
+	tempFile := RandomString(10)
 	d1, _ := json.Marshal(fingerprint)
-	err := ioutil.WriteFile(tempFile, d1, 0644)
+	err := ioutil.WriteFile(tempFile+".rftemp", d1, 0644)
 	if err != nil {
 		return m
 	}
-	out, err := exec.Command("python3", "rf.py", group, tempFile).Output()
+
+	// connect to this socket
+	conn, _ := net.Dial("tcp", "127.0.0.1:5009")
+	// send to socket
+	fmt.Fprintf(conn, group+"="+tempFile)
+	// listen for reply
+	message, _ := bufio.NewReader(conn).ReadString('\n')
+	fmt.Print("Message from server: " + message)
+
+	err = json.Unmarshal([]byte(message), &m)
 	if err != nil {
-		return m
+		panic(err)
 	}
-	err = json.Unmarshal(out, &m)
-	if err != nil {
-		return m
-	}
-	os.Remove(tempFile)
+	os.Remove(tempFile + ".rftemp")
 	log.Println(m)
 	return m
 }

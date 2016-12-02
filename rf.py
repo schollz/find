@@ -71,9 +71,9 @@ class RF(object):
 								min_samples_split=2, random_state=0)
 		clf.fit(self.trainX, self.trainY)
 		score = clf.score(self.testX, self.testY)
-		print(score)
 		with open('data/'+dataFile+'.rf.pkl','wb') as fid:
 			pickle.dump([clf,self.nameX,self.nameY],fid)
+		return score
 
 	def classify(self,groupName,fingerpintFile):
 		with open('data/' + groupName + '.rf.pkl','rb') as pickle_file:
@@ -137,26 +137,27 @@ class EchoRequestHandler(socketserver.BaseRequestHandler):
 	def handle(self):
 		# Echo the back to the client
 		data = self.request.recv(1024)
-		data = data.decode('utf-8')
-		if "=" not in data:
-			data += self.request.recv(1024).decode('utf-8')
-		print ("received data:", data)
+		data = data.decode('utf-8').strip()
+		print ("received data:'%s'" % data)
 		group = data.split('=')[0].strip()
 		filename = data.split('=')[1].strip()
-		randomF = RF()
 		payload = "error".encode('utf-8')
-		try:
+		if len(group) == 0:
+			self.request.send(payload)
+			return
+		randomF = RF()
+		if len(filename) == 0:
+			payload = json.dumps(randomF.learn(group,0.7)).encode('utf-8')
+		else:
 			payload = json.dumps(randomF.classify(group,filename+".rftemp")).encode('utf-8')
-		except:
-			pass
 		self.request.send(payload)
 		return
 
 if __name__ == '__main__':
 	import socket
 	import threading
-
-	address = ('localhost', 5006) # let the kernel give us a port
+	socketserver.TCPServer.allow_reuse_address = True
+	address = ('localhost', 5009) # let the kernel give us a port
 	server = socketserver.TCPServer(address, EchoRequestHandler)
 	ip, port = server.server_address # find out what port we were given
 	server.serve_forever()
