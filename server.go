@@ -7,6 +7,7 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
 	"io/ioutil"
@@ -24,6 +25,7 @@ import (
 // RuntimeArgs contains all runtime
 // arguments available
 var RuntimeArgs struct {
+	FilterMacFile     string
 	ExternalIP        string
 	Port              string
 	ServerCRT         string
@@ -40,6 +42,8 @@ var RuntimeArgs struct {
 	Mqtt              bool
 	Svm               bool
 	RandomForests     bool
+	Filtering         bool
+	FilterMacs        map[string]bool
 }
 
 // VersionNum keeps track of the version
@@ -73,6 +77,7 @@ func main() {
 	flag.StringVar(&RuntimeArgs.Message, "message", "", "message to display to all users")
 	flag.StringVar(&RuntimeArgs.SourcePath, "data", "", "path to data folder")
 	flag.BoolVar(&RuntimeArgs.RandomForests, "rf", false, "use random forests")
+	flag.StringVar(&RuntimeArgs.FilterMacFile, "filter", "", "JSON file for macs to filter")
 	flag.CommandLine.Usage = func() {
 		fmt.Println(`find (version ` + VersionNum + ` (` + Build[0:8] + `), built ` + BuildTime + `)
 Example: 'findserver yourserver.com'
@@ -100,6 +105,17 @@ Options:`)
 		RuntimeArgs.Mqtt = false
 	}
 
+	// Check whether macs should be filtered
+	if len(RuntimeArgs.FilterMacFile) > 0 {
+		b, err := ioutil.ReadFile(RuntimeArgs.FilterMacFile)
+		if err != nil {
+			panic(err)
+		}
+		RuntimeArgs.FilterMacs = make(map[string]bool)
+		json.Unmarshal(b, &RuntimeArgs.FilterMacs)
+		fmt.Printf("Filtering %+v", RuntimeArgs.FilterMacs)
+		RuntimeArgs.Filtering = true
+	}
 	// Check whether we are just dumping the database
 	if len(RuntimeArgs.Dump) > 0 {
 		err := dumpFingerprints(strings.ToLower(RuntimeArgs.Dump))

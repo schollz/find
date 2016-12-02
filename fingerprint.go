@@ -68,6 +68,18 @@ func loadFingerprint(jsonByte []byte) Fingerprint {
 	res := Fingerprint{}
 	//json.Unmarshal(decompressByte(jsonByte), res)
 	res.UnmarshalJSON(decompressByte(jsonByte))
+	if RuntimeArgs.Filtering {
+		newFingerprint := make([]Router, len(res.WifiFingerprint))
+		curNum := 0
+		for i := range res.WifiFingerprint {
+			if ok2, ok := RuntimeArgs.FilterMacs[res.WifiFingerprint[i].Mac]; ok && ok2 {
+				newFingerprint[curNum] = res.WifiFingerprint[i]
+				curNum++
+			}
+		}
+		newFingerprint = newFingerprint[0:curNum]
+		res.WifiFingerprint = newFingerprint
+	}
 	return res
 }
 
