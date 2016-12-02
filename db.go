@@ -49,10 +49,10 @@ func renameNetwork(group string, oldName string, newName string) {
 }
 
 func getUsers(group string) []string {
-	// val, ok := getUserCache(group)
-	// if ok {
-	// 	return val
-	// }
+	val, ok := getUserCache(group)
+	if ok {
+		return val
+	}
 
 	uniqueUsers := []string{}
 	db, err := bolt.Open(path.Join(RuntimeArgs.SourcePath, group+".db"), 0600, nil)

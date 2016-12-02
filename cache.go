@@ -34,6 +34,14 @@ var isLearning = struct {
 
 func init() {
 	go clearCache()
+	go clearCacheFast()
+}
+
+func clearCacheFast() {
+	for {
+		go resetCache("userCache")
+		time.Sleep(time.Second * 30)
+	}
 }
 
 func clearCache() {
@@ -41,7 +49,6 @@ func clearCache() {
 		//Debug.Println("Resetting cache")
 		go resetCache("isLearning")
 		go resetCache("psCache")
-		go resetCache("userCache")
 		go resetCache("userPositionCache")
 		time.Sleep(time.Second * 600)
 	}
