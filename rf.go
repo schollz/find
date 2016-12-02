@@ -68,20 +68,20 @@ func rfLearn(group string) float64 {
 }
 
 func rfClassify(group string, fingerprint Fingerprint) map[string]float64 {
+	var m map[string]float64
 	tempFile := RandomString(10) + ".json"
 	d1, _ := json.Marshal(fingerprint)
 	err := ioutil.WriteFile(tempFile, d1, 0644)
 	if err != nil {
-		panic(err)
+		return m
 	}
 	out, err := exec.Command("python3", "rf.py", group, tempFile).Output()
 	if err != nil {
-		panic(err)
+		return m
 	}
-	var m map[string]float64
 	err = json.Unmarshal(out, &m)
 	if err != nil {
-		panic(err)
+		return m
 	}
 	os.Remove(tempFile)
 	log.Println(m)
