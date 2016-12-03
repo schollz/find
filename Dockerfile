@@ -47,7 +47,7 @@ RUN apt-get update && apt-get install -y supervisor
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Add Tini
-ENV TINI_VERSION v0.9.0
+ENV TINI_VERSION v0.13.0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
 RUN chmod +x /tini
 ENTRYPOINT ["/tini", "--"]

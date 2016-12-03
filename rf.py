@@ -154,22 +154,22 @@ class EchoRequestHandler(socketserver.BaseRequestHandler):
 		return
 
 if __name__ == '__main__':
-	if len(sys.argv)==2:
-		# Learn print("python3 rf.py groupName")
-		# Requires writing a file to disk, groupName.rf.json
-		randomF = RF()
-		print(randomF.learn(sys.argv[1],0.5))
-	elif len(sys.argv)==3:
-		randomF = RF()
-		print(randomF.classify(sys.argv[1],sys.argv[2]))
-	else:
-		import socket
-		import threading
-		socketserver.TCPServer.allow_reuse_address = True
-		address = ('localhost', 5009) # let the kernel give us a port
-		server = socketserver.TCPServer(address, EchoRequestHandler)
-		ip, port = server.server_address # find out what port we were given
-		server.serve_forever()
+	# if len(sys.argv)==2:
+	# 	# Learn print("python3 rf.py groupName")
+	# 	# Requires writing a file to disk, groupName.rf.json
+	# 	randomF = RF()
+	# 	print(randomF.learn(sys.argv[1],0.5))
+	# elif len(sys.argv)==3:
+	# 	randomF = RF()
+	# 	print(randomF.classify(sys.argv[1],sys.argv[2]))
+	# else:
+	import socket
+	import threading
+	socketserver.TCPServer.allow_reuse_address = True
+	address = ('localhost', 5009) # let the kernel give us a port
+	server = socketserver.TCPServer(address, EchoRequestHandler)
+	ip, port = server.server_address # find out what port we were given
+	server.serve_forever()
 
 # from flask import Flask, request
 # app = Flask(__name__)
