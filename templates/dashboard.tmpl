@@ -271,6 +271,7 @@
               <p id="lastSeen{{$index}}" title="Shows the last time and place of user when you are tracking."><strong>Last seen:</strong> {{ $user.Time }} at {{ $user.Location }}</p>
               <p id="bayes{{$index}}" title="Shows the exponential Bayesian scores when you are tracking."></p>
               <p id="svm{{$index}}" title="Shows the SVM scores when you are tracking."></p>
+              <p id="rf{{$index}}" title="Shows the random forest scores when you are tracking."></p>
             </div>
           </div>
         </div>
@@ -398,15 +399,36 @@ function userLocPolling() {
                     return a < b ? -1 : (a > b ? 1 : 0);
                 });
                 for (var i = tuples.length-1; i >=0; i--) {
-                    var key = tuples[i][0];
+                    var keyt = tuples[i][0];
                     var value = Math.round(Math.exp(tuples[i][1])*100);
-                    vals.push(value + "% " + key)
+                    vals.push(value + "% " + keyt)
                     if (vals.length > 2) {
                       break
                     }
                 }
                 console.log(vals.join())
                $(jq('#svm' + userkey)).html("<strong>SVM:</strong> " + vals.join())
+              }
+              if (data['users'][key]['rf'] != undefined && Object.keys(data['users'][key]['rf']).length > 0) {
+                console.log(data['users'][key]['rf'])
+                var tuples = [];
+                for (var key2 in data['users'][key]['rf']) tuples.push([key2, data['users'][key]['rf'][key2]]);
+                vals = []
+                tuples.sort(function(a, b) {
+                    a = a[1];
+                    b = b[1];
+                    return a < b ? -1 : (a > b ? 1 : 0);
+                });
+                for (var i = tuples.length-1; i >=0; i--) {
+                    var keyt = tuples[i][0];
+                    var value = Math.round(tuples[i][1]*100);
+                    vals.push(value + "% " + keyt)
+                    if (vals.length > 2) {
+                      break
+                    }
+                }
+                console.log(vals.join())
+               $(jq('#rf' + userkey)).html("<strong>RF:</strong> " + vals.join())
               }
 
 

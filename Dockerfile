@@ -9,6 +9,11 @@ RUN apt-get install -y golang git wget curl vim
 RUN mkdir /usr/local/work
 ENV GOPATH /usr/local/work
 
+# Add Python stuff
+RUN apt-get install -y python3 python3-dev python3-pip
+RUN apt-get install -y python3-scipy python3-numpy
+RUN python3 -m pip install scikit-learn
+
 # Install SVM
 WORKDIR "/tmp"
 RUN wget http://www.csie.ntu.edu.tw/~cjlin/cgi-bin/libsvm.cgi?+http://www.csie.ntu.edu.tw/~cjlin/libsvm+tar.gz -O libsvm.tar.gz
@@ -25,9 +30,10 @@ RUN apt-get install -y mosquitto-clients mosquitto
 
 # Install FIND
 WORKDIR "/root"
-RUN go get github.com/schollz/find
 RUN git clone https://github.com/schollz/find.git
+RUN go get github.com/schollz/find
 WORKDIR "/root/find"
+RUN git checkout rf
 RUN mkdir mosquitto
 RUN touch mosquitto/conf
 RUN git pull
@@ -36,13 +42,16 @@ RUN go build
 
 # Setup supervisor
 RUN apt-get update && apt-get install -y supervisor
+
+# Add supervisor
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Add Tini
-ENV TINI_VERSION v0.9.0
+ENV TINI_VERSION v0.13.0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
 RUN chmod +x /tini
 ENTRYPOINT ["/tini", "--"]
 
 # Startup
 CMD ["/usr/bin/supervisord"]
+

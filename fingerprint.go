@@ -68,7 +68,24 @@ func loadFingerprint(jsonByte []byte) Fingerprint {
 	res := Fingerprint{}
 	//json.Unmarshal(decompressByte(jsonByte), res)
 	res.UnmarshalJSON(decompressByte(jsonByte))
+	filterFingerprint(&res)
 	return res
+}
+
+func filterFingerprint(res *Fingerprint) {
+	if RuntimeArgs.Filtering {
+		newFingerprint := make([]Router, len(res.WifiFingerprint))
+		curNum := 0
+		for i := range res.WifiFingerprint {
+			if ok2, ok := RuntimeArgs.FilterMacs[res.WifiFingerprint[i].Mac]; ok && ok2 {
+				newFingerprint[curNum] = res.WifiFingerprint[i]
+				newFingerprint[curNum].Mac = newFingerprint[curNum].Mac[0:len(newFingerprint[curNum].Mac)-1] + "0"
+				curNum++
+			}
+		}
+		newFingerprint = newFingerprint[0:curNum]
+		res.WifiFingerprint = newFingerprint
+	}
 }
 
 func cleanFingerprint(res *Fingerprint) {
@@ -160,6 +177,10 @@ func learnFingerprint(jsonFingerprint Fingerprint) (string, bool) {
 }
 
 func trackFingerprint(jsonFingerprint Fingerprint) (string, bool, string, map[string]float64, map[string]float64) {
+	// Classify with filter fingerprint
+	fullFingerprint := jsonFingerprint
+	filterFingerprint(&jsonFingerprint)
+
 	bayes := make(map[string]float64)
 	svmData := make(map[string]float64)
 	cleanFingerprint(&jsonFingerprint)
@@ -183,6 +204,9 @@ func trackFingerprint(jsonFingerprint Fingerprint) (string, bool, string, map[st
 				dumpFingerprintsSVM(group)
 				calculateSVM(group)
 			}
+			if RuntimeArgs.RandomForests {
+				rfLearn(group)
+			}
 			go appendUserCache(group, jsonFingerprint.Username)
 		}
 	}
@@ -198,7 +222,9 @@ func trackFingerprint(jsonFingerprint Fingerprint) (string, bool, string, map[st
 	percentGuess1 = math.Exp(bayes[locationGuess1]) / total * 100.0
 
 	jsonFingerprint.Location = locationGuess1
-	putFingerprintIntoDatabase(jsonFingerprint, "fingerprints-track")
+
+	// Insert full fingerprint
+	putFingerprintIntoDatabase(fullFingerprint, "fingerprints-track")
 
 	Debug.Println("Tracking fingerprint containing " + strconv.Itoa(len(jsonFingerprint.WifiFingerprint)) + " APs for " + jsonFingerprint.Username + " (" + jsonFingerprint.Group + ") at " + jsonFingerprint.Location + " (guess)")
 	message := "Current location: " + locationGuess1 //+ " (" + strconv.Itoa(int(percentGuess1)) + "% confidence)"
@@ -237,6 +263,9 @@ func trackFingerprint(jsonFingerprint Fingerprint) (string, bool, string, map[st
 	userJSON.Bayes = bayes
 	userJSON.Svm = svmData
 	userJSON.Time = time.Now().String()
+	if RuntimeArgs.RandomForests {
+		userJSON.Rf = rfClassify(strings.ToLower(jsonFingerprint.Group), jsonFingerprint)
+	}
 	go setUserPositionCache(strings.ToLower(jsonFingerprint.Group)+strings.ToLower(jsonFingerprint.Username), userJSON)
 
 	return message, true, locationGuess1, bayes, svmData
