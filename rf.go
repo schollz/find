@@ -54,7 +54,7 @@ func rfLearn(group string) float64 {
 	f.Close()
 
 	// Do learning
-	conn, _ := net.Dial("tcp", "127.0.0.1:5009")
+	conn, _ := net.Dial("tcp", "127.0.0.1:"+RuntimeArgs.RFPort)
 	// send to socket
 	fmt.Fprintf(conn, group+"=")
 	// listen for reply
@@ -80,7 +80,7 @@ func rfClassify(group string, fingerprint Fingerprint) map[string]float64 {
 	}
 
 	// connect to this socket
-	conn, _ := net.Dial("tcp", "127.0.0.1:5009")
+	conn, _ := net.Dial("tcp", "127.0.0.1:"+RuntimeArgs.RFPort)
 	// send to socket
 	fmt.Fprintf(conn, group+"="+tempFile)
 	// listen for reply
