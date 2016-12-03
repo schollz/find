@@ -165,8 +165,12 @@ if __name__ == '__main__':
 	# else:
 	import socket
 	import threading
+	import argparse
+	parser = argparse.ArgumentParser()
+	parser.add_argument("port")
+	args = parser.parse_args()
 	socketserver.TCPServer.allow_reuse_address = True
-	address = ('localhost', int(sys.argv[1])) # let the kernel give us a port
+	address = ('localhost', int(args.port)) # let the kernel give us a port
 	server = socketserver.TCPServer(address, EchoRequestHandler)
 	ip, port = server.server_address # find out what port we were given
 	server.serve_forever()
