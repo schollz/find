@@ -167,53 +167,36 @@ if __name__ == '__main__':
 	import threading
 	import argparse
 	parser = argparse.ArgumentParser()
-	parser.add_argument("port")
+	parser.add_argument("-p", "--port", type=int, help="select the port to run on")
+	parser.add_argument("-g", "--group", type=str, help="select a group")
+	parser.add_argument("-f", "--file", type=str, help="select a file with fingerprints")
 	args = parser.parse_args()
-	socketserver.TCPServer.allow_reuse_address = True
-	address = ('localhost', int(args.port)) # let the kernel give us a port
-	server = socketserver.TCPServer(address, EchoRequestHandler)
-	ip, port = server.server_address # find out what port we were given
-	server.serve_forever()
+	if args.port != None:
+		socketserver.TCPServer.allow_reuse_address = True
+		address = ('localhost', args.port) # let the kernel give us a port
+		server = socketserver.TCPServer(address, EchoRequestHandler)
+		ip, port = server.server_address # find out what port we were given
+		server.serve_forever()
+	elif args.file != None and args.group != None:
+		randomF = RF()
+		print(randomF.classify(args.group,args.file))
+	elif args.group != None:
+		randomF = RF()
+		print(randomF.learn(args.group,0.5))
+	else:
+		print("""Usage:
 
-# from flask import Flask, request
-# app = Flask(__name__)
-#
-# @app.route('/learn')
-# def learn():
-# 	group = request.args.get('group', '')
-# 	if len(group) == 0:
-# 		return "error"
-# 	randomF = RF()
-# 	randomF.learn(group,0.7)
-# 	return 'done'
-#
-# @app.route('/track')
-# def track():
-# 	import time
-# 	start_time = time.time()
-# 	group = request.args.get('group', '')
-# 	if len(group) == 0:
-# 		return "error"
-# 	filename = request.args.get('filename', '')
-# 	if len(filename) == 0:
-# 		return "error"
-# 	randomF = RF()
-# 	print("--- %s seconds ---" % (time.time() - start_time))
-# 	return json.dumps(randomF.classify(group,filename+".rftemp"))
-# # python3 rf.py groupName
-# try:
-# 	# randomF = RF()
-# 	# randomF.classify(sys.argv[2],sys.argv[3])
-# 	# randomF.learn(fname,0.5) # file, and percentage of data to use to learn
-# 	if len(sys.argv)==2:
-# 		# Learn print("python3 rf.py groupName")
-# 		# Requires writing a file to disk, groupName.rf.json
-# 		randomF = RF()
-# 		randomF.learn(sys.argv[1],0.7)
-# 	elif len(sys.argv)==3:
-# 		randomF = RF()
-# 		randomF.classify(sys.argv[1],sys.argv[2])
-# 	else:
-# 		print("error")
-# except:
-# 	print("error")
+To just run as TCP server: 
+	
+	python3 rf.py --port 5009
+
+To just learn:
+
+	python3 rf.py --group GROUP
+
+To classify
+
+	python3 rf.py --group GROUP --file FILEWITHFINGERPRINTS
+""")
+
+
