@@ -68,6 +68,11 @@ func loadFingerprint(jsonByte []byte) Fingerprint {
 	res := Fingerprint{}
 	//json.Unmarshal(decompressByte(jsonByte), res)
 	res.UnmarshalJSON(decompressByte(jsonByte))
+	filterFingerprint(&res)
+	return res
+}
+
+func filterFingerprint(res *Fingerprint) {
 	if RuntimeArgs.Filtering {
 		newFingerprint := make([]Router, len(res.WifiFingerprint))
 		curNum := 0
@@ -81,7 +86,6 @@ func loadFingerprint(jsonByte []byte) Fingerprint {
 		newFingerprint = newFingerprint[0:curNum]
 		res.WifiFingerprint = newFingerprint
 	}
-	return res
 }
 
 func cleanFingerprint(res *Fingerprint) {
@@ -173,6 +177,10 @@ func learnFingerprint(jsonFingerprint Fingerprint) (string, bool) {
 }
 
 func trackFingerprint(jsonFingerprint Fingerprint) (string, bool, string, map[string]float64, map[string]float64) {
+	// Classify with filter fingerprint
+	fullFingerprint := jsonFingerprint
+	filterFingerprint(&jsonFingerprint)
+
 	bayes := make(map[string]float64)
 	svmData := make(map[string]float64)
 	cleanFingerprint(&jsonFingerprint)
@@ -214,7 +222,9 @@ func trackFingerprint(jsonFingerprint Fingerprint) (string, bool, string, map[st
 	percentGuess1 = math.Exp(bayes[locationGuess1]) / total * 100.0
 
 	jsonFingerprint.Location = locationGuess1
-	putFingerprintIntoDatabase(jsonFingerprint, "fingerprints-track")
+
+	// Insert full fingerprint
+	putFingerprintIntoDatabase(fullFingerprint, "fingerprints-track")
 
 	Debug.Println("Tracking fingerprint containing " + strconv.Itoa(len(jsonFingerprint.WifiFingerprint)) + " APs for " + jsonFingerprint.Username + " (" + jsonFingerprint.Group + ") at " + jsonFingerprint.Location + " (guess)")
 	message := "Current location: " + locationGuess1 //+ " (" + strconv.Itoa(int(percentGuess1)) + "% confidence)"
