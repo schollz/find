@@ -66,7 +66,7 @@ class RF(object):
 
 
 	def learn(self, dataFile,splitRatio):
-		self.get_data(dataFile,splitRatio)
+		self.get_data(dataFile,splitRatio) 
 		clf = RandomForestClassifier(n_estimators=10, max_depth=None,
 								min_samples_split=2, random_state=0)
 		clf.fit(self.trainX, self.trainY)
@@ -147,20 +147,29 @@ class EchoRequestHandler(socketserver.BaseRequestHandler):
 			return
 		randomF = RF()
 		if len(filename) == 0:
-			payload = json.dumps(randomF.learn(group,0.7)).encode('utf-8')
+			payload = json.dumps(randomF.learn(group,0.9)).encode('utf-8')
 		else:
 			payload = json.dumps(randomF.classify(group,filename+".rftemp")).encode('utf-8')
 		self.request.send(payload)
 		return
 
 if __name__ == '__main__':
-	import socket
-	import threading
-	socketserver.TCPServer.allow_reuse_address = True
-	address = ('localhost', 5009) # let the kernel give us a port
-	server = socketserver.TCPServer(address, EchoRequestHandler)
-	ip, port = server.server_address # find out what port we were given
-	server.serve_forever()
+	if len(sys.argv)==2:
+		# Learn print("python3 rf.py groupName")
+		# Requires writing a file to disk, groupName.rf.json
+		randomF = RF()
+		print(randomF.learn(sys.argv[1],0.5))
+	elif len(sys.argv)==3:
+		randomF = RF()
+		print(randomF.classify(sys.argv[1],sys.argv[2]))
+	else:
+		import socket
+		import threading
+		socketserver.TCPServer.allow_reuse_address = True
+		address = ('localhost', 5009) # let the kernel give us a port
+		server = socketserver.TCPServer(address, EchoRequestHandler)
+		ip, port = server.server_address # find out what port we were given
+		server.serve_forever()
 
 # from flask import Flask, request
 # app = Flask(__name__)

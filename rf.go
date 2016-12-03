@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"math/rand"
 	"net"
 	"os"
@@ -46,9 +45,9 @@ func rfLearn(group string) float64 {
 		b := tx.Bucket([]byte("fingerprints"))
 		c := b.Cursor()
 		for k, v := c.First(); k != nil; k, v = c.Next() {
-			if _, err = f.WriteString(string(decompressByte(v)) + "\n"); err != nil {
-				panic(err)
-			}
+			v2 := loadFingerprint(v)
+			bJSON, _ := json.Marshal(v2)
+			f.WriteString(string(bJSON) + "\n")
 		}
 		return nil
 	})
@@ -63,7 +62,7 @@ func rfLearn(group string) float64 {
 
 	classificationSuccess, err := strconv.ParseFloat(strings.TrimSpace(string(out)), 64)
 	if err != nil {
-		panic(err)
+		Error.Println(string(out))
 	}
 	Debug.Printf("RF classification success for '%s' is %2.2f", group, classificationSuccess)
 	os.Remove(tempFile)
@@ -76,6 +75,7 @@ func rfClassify(group string, fingerprint Fingerprint) map[string]float64 {
 	d1, _ := json.Marshal(fingerprint)
 	err := ioutil.WriteFile(tempFile+".rftemp", d1, 0644)
 	if err != nil {
+		Error.Println("Could not write file: " + err.Error())
 		return m
 	}
 
@@ -91,7 +91,7 @@ func rfClassify(group string, fingerprint Fingerprint) map[string]float64 {
 	if err != nil {
 		panic(err)
 	}
+
 	os.Remove(tempFile + ".rftemp")
-	log.Println(m)
 	return m
 }
