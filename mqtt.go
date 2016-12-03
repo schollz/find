@@ -40,7 +40,7 @@ func setupMqtt() {
 	adminClient = MQTT.NewClient(opts)
 
 	if token := adminClient.Connect(); token.Wait() && token.Error() != nil {
-		panic(token.Error())
+		Debug.Println(token.Error())
 	}
 	Debug.Println("Finished setup")
 }
@@ -119,7 +119,7 @@ func updateMosquittoConfig() {
 
 	acl := "user " + RuntimeArgs.MqttAdmin + "\ntopic readwrite #\n\n"
 	passwd := "admin:" + RuntimeArgs.MqttAdminPassword + "\n"
-	conf := "allow_anonymous false\n\nacl_file " + path.Join(RuntimeArgs.Cwd, "mosquitto") + "/acl"
+	conf := "allow_anonymous false\n\nacl_file " + path.Join(RuntimeArgs.Cwd, "mosquitto") + "/acl\n\npassword_file " + path.Join(RuntimeArgs.Cwd, "mosquitto") + "/passwd"
 
 	db.View(func(tx *bolt.Tx) error {
 		// Assume bucket exists and has keys
@@ -142,10 +142,16 @@ func updateMosquittoConfig() {
 	os.MkdirAll(path.Join(RuntimeArgs.Cwd, "mosquitto"), 0644)
 	ioutil.WriteFile(path.Join(RuntimeArgs.Cwd, "mosquitto/acl"), []byte(acl), 0644)
 	ioutil.WriteFile(path.Join(RuntimeArgs.Cwd, "mosquitto/passwd"), []byte(passwd), 0644)
-	ioutil.WriteFile(path.Join(RuntimeArgs.Cwd, "mosquitto/conf"), []byte(conf), 0644)
-	cmd := "kill"
-	args := []string{"-HUP", RuntimeArgs.MosquittoPID}
+	ioutil.WriteFile(path.Join(RuntimeArgs.Cwd, "mosquitto/mosquitto.conf"), []byte(conf), 0644)
+	
+	cmd := "mosquitto_passwd"
+	args := []string{"-U", path.Join(RuntimeArgs.Cwd, "mosquitto/passwd")}
 	if err := exec.Command(cmd, args...).Run(); err != nil {
+		Warning.Println(err)
+	}
+	cmd = "kill"
+	args = []string{"-HUP", RuntimeArgs.MosquittoPID}
+	if err = exec.Command(cmd, args...).Run(); err != nil {
 		Warning.Println(err)
 	}
 }
