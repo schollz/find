@@ -40,6 +40,64 @@ type UserPositionJSON struct {
 	Rf       map[string]float64 `json:"rf"`
 }
 
+func getHistoricalUserPositions(group string, user string, n int) []UserPositionJSON {
+	group = strings.ToLower(group)
+	user = strings.ToLower(user)
+
+	db, err := bolt.Open(path.Join(RuntimeArgs.SourcePath, group+".db"), 0600, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var fingerprints []Fingerprint
+	err = db.View(func(tx *bolt.Tx) error {
+		// Assume bucket exists and has keys
+		b := tx.Bucket([]byte("fingerprints-track"))
+		if b == nil {
+			return nil
+		}
+		c := b.Cursor()
+		numFound := 0
+		for k, v := c.Last(); k != nil; k, v = c.Prev() {
+			v2 := loadFingerprint(v)
+			if v2.Username == user {
+				timestampString := string(k)
+				timestampUnixNano, _ := strconv.ParseInt(timestampString, 10, 64)
+				UTCfromUnixNano := time.Unix(0, timestampUnixNano)
+				v2.Timestamp = UTCfromUnixNano.UnixNano()
+				fingerprints = append(fingerprints, v2)
+				numFound++
+				if numFound >= n {
+					return nil
+				}
+			}
+		}
+		return fmt.Errorf("User " + user + " not found")
+	})
+	db.Close()
+
+	Debug.Printf("Got history of %d fingerprints\n", len(fingerprints))
+	userJSONs := make([]UserPositionJSON, len(fingerprints))
+	for i, fingerprint := range fingerprints {
+		var userJSON UserPositionJSON
+		UTCfromUnixNano := time.Unix(0, fingerprint.Timestamp)
+		userJSON.Time = UTCfromUnixNano.String()
+		location, bayes := calculatePosterior(fingerprint, *NewFullParameters())
+		userJSON.Location = location
+		userJSON.Bayes = bayes
+		// Process SVM if needed
+		if RuntimeArgs.Svm {
+			_, userJSON.Svm = classify(fingerprint)
+		}
+		// Process RF if needed
+		if RuntimeArgs.RandomForests {
+			userJSON.Rf = rfClassify(group, fingerprint)
+		}
+		userJSONs[i] = userJSON
+	}
+	return userJSONs
+}
+
 func getCurrentPositionOfUser(group string, user string) UserPositionJSON {
 	group = strings.ToLower(group)
 	user = strings.ToLower(user)
@@ -152,6 +210,7 @@ func getUserLocations(c *gin.Context) {
 	group := c.DefaultQuery("group", "noneasdf")
 	userQuery := c.DefaultQuery("user", "noneasdf")
 	usersQuery := c.DefaultQuery("users", "noneasdf")
+	nQuery := c.DefaultQuery("n", "noneasdf")
 	group = strings.ToLower(group)
 	if group != "noneasdf" {
 		if !groupExists(group) {
@@ -174,7 +233,13 @@ func getUserLocations(c *gin.Context) {
 			if _, ok := people[user]; !ok {
 				people[user] = []UserPositionJSON{}
 			}
-			people[user] = append(people[user], getCurrentPositionOfUser(group, user))
+			if nQuery != "noneasdf" {
+				number, _ := strconv.ParseInt(nQuery, 10, 0)
+				Debug.Println("Getting history for " + user)
+				people[user] = append(people[user], getHistoricalUserPositions(group, user, int(number))...)
+			} else {
+				people[user] = append(people[user], getCurrentPositionOfUser(group, user))
+			}
 		}
 		message := "Correctly found locations."
 		if len(people) == 0 {
