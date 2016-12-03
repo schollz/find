@@ -42,6 +42,8 @@ RUN go build
 
 # Setup supervisor
 RUN apt-get update && apt-get install -y supervisor
+
+# Add supervisor
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Add Tini
