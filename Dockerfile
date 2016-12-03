@@ -33,7 +33,6 @@ RUN go get github.com/schollz/find
 WORKDIR "/root"
 RUN git clone https://github.com/schollz/find.git
 WORKDIR "/root/find"
-RUN git checkout rf
 RUN mkdir mosquitto
 RUN touch mosquitto/conf
 RUN git pull
