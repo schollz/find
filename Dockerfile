@@ -29,8 +29,9 @@ RUN rm -rf *
 RUN apt-get install -y mosquitto-clients mosquitto
 
 # Install FIND
+RUN go get github.com/schollz/find
 WORKDIR "/root"
-RUN git clone https://github.com/schollz/find.git && go get github.com/schollz/find
+RUN git clone https://github.com/schollz/find.git
 WORKDIR "/root/find"
 RUN git checkout rf
 RUN mkdir mosquitto
