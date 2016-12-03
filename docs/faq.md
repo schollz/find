@@ -205,6 +205,7 @@ There is a `mixin` variable that calculates the linear combination of Method 1 a
 
 ### Is there a good minimum time to leave the app to train a location?
 
+**I think 5 - 10 minutes is plenty**.
 <br><br><br><br>
 
 

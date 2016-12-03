@@ -126,6 +126,7 @@ Name  | Location | Description                                             | Req
 group | query    | Defines the unique group ID                             | yes
 user  | query    | Specifies a user to get location                        | no
 users | query    | Specifies multiple users `users=X,Y,Z` to get histories | no
+n | query    | Specifies number of fingerprints to get from history | no
 
 ### Response
 

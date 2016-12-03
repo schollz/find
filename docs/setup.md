@@ -107,6 +107,28 @@ then you'll need to send the following as the body:
 "abcdefgfijkl32mnopqrstuvwx 3"
 ```
 
+## Random Forest support
+
+FIND can use random forests with an additional TCP server that handles Random Forest calculations. To use it, first install Python3 libraries:
+
+```
+apt-get install -y python3 python3-dev python3-pip
+apt-get install -y python3-scipy python3-numpy
+python3 -m pip install scikit-learn
+```
+
+Then run the Random Forests TCP server using
+
+```
+python3 rf.py --port 5009
+```
+
+Now you can run the FIND server using this server for the RF calculations with some new flags to tell the server which port is on:
+
+```
+./findserver -rf 5009
+```
+
 ## SVM support
 
 
@@ -132,10 +154,31 @@ Then just restart FIND! It will automatically detect whether its installed. When
 _Note_: Currently FIND defaults to use the Naive-Bayes machine learning for the actual guesses. In my experience
 SVM is generally inferior, but this may depend on your location.
 
+## Filtering macs
+
+There are some instances where you want to ignore most access points and use only a select few. You can now do this by starting the server with the `-filter` flag:
+
+```
+./findserver -filter macs.json
+```
+
+where the file, `macs.json` contains *only the macs you want to use*. For example, a `macs.json` could look like:
+
+```javascript
+{
+    "ac:86:74:6b:9b:80":true,
+    "ac:86:74:6b:9b:60":true,
+    "ac:86:74:6b:9b:a0":true
+}
+```
+
+which would only do calculations based on those three access points. 
+
+__Note__: All access points are saved, even when `-filter` is enabled. However, calculations will only be performed using the ones specified in the filter file.
 
 # Install with Docker
 
-This installation route will include `mosquitto` and `SVM`, no further configuration needed. Its based off the Ubuntu16 image, but that could be changed (except `mosquitto` is not bundled in earlier versions). This Dockerfile makes more sense to me since it reads more like a Makefile. It forwards port `18003` for FIND and port `11883` for `mosquitto` in the following examples.
+This installation route will include `mosquitto` and `SVM` and Random Forests - no further configuration needed. Its based off the Ubuntu16 image, but that could be changed (except `mosquitto` is not bundled in earlier versions). This Dockerfile makes more sense to me since it reads more like a Makefile. It forwards port `18003` for FIND and port `11883` for `mosquitto` in the following examples.
 
 ## Using hub.docker.com
 
