@@ -77,7 +77,7 @@ func main() {
 	flag.StringVar(&RuntimeArgs.Dump, "dump", "", "group to dump to folder")
 	flag.StringVar(&RuntimeArgs.Message, "message", "", "message to display to all users")
 	flag.StringVar(&RuntimeArgs.SourcePath, "data", "", "path to data folder")
-	flag.BoolVar(&RuntimeArgs.RFPort, "rf", false, "port for random forests calculations")
+	flag.StringVar(&RuntimeArgs.RFPort, "rf", "", "port for random forests calculations")
 	flag.StringVar(&RuntimeArgs.FilterMacFile, "filter", "", "JSON file for macs to filter")
 	flag.CommandLine.Usage = func() {
 		fmt.Println(`find (version ` + VersionNum + ` (` + Build[0:8] + `), built ` + BuildTime + `)
