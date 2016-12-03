@@ -34,13 +34,14 @@ RUN go get github.com/schollz/find
 RUN git clone https://github.com/schollz/find.git
 WORKDIR "/root/find"
 RUN go build
-RUN echo "\ninclude_dir /path/to/find/mosquitto" >> /etc/mosquitto/mosquitto.conf
+RUN echo "\ninclude_dir /root/find/mosquitto" >> /etc/mosquitto/mosquitto.conf
 
 # Old entrypoint
 # ENTRYPOINT git pull && go build && mosquitto -c /root/find/mosquitto/conf -d && ./find -mqtt localhost:1883 -mqttadmin admin -mqttadminpass 123 -mosquitto `pgrep mosquitto` -data /data > log & bash
 
 # Setup supervisor
-RUN apt-get update && apt-get install -y supervisor
+RUN apt-get update 
+RUN apt-get install -y supervisor
 
 # Add supervisor
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
