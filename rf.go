@@ -88,7 +88,7 @@ func rfClassify(group string, fingerprint Fingerprint) map[string]float64 {
 
 	err = json.Unmarshal([]byte(message), &m)
 	if err != nil {
-		panic(err)
+		// do nothing
 	}
 
 	os.Remove(tempFile + ".rftemp")
