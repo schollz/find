@@ -9,6 +9,11 @@ RUN apt-get install -y golang git wget curl vim
 RUN mkdir /usr/local/work
 ENV GOPATH /usr/local/work
 
+# Add Python stuff
+RUN apt-get install -y python3 python3-dev python3-pip
+RUN apt-get install -y python3-scipy python3-numpy
+RUN python3 -m pip install scikit-learn
+
 # Install SVM
 WORKDIR "/tmp"
 RUN wget http://www.csie.ntu.edu.tw/~cjlin/cgi-bin/libsvm.cgi?+http://www.csie.ntu.edu.tw/~cjlin/libsvm+tar.gz -O libsvm.tar.gz
@@ -28,6 +33,7 @@ WORKDIR "/root"
 RUN go get github.com/schollz/find
 RUN git clone https://github.com/schollz/find.git
 WORKDIR "/root/find"
+RUN git checkout rf
 RUN mkdir mosquitto
 RUN touch mosquitto/conf
 RUN git pull
@@ -46,3 +52,4 @@ ENTRYPOINT ["/tini", "--"]
 
 # Startup
 CMD ["/usr/bin/supervisord"]
+
