@@ -85,7 +85,6 @@ func rfClassify(group string, fingerprint Fingerprint) map[string]float64 {
 	fmt.Fprintf(conn, group+"="+tempFile)
 	// listen for reply
 	message, _ := bufio.NewReader(conn).ReadString('\n')
-	fmt.Print("Message from server: " + message)
 
 	err = json.Unmarshal([]byte(message), &m)
 	if err != nil {
