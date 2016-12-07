@@ -1,10 +1,10 @@
 # ![](https://www.internalpositioning.com/guide/img/wifi-marker-darkgrey-small.png) FIND
 
 [![Build Status](https://travis-ci.org/schollz/find.svg?branch=master)](https://travis-ci.org/schollz/find)
-[![Version 2.2](https://img.shields.io/badge/version-2.2-brightgreen.svg)](https://www.internalpositioning.com/guide/development/) 
+[![Version 2.3](https://img.shields.io/badge/version-2.3-brightgreen.svg)](https://www.internalpositioning.com/guide/development/) 
 [![Github All Releases](https://img.shields.io/github/downloads/schollz/find/total.svg)](https://github.com/schollz/find/releases)
 [![FIND documentation](https://img.shields.io/badge/find-documentation-blue.svg)](https://doc.internalpositioning.com/) 
-![Coverage](https://img.shields.io/badge/coverage-58%25-orange.svg) 
+![Coverage](https://img.shields.io/badge/coverage-57%25-orange.svg) 
 [![Donate](https://img.shields.io/badge/donate-$1-brown.svg)](https://www.paypal.me/ZackScholl/1.00)
 [![Join the chat at https://gitter.im/schollz/find](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/schollz/find?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) 
 
