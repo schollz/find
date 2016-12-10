@@ -86,11 +86,13 @@ func slashDashboard(c *gin.Context) {
 	filterUsers := c.DefaultQuery("users", "")
 	filterUserMap := make(map[string]bool)
 	if len(filterUser) > 0 {
-		filterUserMap[strings.TrimSpace(filterUser)] = true
+		u := strings.Replace(strings.TrimSpace(filterUser), ":", "", -1)
+		filterUserMap[u] = true
 	}
 	if len(filterUsers) > 0 {
 		for _, user := range strings.Split(filterUsers, ",") {
-			filterUserMap[strings.TrimSpace(user)] = true
+			u := strings.Replace(strings.TrimSpace(user), ":", "", -1)
+			filterUserMap[u] = true
 		}
 	}
 	group := c.Param("group")
