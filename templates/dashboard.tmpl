@@ -264,7 +264,7 @@
           <div class="panel panel-primary" id="volume-fees-panel">
             <div class="panel-heading">
               <h3 class="panel-title">
-                         {{ $index }} &nbsp;<a id="{{ $index }}" class="edituser" title="Click to change the name for '{{ $index }}'"><span class="fa fa-pencil-square-o"></span></a>&nbsp;<a id="{{ $index }}" class="deleteuser" title="Click to delete user '{{ $index }}'"><i class="fa fa-trash"></i></a>
+                         {{ $index }} &nbsp;<a id="{{ $index }}" class="edituser" title="Click to change the name for '{{ $index }}'"><span class="fa fa-pencil-square-o"></span></a>&nbsp;<a id="{{ $index }}" class="deleteuser" title="Click to delete user '{{ $index }}'"><i class="fa fa-trash"></i></a>&nbsp;<a href="/dashboard/{{ $.Group }}?user={{ $index }}" title="Click to filter user '{{ $index }}'"><i class="fa fa-filter"></i></a>
                        </h3>
             </div>
             <div class="panel-body">

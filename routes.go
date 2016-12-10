@@ -82,6 +82,17 @@ func slashLogout(c *gin.Context) {
 
 // slashDashboard displays the dashboard
 func slashDashboard(c *gin.Context) {
+	filterUser := c.DefaultQuery("user", "")
+	filterUsers := c.DefaultQuery("users", "")
+	filterUserMap := make(map[string]bool)
+	if len(filterUser) > 0 {
+		filterUserMap[strings.TrimSpace(filterUser)] = true
+	}
+	if len(filterUsers) > 0 {
+		for _, user := range strings.Split(filterUsers, ",") {
+			filterUserMap[strings.TrimSpace(user)] = true
+		}
+	}
 	group := c.Param("group")
 	if _, err := os.Stat(path.Join(RuntimeArgs.SourcePath, group+".db")); os.IsNotExist(err) {
 		c.HTML(http.StatusOK, "login.tmpl", gin.H{
@@ -93,7 +104,10 @@ func slashDashboard(c *gin.Context) {
 	users := getUsers(group)
 	people := make(map[string]UserPositionJSON)
 	for _, user := range users {
-		people[user] = getCurrentPositionOfUser(group, user)
+		_, ok := filterUserMap[user]
+		if len(filterUserMap) == 0 || ok {
+			people[user] = getCurrentPositionOfUser(group, user)
+		}
 	}
 	type DashboardData struct {
 		Networks         []string
