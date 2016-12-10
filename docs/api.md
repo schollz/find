@@ -336,3 +336,21 @@ None.
   "uptime":35109.225647597
 }
 ```
+
+<br><br><br><br><br>
+
+## GET /GROUP/dashboard
+
+### Description
+
+A dashboard website for the specified group. You can optionally pass a parameter that will filter the specified users for the live realtime tracking.
+
+### Parameters
+
+Name  | Location | Description                 | Required
+----- | -------- | --------------------------- | --------
+user | query    | User to filter | no
+users | query    | Users, seperated by comma, to filter | no
+
+
+
