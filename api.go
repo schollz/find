@@ -141,7 +141,6 @@ func getCurrentPositionOfUser(group string, user string) UserPositionJSON {
 	}
 	if RuntimeArgs.RandomForests {
 		userJSON.Rf = rfClassify(group, userFingerprint)
-		log.Println("%+v", userJSON.Rf)
 	}
 	go setUserPositionCache(group+user, userJSON)
 	return userJSON

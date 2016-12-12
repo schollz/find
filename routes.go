@@ -82,6 +82,11 @@ func slashLogout(c *gin.Context) {
 
 // slashDashboard displays the dashboard
 func slashDashboard(c *gin.Context) {
+	// skipUsers := c.DefaultQuery("skip", "")
+	// skipAllUsers := false
+	// if len(skipUsers) > 0 {
+	// 	skipAllUsers = true
+	// }
 	filterUser := c.DefaultQuery("user", "")
 	filterUsers := c.DefaultQuery("users", "")
 	filterUserMap := make(map[string]bool)
