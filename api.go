@@ -118,8 +118,13 @@ func getCurrentPositionOfUser(group string, user string) UserPositionJSON {
 			return nil
 		}
 		c := b.Cursor()
+		i := 0
 		for k, v := c.Last(); k != nil; k, v = c.Prev() {
 			v2 := loadFingerprint(v)
+			i++
+			if i > 500 {
+				return fmt.Errorf("Too deep!")
+			}
 			if v2.Username == user {
 				timestampString := string(k)
 				timestampUnixNano, _ := strconv.ParseInt(timestampString, 10, 64)
@@ -132,6 +137,9 @@ func getCurrentPositionOfUser(group string, user string) UserPositionJSON {
 		return fmt.Errorf("User " + user + " not found")
 	})
 	db.Close()
+	if err != nil {
+		return userJSON
+	}
 	location, bayes := calculatePosterior(userFingerprint, *NewFullParameters())
 	userJSON.Location = location
 	userJSON.Bayes = bayes

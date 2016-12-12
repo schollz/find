@@ -110,10 +110,14 @@ func slashDashboard(c *gin.Context) {
 	ps, _ := openParameters(group)
 	users := getUsers(group)
 	people := make(map[string]UserPositionJSON)
-	for _, user := range users {
+	for i, user := range users {
 		_, ok := filterUserMap[user]
 		if len(filterUserMap) == 0 || ok {
-			people[user] = getCurrentPositionOfUser(group, user)
+			if i > 10 {
+				people[user] = UserPositionJSON{}
+			} else {
+				people[user] = getCurrentPositionOfUser(group, user)
+			}
 		}
 	}
 	type DashboardData struct {
