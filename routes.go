@@ -213,10 +213,13 @@ func slashExplore2(c *gin.Context) {
 	network := c.Param("network")
 	location := c.Param("location")
 	ps, _ := openParameters(group)
-	lookUpLocation := true
-	if strings.Count(location, ":") > 4 {
-		lookUpLocation = false // location is actuall mac
-		Debug.Println("GOT LOCATION")
+	fmt.Println(ps.UniqueLocs)
+	lookUpLocation := false
+
+	for _, loc := range ps.UniqueLocs {
+		if location == loc {
+			lookUpLocation = true
+		}
 	}
 
 	type macDatum struct {
