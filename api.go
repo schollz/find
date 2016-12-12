@@ -182,13 +182,16 @@ func userLocations(c *gin.Context) {
 	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
 
 	group := c.DefaultQuery("group", "noneasdf")
+	users := strings.Split(c.DefaultQuery("users", "noneasdf"), ",")
 	group = strings.ToLower(group)
 	if group != "noneasdf" {
 		if !groupExists(group) {
 			c.JSON(http.StatusOK, gin.H{"message": "You should insert fingerprints before tracking, see documentation", "success": false})
 			return
 		}
-		users := getUsers(group)
+		if users[0] == "noneasdf" {
+			users = getUsers(group)
+		}
 		people := make(map[string]UserPositionJSON)
 		for _, user := range users {
 			people[user] = getCurrentPositionOfUser(group, user)
