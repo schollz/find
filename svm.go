@@ -28,7 +28,7 @@ import (
 // ./svm-scale -l 0 -u 1 svm.shuffled > svm.shuffled.scaled
 // head -n 500 svm.shuffled.scaled > learning
 // tail -n 1500 svm.shuffled.scaled > testing
-// ./svm-train -s 0 -t 0 -b 1 learning > /dev/null
+// ./svm-train -s 0 -t 1 -b 1 learning > /dev/null
 // ./svm-predict -b 1 testing learning.model out
 
 type Svm struct {
@@ -228,14 +228,14 @@ func calculateSVM(group string) error {
 	// }
 
 	cmd := "svm-train"
-	args := "-s 0 -t 0 -b 1 " + tempFileFull + " data/" + group + ".model"
+	args := "-s 0 -t 1 -b 1 " + tempFileFull + " data/" + group + ".model"
 	Debug.Println(cmd, args)
 	if _, err = exec.Command(cmd, strings.Split(args, " ")...).Output(); err != nil {
 		panic(err)
 	}
 
 	cmd = "svm-train"
-	args = "-s 0 -t 0 -b 1 " + tempFileTrain + " " + tempFileTrain + ".model"
+	args = "-s 0 -t 1 -b 1 " + tempFileTrain + " " + tempFileTrain + ".model"
 	Debug.Println(cmd, args)
 	if _, err = exec.Command(cmd, strings.Split(args, " ")...).Output(); err != nil {
 		panic(err)
@@ -386,5 +386,5 @@ func makeSVMLine(v2 Fingerprint, macs map[string]int, locations map[string]int) 
 // ./svm-scale -l 0 -u 1 svm.shuffled > svm.shuffled.scaled
 // head -n 500 svm.shuffled.scaled > learning
 // tail -n 1500 svm.shuffled.scaled > testing
-// ./svm-train -s 0 -t 0 -b 1 learning > /dev/null
+// ./svm-train -s 0 -t 1 -b 1 learning > /dev/null
 // ./svm-predict -b 1 testing learning.model out
