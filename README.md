@@ -22,16 +22,16 @@ The system is built on two main components - [a server](https://ml.internalposit
 
 **FAQ (abbreviated)**:
 
-- How does it work? [It uses already available WiFi information to classify locations](https://github.com/schollz/find/blob/master/FAQ.md#how-does-it-work).
-- Doesn't this already exist? [Yes, kinda](https://github.com/schollz/find/blob/master/FAQ.md#doesnt-this-already-exist).
-- What's the point? This short piece of code can do [home automation](https://github.com/schollz/find/blob/master/FAQ.md#can-i-run-the-server-at-home-on-the-lan-connection) and [replace motion sensors](https://github.com/schollz/find/blob/master/FAQ.md#can-it-replace-motion-sensors) and [more](https://github.com/schollz/find/blob/master/FAQ.md#whats-the-point-of-this).
-- Can I use an iPhone? [Sorry, no](https://github.com/schollz/find/blob/master/FAQ.md#can-i-use-an-iphone).
-- Does it work on a Raspberry Pi? [Yes](https://github.com/schollz/find/blob/master/FAQ.md#can-you-run-the-server-on-a-raspberry-pi).
-- Does it work with [home-assistant.io](https://home-assistant.io/)? [Yes](https://github.com/schollz/find/blob/master/FAQ.md#does-it-work-with-home-assistantio).
+- How does it work? It uses already available WiFi information to classify locations. [See here for more detailed information](https://doc.internalpositioning.com/faq/#how-does-it-work).
+- Doesn't this already exist? [Yes, kinda](https://doc.internalpositioning.com/faq/#doesnt-this-already-exist).
+- What's the point? This short piece of code can do [home automation](https://doc.internalpositioning.com/faq/#can-i-run-the-server-at-home-on-the-lan-connection) and [replace motion sensors](https://doc.internalpositioning.com/faq/#can-it-replace-motion-sensors) and [more](https://doc.internalpositioning.com/faq/#whats-the-point-of-this).
+- Can I use an iPhone? [Sorry, no](https://doc.internalpositioning.com/faq/#can-i-use-an-iphone).
+- Does it work on a Raspberry Pi? [Yes](https://doc.internalpositioning.com/faq/#can-you-run-the-server-on-a-raspberry-pi).
+- Does it work with [home-assistant.io](https://home-assistant.io/)? [Yes](https://doc.internalpositioning.com/faq/#does-it-work-with-home-assistantio).
 - Can I help? [Yes, please](https://github.com/schollz/find/issues).
 - How do I try it? It's easy. Just [download and run](https://github.com/schollz/find#usage).
 
-More questions? See the [unabbreviated FAQ](https://github.com/schollz/find/blob/master/FAQ.md).
+More questions? See the [unabbreviated FAQ](https://doc.internalpositioning.com/faq/).
 
 # Quickstart
 
@@ -39,7 +39,7 @@ If you'd like to install things yourself, see [the documentation](https://doc.in
 
 ## 1\. Download the software
 
-**Android users:** [download the current version of the app](https://play.google.com/store/apps/details?id=com.hcp.find). _Sorry iPhone users but [the Apple store prevents apps that access WiFi information](https://github.com/schollz/find/blob/master/FAQ.md#can-i-use-an-iphone), so I will be unable to release a iPhone version._
+**Android users:** [download the current version of the app](https://play.google.com/store/apps/details?id=com.hcp.find). _Sorry iPhone users but [the Apple store prevents apps that access WiFi information](https://doc.internalpositioning.com/faq/#can-i-use-an-iphone), so I will be unable to release a iPhone version._
 
 **OR**
 
