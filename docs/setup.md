@@ -195,6 +195,25 @@ $ docker build -t finddocker .
 $ docker run -it -p 18003:8003 -p 11883:1883 -v /path/to/host/data:/data finddocker
 ```
 
+# Plugins
+
+
+## FIND-LF
+
+Normally, the FIND APP allows an phone/device collect fingerprints from surrounding access points.
+
+<center>
+<img src="/find-example.png" width=600px></img>
+</center>
+
+Using FIND-LF you can actually collect the fingerprints directly using a cluster of Raspberry Pis. These Raspberry Pis then forward the individual signals to a FIND-LF server, which then forwards them normally to FIND server.
+
+<center>
+<img src="/find-lf-example.png" width=600px></img>
+</center>
+
+
+
 # Contributing
 
 Please, do! Checkout [the latest issues](https://github.com/schollz/find/issues) to see what needs being done, or add your own cool thing.

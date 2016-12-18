@@ -77,6 +77,10 @@ between floors.
 
 **FIND** works by taking these differences between the WiFi data from different places to *classify* a location. Positioning is accomplished by first learning the distributions of WiFi signals for a given location and then classifying it during tracking. Learning only takes ~10 minutes and will last almost indefinitely. The WiFi fingerprints are also the same across all devices so that learning using one device is guaranteed to work across all devices.
 
+<center>
+<img src="/room-schematic.png" width=600px></img>
+</center>
+
 <br><br><br><br>
 
 

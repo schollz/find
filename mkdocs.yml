@@ -1,5 +1,5 @@
 site_name: FIND Documentation
-theme: cyborg
+theme: cosmo
 repo_url: https://github.com/schollz/find
 site_description: API documentation for schollz/find, a Framework for Internal Positioning and WiFi based location
 site_url: https://docs.internalpositioning.com
