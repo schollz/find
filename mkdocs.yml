@@ -9,8 +9,7 @@ pages:
   - 'Setup': setup.md
   - 'API': api.md
   - 'FAQ': faq.md
-  - 'Home Automation': ha.md
-  - 'Privacy Policy': privacy.md
+  - 'About': privacy.md
 
 extra_javascript:
     - https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML

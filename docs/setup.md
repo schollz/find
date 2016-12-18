@@ -198,7 +198,7 @@ $ docker run -it -p 18003:8003 -p 11883:1883 -v /path/to/host/data:/data finddoc
 # Plugins
 
 
-## FIND-LF
+## [find-lf](https://github.com/schollz/find-lf)
 
 Normally, the FIND APP allows an phone/device collect fingerprints from surrounding access points.
 
@@ -206,68 +206,69 @@ Normally, the FIND APP allows an phone/device collect fingerprints from surround
 <img src="/find-example.png" width=600px></img>
 </center>
 
-Using FIND-LF you can actually collect the fingerprints directly using a cluster of Raspberry Pis. These Raspberry Pis then forward the individual signals to a FIND-LF server, which then forwards them normally to FIND server.
+Using [FIND-LF](https://github.com/schollz/find-lf) you can actually collect the fingerprints directly using a cluster of Raspberry Pis. These Raspberry Pis then forward the individual signals to a [FIND-LF](https://github.com/schollz/find-lf) server, which then forwards them normally to FIND server.
 
 <center>
 <img src="/find-lf-example.png" width=600px></img>
 </center>
 
+For more information, see the [FIND-LF README](https://github.com/schollz/find-lf).
+
+## [find-map](https://github.com/schollz/find-map)
+
+The [find-map](https://github.com/schollz/find-map) is a simple setup for projecting the current locations using GPS coordinates. For more information, see [find-map README](https://github.com/schollz/find-map).
+
+# Home Automation
+
+## [home-assistant.io](https://home-assistant.io/)
+
+Home Assistant is an excellent framework for tracking the state of devices
+in your home, and can control them from a single interface.
+
+I've created a example template file for home assistant that can be used
+with FIND:
+
+- [HTTP-based communication](https://gist.github.com/schollz/6bc1fc6293308806a1cbd7bcef44e591)
+- MQTT-based communication (coming)
+
+Here's an example of my screen using the system:
+
+<center>
+<img src="/hass.png" width=200px></img>
+</center>
 
 
-# Contributing
+## Particle Photon
 
-Please, do! Checkout [the latest issues](https://github.com/schollz/find/issues) to see what needs being done, or add your own cool thing.
+The Particle Photon is a $20 device that can be used as a tracking device using the following code. The code allows for a "sleep" mode that can be activated by pressing "Setup" once, and turned off by pressing "Setup" twice. This mode allows more battery life.
 
-If you find a bug or need help with something, feel free to contact:
-
-* Email: [zack@hypercubeplatforms.com](mailto:zack@hypercubeplatforms.com)
-* Twitter: [@zack_118](https://twitter.com/intent/tweet?screen_name=zack_118)
-* Gitter: [Join room](https://gitter.im/schollz/find)
-* Github Issues: [Open an issue](https://github.com/schollz/find/issues/new)
+You can access the **FIND** program using HTTP or MQTT. I've included example sketches that can be used for each.
 
 
-# Acknowledgements
+### HTTP-based messaging
 
-Thanks to [tscholl2](https://github.com/tscholl2), [sjsafranek](https://github.com/sjsafranek), and [jschools](https://github.com/jschools) for their help in guiding the development of **FIND** and creating the early versions of FIND with me!
+[Source code](https://gist.github.com/schollz/6077b4c64cf488e89856ed76c0f8a7d2).
 
-<img src="https://i.imgur.com/Ze51DJ6.png" width="180px" /> Funding from [Duke University Colab](https://colab.duke.edu/)
+Some notes:
 
-Thanks to Rishabh Rajgarhia and [CanvasJS](http://canvasjs.com/) for help implementing a nice graph.
+- You must use HTTP, not HTTPS. That's why the server is set to `ml2.internalpositioning.com`
+- You can not flash from WiFi is the board is in sleep mode. Thats what the button is for. If this fails, you can reset by unplugging, holding down "Setup" and then plugging in while holding down "Setup." Then link up the Photon like you did from the beginning.
+- The Photon ESP chip sees fewer macs than a Android does, probably because of the antenna. Thus, its best to not use platform-specific information and you should set the mixins to `0` on the server by using `curl https://ml.internalpositioning.com/mixin?group=X&mixin=0`.
 
-Thanks [arafsheikh](https://github.com/arafsheikh) for adding interface selection, [Pugio](https://github.com/Pugio) and [ScottSWu](https://github.com/ScottSWu) for adding OS X/Windows support for the fingerprint program, including a better [Windows scanning utility](https://github.com/ScottSWu/windows-wlan-util/releases)! Thanks [Thom-x](https://github.com/Thom-x) for the Dockerfile. Thanks [certifiedloud](https://github.com/certifiedloud) for implementing the change to `DELETE` requests and implementing sockets for unix. Thanks [bebus77](https://github.com/bebus77) for making a awesome generic struct for OS support on the fingerprinting program! Thanks [christoph-wagner](https://github.com/Christoph-Wagner) for help with polling interval on app.
 
-Thanks to [patorjk](http://patorjk.com/software/taag/) and [asciiworld](http://www.asciiworld.com/) for the ASCII art. Thanks to [Imgur](https://imgur.com/a/yjvci) for [hosting](https://imgur.com/a/3yGjV) images.
+### MQTT-based messaging
 
-# License
+[Source code](https://gist.github.com/schollz/d388b0c0ed1bb3b604eba6b7154a49d1).
 
-## FIND
+This version uses significantly less bandwidth than the HTTP version. It takes a little more configuration, [see the MQTT documentation](/mqtt/) for how to get started with MQTT.
 
-**FIND** is a Framework for Internal Navigation and Discovery.
+**Benchmarking**
 
-Copyright (C) 2015-2016 Zack Scholl
+Using a `nextTime` of `+2000ms` it uses 147 mA.
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+Using a `nextTime` of `+5000ms`, it uses 113 mA.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the [GNU Affero General Public License](LICENSE) for more details.
+Using a `nextTime` of `+10000ms`, with SLEEP ACTIVATED, it uses 81 mA
 
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see [GNU Affero General Public License here](https://www.gnu.org/licenses/agpl.html).
+Using a `nextTime` of `+60000ms`, with SLEEP ACTIVATED, it uses 57 mA
 
-## CanvasJS
-
-**FIND** uses [CanvasJS](http://canvasjs.com/). Note that you will have to buy the appropriate CanvasJS License if you use this software for commercial purposes. CanvasJS has the following Dual Licensing Model:
-
-### Commercial License
-
-Commercial use of CanvasJS requires you to purchase a license. Without a commercial license you can use it for evaluation purposes only. Please refer to the following link for further details: http://canvasjs.com/.
-
-### Free for Non-Commercial Use
-
-For non-commercial purposes you can use the software for free under Creative Commons Attribution-NonCommercial 3.0 License.
-
-A credit Link is added to the bottom right of the chart which should be preserved. Refer to the following link for further details on the same: http://creativecommons.org/licenses/by-nc/3.0/deed.en_US.

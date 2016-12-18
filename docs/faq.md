@@ -8,78 +8,27 @@ If you have any questions, please contact:
 * Gitter: [Join room](https://gitter.im/schollz/find)
 * Github Issues: [Open an issue](https://github.com/schollz/find/issues/new)
 
-<br><br><br><br>
-
-
-###  Can I use an iPhone?
-
-**No.** We currently do not support iPhone. Unfortunately, the information about the WiFi scanning has to come from the use of the [`Apple80211` library](https://stackoverflow.com/questions/9684341/iphone-get-a-list-of-all-ssids-without-private-library/9684945#9684945). This is private library which means that [a user would have to jail break their device in order to use it](https://stackoverflow.com/questions/6341547/ios-can-i-manually-associate-wifi-network-with-geographic-location/6341893#6341893). We do not want to distribute an app that would require users to jailbreak their phones, so we will have to avoid developing for iOS until Apple removes this restriction. Sorry!
-
-<br><br><br><br>
-
-
-###  Doesn't this already exist?
-
-**Yes - but not satisfyingly.** Most solutions are not open-source, or they require external hardware (beacons, etc.), or they are expensive, or they just don't work very well. But don't take my word for it, try it yourself. Here are some of the programs I found that are similar:
-
-If you are looking for a more **commercial, large-scale deployable application**, look at these up-and-coming solutions:
-
--   [MazeMap Indoor Navigation] - a Norway-based and Cisco-partnered enterprise that takes your CAD floor plans and generates a nice user-interface with similar indoor-positioning capabilities.
--   [Meridian Kits] - a SF and Portland based company (part of Aruba Networks) that offers specialized App SDK environments for building internal positioning systems into workplaces, businesses and hospitals
--   [MPact Platform] - Motorola is working on a internal positioning system that takes advantage of BlueTooth beacons and Wi-Fi for internal positioning for large applications
-
-If you are looking for a **free single-user, single-home application**, perhaps you can find solutions with these apps:
-
--   [Google Maps Floor Plan Maker] - not sure how it works (and have not tested) but claims to be able to navigate within small businesses. Reviewed okay.
--   [WiFi Indoor Localization] - single-floor grid-based learning system that uses Wi-Fi to train on the names of mac addresses. In my hands it did not work well below 20ft resolution. Reviewed okay.
--   [Indoor Positioning] - Selective learning, not tested by me, but also grid-based. Not reviewed.
--   [BuildNGO - Indoor Navi] - Offers Android app that requires online service for uploading floor plans to their server and uses learning based on Max signal, may require Bluetooth as well.
--   [Wifarer] - Uses Beacons and WiFi for Indoor positioning, but trainable and limited to select museums. Reviewed well, but no training available.
--   [Indoor GPS] - Perfunctory application that trains on a route, instead of a location and offers SDK but still lots of work to be done. Reviewed okay.
-
-  [MazeMap Indoor Navigation]: http://mazemap.com/what-it-is
-  [Meridian Kits]: http://www.meridianapps.com
-  [MPact Platform]: http://newsroom.motorolasolutions.com/Press-Releases/Communicate-to-Shoppers-at-the-Right-Time-with-First-of-its-Kind-Location-Based-Platform-from-Motor-49e1.aspx
-  [Google Maps Floor Plan Maker]: https://play.google.com/store/apps/details?id=com.google.android.apps.insight.surveyor&hl=en
-  [WiFi Indoor Localization]: https://play.google.com/store/apps/details?id=com.hfalan.wifilocalization&hl=en
-  [Indoor Positioning]: https://play.google.com/store/apps/details?id=com.bombao.projetwifi&hl=en
-  [BuildNGO - Indoor Navi]: https://play.google.com/store/apps/details?id=com.sails.buildngo&hl=en
-  [Wifarer]: https://play.google.com/store/apps/details?id=com.wifarer.android&hl=en
-  [Indoor GPS]: https://play.google.com/store/apps/details?id=com.ladiesman217.indoorgps&hl=en
-
-
-  <br><br><br><br>
-
-
-###  What's the point of this?
-
-**The point is to eventually incorporate FIND into home automation.** **FIND** can replace motion sensors to provide positional and user-specific information. Anything that you would do with a motion sensor you can do with **FIND**. Anything you can do with GPS information you can do with **FIND** information. Except here you get internal positioning so you could tell apart one table from another in a cafeteria, or one bookshelf from another in a library.
-
- As Wi-Fi singleboard computers get smaller and smartphones become more ubiquitous there will be more and more opportunities to harness WiFi signals into something useful for other applications.
-
- <br><br><br><br>
-
 
 ### How does it work?
 
-**The basis of this system is to catalog all the fingerprints about the
-Wifi routers in the area (MAC addresses and signal values) and then
-classify them according to their location.** Take a look at a typical set of fingerprints
- (taken from the library at Duke University):
-
-![Distributions](https://www.internalpositioning.com/guide/img/fingerprint_library.png)
-
-The distributions in Wifi RSSI signal as interpreted by an Android
-device is shown for each router. Each router is differentiated by color.
-Different locations give different distributions of router signals,
-whether these locations differ by a several meters or the same location
-between floors.
-
-**FIND** works by taking these differences between the WiFi data from different places to *classify* a location. Positioning is accomplished by first learning the distributions of WiFi signals for a given location and then classifying it during tracking. Learning only takes ~10 minutes and will last almost indefinitely. The WiFi fingerprints are also the same across all devices so that learning using one device is guaranteed to work across all devices.
+Each time a WiFi-enabled device conducts a scan of nearby access points, it will recieve a unique identifier of the access point and a signal strength that correlates with the distance to the access point. A compilation of these different signals can be compiled into a *fingerprint* which can be used to uniquely classify the current location of that device.
 
 <center>
 <img src="/room-schematic.png" width=600px></img>
 </center>
+
+The access points can be anything - routers, Rokus, Raspberry Pis. They also can be anywhere - since they only need to be *seen* and not *connected* to, it will successfully use routers that are in a different building.
+
+The basis of this system is to catalog all the fingerprints about the
+Wifi routers in the area (MAC addresses and signal values) and then
+classify them according to their location. This is done using a Android App, or computer program, that collects the fingerprints, and then sends them on to the FIND server which can compute the location. (Alternatively you can have the access points themselves send the signals, for more information [see the FIND-LF plugin](/setup/#find-lf)).
+
+<center>
+<img src="/find-example.png" width=600px></img>
+</center>
+
+Locations are determined on the FIND server using *classification*. Currently the server supports a Naive-Bayes implementation, Random Forests, and Support Vector Machines. Positioning by classification is accomplished by first learning the distributions of WiFi signals for a given location and then classifying it during tracking. Learning only takes ~10 minutes and will last almost indefinitely. The WiFi fingerprints are also the same across all devices so that learning using one device is guaranteed to work across all devices.
+
 
 <br><br><br><br>
 
@@ -144,6 +93,58 @@ There is a `mixin` variable that calculates the linear combination of Method 1 a
 * This `mixin` parameter [can be set manually](/#put-mixin), in the case that you are sure you don't want to use antenna specific information (Method 2).
 
 <br><br><br><br>
+
+<br><br><br><br>
+
+
+###  Can I use an iPhone?
+
+**No.** We currently do not support iPhone. Unfortunately, the information about the WiFi scanning has to come from the use of the [`Apple80211` library](https://stackoverflow.com/questions/9684341/iphone-get-a-list-of-all-ssids-without-private-library/9684945#9684945). This is private library which means that [a user would have to jail break their device in order to use it](https://stackoverflow.com/questions/6341547/ios-can-i-manually-associate-wifi-network-with-geographic-location/6341893#6341893). We do not want to distribute an app that would require users to jailbreak their phones, so we will have to avoid developing for iOS until Apple removes this restriction. Sorry!
+
+<br><br><br><br>
+
+
+###  Doesn't this already exist?
+
+**Yes - but not satisfyingly.** Most solutions are not open-source, or they require external hardware (beacons, etc.), or they are expensive, or they just don't work very well. But don't take my word for it, try it yourself. Here are some of the programs I found that are similar:
+
+If you are looking for a more **commercial, large-scale deployable application**, look at these up-and-coming solutions:
+
+-   [MazeMap Indoor Navigation] - a Norway-based and Cisco-partnered enterprise that takes your CAD floor plans and generates a nice user-interface with similar indoor-positioning capabilities.
+-   [Meridian Kits] - a SF and Portland based company (part of Aruba Networks) that offers specialized App SDK environments for building internal positioning systems into workplaces, businesses and hospitals
+-   [MPact Platform] - Motorola is working on a internal positioning system that takes advantage of BlueTooth beacons and Wi-Fi for internal positioning for large applications
+
+If you are looking for a **free single-user, single-home application**, perhaps you can find solutions with these apps:
+
+-   [Google Maps Floor Plan Maker] - not sure how it works (and have not tested) but claims to be able to navigate within small businesses. Reviewed okay.
+-   [WiFi Indoor Localization] - single-floor grid-based learning system that uses Wi-Fi to train on the names of mac addresses. In my hands it did not work well below 20ft resolution. Reviewed okay.
+-   [Indoor Positioning] - Selective learning, not tested by me, but also grid-based. Not reviewed.
+-   [BuildNGO - Indoor Navi] - Offers Android app that requires online service for uploading floor plans to their server and uses learning based on Max signal, may require Bluetooth as well.
+-   [Wifarer] - Uses Beacons and WiFi for Indoor positioning, but trainable and limited to select museums. Reviewed well, but no training available.
+-   [Indoor GPS] - Perfunctory application that trains on a route, instead of a location and offers SDK but still lots of work to be done. Reviewed okay.
+
+  [MazeMap Indoor Navigation]: http://mazemap.com/what-it-is
+  [Meridian Kits]: http://www.meridianapps.com
+  [MPact Platform]: http://newsroom.motorolasolutions.com/Press-Releases/Communicate-to-Shoppers-at-the-Right-Time-with-First-of-its-Kind-Location-Based-Platform-from-Motor-49e1.aspx
+  [Google Maps Floor Plan Maker]: https://play.google.com/store/apps/details?id=com.google.android.apps.insight.surveyor&hl=en
+  [WiFi Indoor Localization]: https://play.google.com/store/apps/details?id=com.hfalan.wifilocalization&hl=en
+  [Indoor Positioning]: https://play.google.com/store/apps/details?id=com.bombao.projetwifi&hl=en
+  [BuildNGO - Indoor Navi]: https://play.google.com/store/apps/details?id=com.sails.buildngo&hl=en
+  [Wifarer]: https://play.google.com/store/apps/details?id=com.wifarer.android&hl=en
+  [Indoor GPS]: https://play.google.com/store/apps/details?id=com.ladiesman217.indoorgps&hl=en
+
+
+  <br><br><br><br>
+
+
+###  What's the point of this?
+
+**The point is to eventually incorporate FIND into home automation.** **FIND** can replace motion sensors to provide positional and user-specific information. Anything that you would do with a motion sensor you can do with **FIND**. Anything you can do with GPS information you can do with **FIND** information. Except here you get internal positioning so you could tell apart one table from another in a cafeteria, or one bookshelf from another in a library.
+
+ As Wi-Fi singleboard computers get smaller and smartphones become more ubiquitous there will be more and more opportunities to harness WiFi signals into something useful for other applications.
+
+ <br><br><br><br>
+
 
 
 ### Does the smartphone version use up the battery quickly?
