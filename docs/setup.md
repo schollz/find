@@ -206,7 +206,7 @@ Normally, the FIND APP allows an phone/device collect fingerprints from surround
 <img src="/find-example.png" width=600px></img>
 </center>
 
-Using [FIND-LF](https://github.com/schollz/find-lf) you can actually collect the fingerprints directly using a cluster of Raspberry Pis. These Raspberry Pis then forward the individual signals to a [FIND-LF](https://github.com/schollz/find-lf) server, which then forwards them normally to FIND server.
+Using [FIND-LF](https://github.com/schollz/find-lf) you can actually collect the fingerprints directly using a cluster of Raspberry Pis and you do not need a fingerprinting client (like an Android App). These Raspberry Pis then forward the individual signals to a [FIND-LF](https://github.com/schollz/find-lf) server, which then forwards them normally to FIND server.
 
 <center>
 <img src="/find-lf-example.png" width=600px></img>
