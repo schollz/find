@@ -104,8 +104,14 @@ func optimizePriorsThreaded(group string) error {
 	if mixinOverride >= 0 && mixinOverride <= 1 {
 		mixins = []float64{mixinOverride}
 	}
-	// cutoff := 0.1
+
+	// Choose cutoff
 	cutoffs := []float64{0.005, 0.05, 0.1}
+	cutoffOverride, _ := getCutoffOverride(group)
+	if cutoffOverride >= 0 && cutoffOverride <= 1 {
+		cutoffs = []float64{cutoffOverride}
+	}
+
 	bestMixin := make(map[string]float64)
 	bestResult := make(map[string]float64)
 	bestCutoff := make(map[string]float64)

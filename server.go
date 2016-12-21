@@ -210,6 +210,7 @@ cp svm-train /usr/local/bin/`)
 	r.GET("/userlocs", userLocations) // to be deprecated
 	r.GET("/whereami", whereAmI)      // to be deprecated
 	r.PUT("/mixin", putMixinOverride)
+	r.PUT("/cutoff", putCutoffOverride)
 	r.PUT("/database", migrateDatabase)
 
 	// Load and display the logo

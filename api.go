@@ -354,6 +354,27 @@ func putMixinOverride(c *gin.Context) {
 	}
 }
 
+func putCutoffOverride(c *gin.Context) {
+	group := strings.ToLower(c.DefaultQuery("group", "noneasdf"))
+	newCutoff := c.DefaultQuery("cutoff", "none")
+	if group != "noneasdf" {
+		newCutoffFloat, err := strconv.ParseFloat(newCutoff, 64)
+		if err == nil {
+			err2 := setCutoffOverride(group, newCutoffFloat)
+			if err2 == nil {
+				optimizePriorsThreaded(strings.ToLower(group))
+				c.JSON(http.StatusOK, gin.H{"success": true, "message": "Overriding cutoff for " + group + ", now set to " + newCutoff})
+			} else {
+				c.JSON(http.StatusOK, gin.H{"success": false, "message": err2.Error()})
+			}
+		} else {
+			c.JSON(http.StatusOK, gin.H{"success": false, "message": err.Error()})
+		}
+	} else {
+		c.JSON(http.StatusOK, gin.H{"success": false, "message": "Error parsing request"})
+	}
+}
+
 func editNetworkName(c *gin.Context) {
 	group := c.DefaultQuery("group", "noneasdf")
 	oldname := c.DefaultQuery("oldname", "none")

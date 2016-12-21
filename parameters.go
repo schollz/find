@@ -337,6 +337,31 @@ func getMixinOverride(group string) (float64, error) {
 	return override, err
 }
 
+func getCutoffOverride(group string) (float64, error) {
+	group = strings.ToLower(group)
+	override := float64(-1)
+	db, err := bolt.Open(path.Join(RuntimeArgs.SourcePath, group+".db"), 0600, nil)
+	defer db.Close()
+	if err != nil {
+		Error.Println(err)
+	}
+
+	err = db.View(func(tx *bolt.Tx) error {
+		// Assume bucket exists and has keys
+		b := tx.Bucket([]byte("resources"))
+		if b == nil {
+			return fmt.Errorf("Resources dont exist")
+		}
+		v := b.Get([]byte("cutoffOverride"))
+		if len(v) == 0 {
+			return fmt.Errorf("No mixin override")
+		}
+		override, err = strconv.ParseFloat(string(v), 64)
+		return err
+	})
+	return override, err
+}
+
 func setMixinOverride(group string, mixin float64) error {
 	if (mixin < 0 || mixin > 1) && mixin != -1 {
 		return fmt.Errorf("mixin must be between 0 and 1")
@@ -354,6 +379,31 @@ func setMixinOverride(group string, mixin float64) error {
 		}
 
 		err2 = bucket.Put([]byte("mixinOverride"), []byte(strconv.FormatFloat(mixin, 'E', -1, 64)))
+		if err2 != nil {
+			return fmt.Errorf("could add to bucket: %s", err2)
+		}
+		return err2
+	})
+	return err
+}
+
+func setCutoffOverride(group string, cutoff float64) error {
+	if (cutoff < 0 || cutoff > 1) && cutoff != -1 {
+		return fmt.Errorf("cutoff must be between 0 and 1")
+	}
+	db, err := bolt.Open(path.Join(RuntimeArgs.SourcePath, group+".db"), 0600, nil)
+	defer db.Close()
+	if err != nil {
+		Error.Println(err)
+	}
+
+	err = db.Update(func(tx *bolt.Tx) error {
+		bucket, err2 := tx.CreateBucketIfNotExists([]byte("resources"))
+		if err2 != nil {
+			return fmt.Errorf("create bucket: %s", err2)
+		}
+
+		err2 = bucket.Put([]byte("cutoffOverride"), []byte(strconv.FormatFloat(cutoff, 'E', -1, 64)))
 		if err2 != nil {
 			return fmt.Errorf("could add to bucket: %s", err2)
 		}
