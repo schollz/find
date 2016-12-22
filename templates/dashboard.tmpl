@@ -242,48 +242,6 @@
 
     <div class="row clearfix" id="content-row">
       <div class="col-xs-12 column">
-        <h3>Users</h3>
-      </div>
-    </div>
-
-
-    <div class="well" id="volume-stats-well">
-
-      <div class="panel panel-primary" id="volume-fees-panel">
-          <div class="panel-body">
-          <button class="btn btn-warning btn-block" id="startTracking" title="Click to start tracking all the users in realtime. There current positions will update here.">Track</button>
-          </div>
-      </div>
-
-      <div class="row clearfix" id="location-listing">
-
-
-        {{ range $index, $user := .Users }}
-
-        <div class="col-md-6 column" id="volume-fees-chart">
-          <div class="panel panel-primary" id="volume-fees-panel">
-            <div class="panel-heading">
-              <h3 class="panel-title">
-                         {{ $index }} &nbsp;<a id="{{ $index }}" class="edituser" title="Click to change the name for '{{ $index }}'"><span class="fa fa-pencil-square-o"></span></a>&nbsp;<a id="{{ $index }}" class="deleteuser" title="Click to delete user '{{ $index }}'"><i class="fa fa-trash"></i></a>&nbsp;<a href="/dashboard/{{ $.Group }}?user={{ $index }}" title="Click to filter user '{{ $index }}'"><i class="fa fa-filter"></i></a>
-                       </h3>
-            </div>
-            <div class="panel-body">
-              <p id="lastSeen{{$index}}" title="Shows the last time and place of user when you are tracking."><strong>Last seen:</strong> {{ $user.Time }} at {{ $user.Location }}</p>
-              <p id="bayes{{$index}}" title="Shows the exponential Bayesian scores when you are tracking."></p>
-              <p id="svm{{$index}}" title="Shows the SVM scores when you are tracking."></p>
-              <p id="rf{{$index}}" title="Shows the random forest scores when you are tracking."></p>
-            </div>
-          </div>
-        </div>
-
-        {{ end }}
-
-
-      </div>
-    </div>
-
-    <div class="row clearfix" id="content-row">
-      <div class="col-xs-12 column">
         <h3>Database statistics</h3>
       </div>
     </div>
@@ -337,6 +295,52 @@
     </div>
 
 
+
+
+
+        <div class="row clearfix" id="content-row">
+          <div class="col-xs-12 column">
+            <h3>Users</h3>
+          </div>
+        </div>
+
+
+        <div class="well" id="volume-stats-well">
+
+          <div class="panel panel-primary" id="volume-fees-panel">
+              <div class="panel-body">
+              <button class="btn btn-warning btn-block" id="startTracking" title="Click to start tracking all the users in realtime. There current positions will update here.">Track</button>
+              </div>
+          </div>
+
+          <div class="row clearfix" id="location-listing">
+
+
+            {{ range $index, $user := .Users }}
+
+            <div class="col-md-6 column" id="volume-fees-chart">
+              <div class="panel panel-primary" id="volume-fees-panel">
+                <div class="panel-heading">
+                  <h3 class="panel-title">
+                             {{ $index }} &nbsp;<a id="{{ $index }}" class="edituser" title="Click to change the name for '{{ $index }}'"><span class="fa fa-pencil-square-o"></span></a>&nbsp;<a id="{{ $index }}" class="deleteuser" title="Click to delete user '{{ $index }}'"><i class="fa fa-trash"></i></a>
+                             &nbsp;<a href="/dashboard/{{ $.Group }}?user={{ $index }}" title="Click to filter user '{{ $index }}'"><i class="fa fa-filter"></i></a>
+                             &nbsp;<a onclick="window.open('/lastfingerprint?group={{ $.Group }}&user={{ $index }}', 'newwindow', 'width=350, height=450'); return false;" href="/lastfingerprint?group={{ $.Group }}&user={{ $index }}" title="Click to show last fingerprint of user '{{ $index }}'"><i class="fa fa-wifi"></i></a>
+                           </h3>
+                </div>
+                <div class="panel-body">
+                  <p id="lastSeen{{$index}}" title="Shows the last time and place of user when you are tracking."><strong>Last seen:</strong> {{ $user.Time }} at {{ $user.Location }}</p>
+                  <p id="bayes{{$index}}" title="Shows the exponential Bayesian scores when you are tracking."></p>
+                  <p id="svm{{$index}}" title="Shows the SVM scores when you are tracking."></p>
+                  <p id="rf{{$index}}" title="Shows the random forest scores when you are tracking."></p>
+                </div>
+              </div>
+            </div>
+
+            {{ end }}
+
+
+          </div>
+        </div>
 
 
   </div>

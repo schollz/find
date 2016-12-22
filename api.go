@@ -7,6 +7,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -38,6 +39,86 @@ type UserPositionJSON struct {
 	Bayes    map[string]float64 `json:"bayes"`
 	Svm      map[string]float64 `json:"svm"`
 	Rf       map[string]float64 `json:"rf"`
+}
+
+func apiGetLastFingerprint(c *gin.Context) {
+	group := c.DefaultQuery("group", "noneasdf")
+	user := c.DefaultQuery("user", "noneasdf")
+	if group != "noneasdf" {
+		if !groupExists(group) {
+			c.JSON(http.StatusOK, gin.H{"message": "You should insert a fingerprint first, see documentation", "success": false})
+			return
+		}
+		if user == "noneasdf" {
+			c.JSON(http.StatusOK, gin.H{"message": "You need to speciy user", "success": false})
+			return
+		}
+		c.String(http.StatusOK, getLastFingerprint(group, user))
+	} else {
+		c.JSON(http.StatusOK, gin.H{"message": "You need to speciy group", "success": false})
+	}
+}
+
+func getLastFingerprint(group string, user string) string {
+	group = strings.ToLower(group)
+	user = strings.ToLower(user)
+	sentAs := ""
+
+	db, err := bolt.Open(path.Join(RuntimeArgs.SourcePath, group+".db"), 0600, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	var v2 Fingerprint
+	err = db.View(func(tx *bolt.Tx) error {
+		// Assume bucket exists and has keys
+		b := tx.Bucket([]byte("fingerprints-track"))
+		if b == nil {
+			return nil
+		}
+		c := b.Cursor()
+		for k, v := c.Last(); k != nil; k, v = c.Prev() {
+			v3 := loadFingerprint(v)
+			if v3.Username == user {
+				v2 = v3
+				timestampString := string(k)
+				timestampUnixNano, _ := strconv.ParseInt(timestampString, 10, 64)
+				UTCfromUnixNano := time.Unix(0, timestampUnixNano)
+				v2.Timestamp = UTCfromUnixNano.UnixNano()
+				sentAs = "sent as /track\n"
+				break
+			}
+		}
+		return fmt.Errorf("User " + user + " not found")
+	})
+
+	err = db.View(func(tx *bolt.Tx) error {
+		// Assume bucket exists and has keys
+		b := tx.Bucket([]byte("fingerprints-learn"))
+		if b == nil {
+			return nil
+		}
+		c := b.Cursor()
+		for k, v := c.Last(); k != nil; k, v = c.Prev() {
+			timestampString := string(k)
+			timestampUnixNano, _ := strconv.ParseInt(timestampString, 10, 64)
+			UTCfromUnixNano := time.Unix(0, timestampUnixNano).UnixNano()
+			if UTCfromUnixNano < v2.Timestamp {
+				break
+			}
+			v3 := loadFingerprint(v)
+			if v2.Username == user {
+				v2 = v3
+				v2.Timestamp = UTCfromUnixNano
+				sentAs = "sent as /learn\n"
+				break
+			}
+		}
+		return fmt.Errorf("User " + user + " not found")
+	})
+	db.Close()
+
+	bJson, _ := json.MarshalIndent(v2, "", " ")
+	return sentAs + string(bJson)
 }
 
 func getHistoricalUserPositions(group string, user string, n int) []UserPositionJSON {

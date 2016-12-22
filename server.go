@@ -212,6 +212,7 @@ cp svm-train /usr/local/bin/`)
 	r.PUT("/mixin", putMixinOverride)
 	r.PUT("/cutoff", putCutoffOverride)
 	r.PUT("/database", migrateDatabase)
+	r.GET("/lastfingerprint", apiGetLastFingerprint)
 
 	// Load and display the logo
 	dat, _ := ioutil.ReadFile("./static/logo.txt")
