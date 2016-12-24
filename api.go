@@ -41,6 +41,28 @@ type UserPositionJSON struct {
 	Rf       map[string]float64 `json:"rf"`
 }
 
+func getLocationList(c *gin.Context) {
+	c.Writer.Header().Set("Content-Type", "application/json")
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+	c.Writer.Header().Set("Access-Control-Max-Age", "86400")
+	c.Writer.Header().Set("Access-Control-Allow-Methods", "GET")
+	c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, X-Max")
+	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+
+	group := strings.ToLower(c.DefaultQuery("group", "noneasdf"))
+	if group == "noneasdf" {
+		c.JSON(http.StatusOK, gin.H{"message": "You need to speciy group", "success": false})
+		return
+	}
+	if !groupExists(group) {
+		c.JSON(http.StatusOK, gin.H{"message": "You should insert a fingerprint first, see documentation", "success": false})
+		return
+	}
+	ps, _ := openParameters(group)
+
+	c.JSON(http.StatusOK, gin.H{"message": fmt.Sprintf("Found %d unique locations in group %s", len(ps.UniqueLocs), group), "locations": ps.UniqueLocs, "success": true})
+}
+
 func apiGetLastFingerprint(c *gin.Context) {
 	group := c.DefaultQuery("group", "noneasdf")
 	user := c.DefaultQuery("user", "noneasdf")
@@ -290,6 +312,7 @@ func userLocations(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"success": false, "message": "Error parsing request"})
 	}
 }
+
 func getUserLocations(c *gin.Context) {
 	c.Writer.Header().Set("Content-Type", "application/json")
 	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
@@ -438,6 +461,8 @@ func putMixinOverride(c *gin.Context) {
 func putCutoffOverride(c *gin.Context) {
 	group := strings.ToLower(c.DefaultQuery("group", "noneasdf"))
 	newCutoff := c.DefaultQuery("cutoff", "none")
+	Debug.Println(group)
+	Debug.Println(newCutoff)
 	if group != "noneasdf" {
 		newCutoffFloat, err := strconv.ParseFloat(newCutoff, 64)
 		if err == nil {

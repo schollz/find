@@ -198,6 +198,7 @@ cp svm-train /usr/local/bin/`)
 
 	// Routes for API access (api.go)
 	r.GET("/location", getUserLocations)
+	r.GET("/locations", getLocationList)
 	r.GET("/editname", editName)
 	r.GET("/editusername", editUserName)
 	r.GET("/editnetworkname", editNetworkName)
