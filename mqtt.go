@@ -48,6 +48,10 @@ func setupMqtt() {
 func putMQTT(c *gin.Context) {
 	group := strings.ToLower(c.DefaultQuery("group", "noneasdf"))
 	reset := strings.ToLower(c.DefaultQuery("reset", "noneasdf"))
+	if !RuntimeArgs.Mqtt {
+		c.JSON(http.StatusOK, gin.H{"success": false, "message": "MQTT is not enabled on this server"})
+		return
+	}
 	if group != "noneasdf" {
 		password, err := getMQTT(group)
 		if len(password) == 0 || reset == "true" {
@@ -143,7 +147,7 @@ func updateMosquittoConfig() {
 	ioutil.WriteFile(path.Join(RuntimeArgs.Cwd, "mosquitto/acl"), []byte(acl), 0644)
 	ioutil.WriteFile(path.Join(RuntimeArgs.Cwd, "mosquitto/passwd"), []byte(passwd), 0644)
 	ioutil.WriteFile(path.Join(RuntimeArgs.Cwd, "mosquitto/mosquitto.conf"), []byte(conf), 0644)
-	
+
 	cmd := "mosquitto_passwd"
 	args := []string{"-U", path.Join(RuntimeArgs.Cwd, "mosquitto/passwd")}
 	if err := exec.Command(cmd, args...).Run(); err != nil {
