@@ -251,7 +251,20 @@
 
       <div class="panel panel-primary" id="volume-fees-panel">
           <div class="panel-body">
-          <button type="submit" class="btn btn-info btn-block" id="recalculateAll" title="Reclaculate the machine learning parameters and update your statistics.">Update</button>
+            <div class="row">
+            <div class="col-sm-3 col-xs-6">
+              <button type="submit" class="btn btn-info btn-block" id="recalculateAll" title="Reclaculate the machine learning parameters and update your statistics.">Update</button>
+            </div>
+            <div class="col-sm-3 col-xs-6">
+              <button type="submit" class="btn btn-success btn-block" id="getMQTT" title="Get MQTT password.">Get MQTT</button>
+            </div>
+            <div class="col-sm-3 col-xs-6">
+              <button type="submit" class="btn btn-danger btn-block" id="setMixin" title="Set Mixin for parameters.">Set Mixin</button>
+            </div>
+            <div class="col-sm-3 col-xs-6">
+              <button type="submit" class="btn btn-danger btn-block" id="setCutoff" title="Set Cutoff for parameters.">Set Cutoff</button>
+            </div>
+          </div>
           </div>
       </div>
 
@@ -775,6 +788,172 @@ function userLocPolling() {
                 });
 
             });
+
+
+            $('.editnetworkloc').click(function() {
+              var place = $(this).attr('id');
+              swal({
+                  title: "Edit location",
+                  text: "Are you sure you want to rename '" + place + "'",
+                  type: "warning",
+                  showCancelButton: true,
+                  confirmButtonColor: "#DD6B55",
+                  confirmButtonText: "Yes, rename it!",
+                  cancelButtonText: "No, cancel pls!",
+                  closeOnConfirm: false,
+                  closeOnCancel: false
+                },
+                function(isConfirm) {
+                  if (isConfirm) {
+
+
+                    swal({
+                        title: "Edit name",
+                        text: "Enter the new name for '" + place + "':",
+                        type: "input",
+                        showCancelButton: true,
+                        closeOnConfirm: false,
+                        animation: "slide-from-top",
+                        inputPlaceholder: "newlocation"
+                      },
+                      function(inputValue) {
+                        if (inputValue === false) {
+                          swal.showInputError("You need to write something!");
+                          return false
+                        }
+
+                        if (inputValue === "") {
+                          swal.showInputError("You need to write something!");
+                          return false
+                        }
+                        console.log({
+                          "group": "{{ .Group }}",
+                          "oldname": place,
+                          "newname": inputValue
+                        })
+                        $.get("/editnetworkname", {
+                            "group": "{{ .Group }}",
+                            "oldname": place,
+                            "newname": inputValue
+                          },
+                          function(data) {
+                            console.log(data);
+                            if (data['success']) {
+                              swal("Edited!", data['message'], "success");
+                              location.reload()
+                            } else {
+                              swal("Something went wrong.", data['message'], "error");
+                            }
+                          }
+                        );
+
+
+                        swal("Please wait while name is changed", "You wrote: " + inputValue, "success");
+                      });
+
+                  } else {
+                    swal("Cancelled", "Name is still the same! :)", "error");
+                  }
+                });
+
+            });
+
+
+
+$('#getMQTT').click(function() {
+  $.ajax({
+    url:"/mqtt?group={{ .Group }}",
+    type: "PUT",
+    success: function(data) {
+      console.log(data);
+      if (data['success']) {
+        swal({
+          title: "MQTT is setup!",
+          text: "Your password is: " + data['password'] + "\nYou can listen on topic '{{ .Group }}/location/USER'",
+          timer: 5000,
+          showConfirmButton: true
+        });
+      } else {
+        swal("Something went wrong.", data['message'], "error");
+      }
+    }
+  });
+});
+
+$('#setMixin').click(function() {
+    swal({
+        title: "Set Mixin",
+        text: "Enter the new Mixin (between 0 and 1, or -1 to set automatically):",
+        type: "input",
+        showCancelButton: true,
+        closeOnConfirm: false,
+        animation: "slide-from-top",
+        inputPlaceholder: "newlocation"
+      },
+      function(inputValue) {
+        if (inputValue === false || inputValue === "") {
+          swal.showInputError("You need to write something!");
+          return false
+        }
+        $.ajax({
+          url:"/mixin?group={{ .Group }}&mixin="+inputValue,
+          type: "PUT",
+          success: function(data) {
+            console.log(data);
+            if (data['success']) {
+              swal({
+                title: "Updated!",
+                text: data['message'],
+                timer: 2000,
+                showConfirmButton: true
+              },function(){
+                location.reload();
+              });
+            } else {
+              swal("Something went wrong.", data['message'], "error");
+            }
+          }
+        });
+      });
+  });
+
+$('#setCutoff').click(function() {
+    swal({
+        title: "Set Cutoff",
+        text: "Enter the new cutoff (between 0 and 1, or -1 to set automatically):",
+        type: "input",
+        showCancelButton: true,
+        closeOnConfirm: false,
+        animation: "slide-from-top",
+        inputPlaceholder: "newlocation"
+      },
+      function(inputValue) {
+        if (inputValue === false || inputValue === "") {
+          swal.showInputError("You need to write something!");
+          return false
+        }
+
+        $.ajax({
+          url:"/cutoff?group={{ .Group }}&cutoff="+inputValue,
+          type: "PUT",
+          success: function(data) {
+            console.log(data);
+            if (data['success']) {
+              swal({
+                title: "Updated!",
+                text: data['message'],
+                timer: 2000,
+                showConfirmButton: true
+              },function(){
+                location.reload();
+              });
+            } else {
+              swal("Something went wrong.", data['message'], "error");
+            }
+          }
+        });
+      });
+  });
   </script>
 
 
