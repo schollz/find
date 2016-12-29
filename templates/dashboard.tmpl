@@ -386,9 +386,12 @@
 function userLocPolling() {
   jsonData = {};
   jsonData.group = "{{ .Group }}";
-      if (qs['users'] != undefined) {
-        jsonData.users = qs['users'];
-      }
+  if (qs['users'] != undefined) {
+    jsonData.users = qs['users'];
+  }
+  if (qs['user'] != undefined) {
+    jsonData.users = qs['user'];
+  }
         $.getJSON("/userlocs", jsonData,
           function(data) {
             if (data['success'] == true) {
