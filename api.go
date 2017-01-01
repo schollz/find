@@ -201,6 +201,64 @@ func getHistoricalUserPositions(group string, user string, n int) []UserPosition
 	return userJSONs
 }
 
+func getCurrentPositionOfAllUsers(group string) map[string]UserPositionJSON {
+	group = strings.ToLower(group)
+	db, err := bolt.Open(path.Join(RuntimeArgs.SourcePath, group+".db"), 0600, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	userPositions := make(map[string]UserPositionJSON)
+	userFingerprints := make(map[string]Fingerprint)
+	numUsersFound := 0
+	err = db.View(func(tx *bolt.Tx) error {
+		// Assume bucket exists and has keys
+		b := tx.Bucket([]byte("fingerprints-track"))
+		if b == nil {
+			return fmt.Errorf("Database not found")
+		}
+		c := b.Cursor()
+		for k, v := c.Last(); k != nil; k, v = c.Prev() {
+			v2 := loadFingerprint(v)
+			if _, ok := userPositions[v2.Username]; !ok {
+				timestampString := string(k)
+				timestampUnixNano, _ := strconv.ParseInt(timestampString, 10, 64)
+				UTCfromUnixNano := time.Unix(0, timestampUnixNano)
+				foo := UserPositionJSON{Time: UTCfromUnixNano.String()}
+				userPositions[v2.Username] = foo
+				userFingerprints[v2.Username] = v2
+				numUsersFound++
+			}
+			if numUsersFound > 40 {
+				return nil
+			}
+		}
+		return nil
+	})
+	db.Close()
+	if err != nil {
+		return userPositions
+	}
+
+	for user := range userPositions {
+		location, bayes := calculatePosterior(userFingerprints[user], *NewFullParameters())
+		foo := userPositions[user]
+		foo.Location = location
+		foo.Bayes = bayes
+		// Process SVM if needed
+		if RuntimeArgs.Svm {
+			_, foo.Svm = classify(userFingerprints[user])
+		}
+		if RuntimeArgs.RandomForests {
+			foo.Rf = rfClassify(group, userFingerprints[user])
+		}
+		go setUserPositionCache(group+user, foo)
+		userPositions[user] = foo
+	}
+
+	return userPositions
+}
+
 func getCurrentPositionOfUser(group string, user string) UserPositionJSON {
 	group = strings.ToLower(group)
 	user = strings.ToLower(user)
@@ -225,7 +283,7 @@ func getCurrentPositionOfUser(group string, user string) UserPositionJSON {
 		for k, v := c.Last(); k != nil; k, v = c.Prev() {
 			v2 := loadFingerprint(v)
 			i++
-			if i > 500 {
+			if i > 10000 {
 				return fmt.Errorf("Too deep!")
 			}
 			if v2.Username == user {

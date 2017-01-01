@@ -108,11 +108,15 @@ func slashDashboard(c *gin.Context) {
 		return
 	}
 	ps, _ := openParameters(group)
-	users := getUsers(group)
+	var users []string
+	for user := range filterUserMap {
+		users = append(users, user)
+	}
 	people := make(map[string]UserPositionJSON)
-	for _, user := range users {
-		_, ok := filterUserMap[user]
-		if len(filterUserMap) == 0 || ok {
+	if len(users) == 0 {
+		people = getCurrentPositionOfAllUsers(group)
+	} else {
+		for _, user := range users {
 			people[user] = getCurrentPositionOfUser(group, user)
 		}
 	}
@@ -132,6 +136,7 @@ func slashDashboard(c *gin.Context) {
 	dash.LocationCount = make(map[string]int)
 	dash.Mixin = make(map[string]float64)
 	dash.VarabilityCutoff = make(map[string]float64)
+
 	for n := range ps.NetworkLocs {
 		dash.Mixin[n] = ps.Priors[n].Special["MixIn"]
 		dash.VarabilityCutoff[n] = ps.Priors[n].Special["VarabilityCutoff"]
