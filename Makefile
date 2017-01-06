@@ -3,7 +3,7 @@ SOURCES := $(shell find $(SOURCEDIR) -name '*.go')
 
 BINARY=findserver
 
-VERSION=2.3
+VERSION=2.4
 BUILD_TIME=`date +%FT%T%z`
 BUILD=`git rev-parse HEAD`
 
@@ -12,12 +12,7 @@ LDFLAGS=-ldflags "-X main.VersionNum=${VERSION} -X main.Build=${BUILD} -X main.B
 .DEFAULT_GOAL: $(BINARY)
 
 $(BINARY): $(SOURCES)
-	go get -u -v github.com/boltdb/bolt
-	go get -u -v github.com/gin-gonic/contrib/sessions
-	go get -u -v github.com/gin-gonic/gin
-	go get -u -v github.com/stretchr/testify/assert
-	go get -u -v github.com/pquerna/ffjson/fflib/v1
-	go get -u -v github.com/schollz/org.eclipse.paho.mqtt.golang
+	go get -u -v github.com/schollz/find
 	go build ${LDFLAGS} -o ${BINARY} ${SOURCES}
 
 .PHONY: install

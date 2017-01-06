@@ -1,7 +1,7 @@
 # ![](https://www.internalpositioning.com/guide/img/wifi-marker-darkgrey-small.png) FIND
 
 [![Build Status](https://travis-ci.org/schollz/find.svg?branch=master)](https://travis-ci.org/schollz/find)
-[![Version 2.3](https://img.shields.io/badge/version-2.3-brightgreen.svg)](https://www.internalpositioning.com/guide/development/) 
+[![Version 2.4](https://img.shields.io/badge/version-2.4-brightgreen.svg)](https://www.internalpositioning.com/guide/development/) 
 [![Github All Releases](https://img.shields.io/github/downloads/schollz/find/total.svg)](https://github.com/schollz/find/releases)
 [![FIND documentation](https://img.shields.io/badge/find-documentation-blue.svg)](https://doc.internalpositioning.com/) 
 ![Coverage](https://img.shields.io/badge/coverage-57%25-orange.svg) 
