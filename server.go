@@ -18,6 +18,7 @@ import (
 	"path"
 	"strings"
 
+	"github.com/BurntSushi/toml"
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 )
@@ -27,7 +28,6 @@ import (
 var RuntimeArgs struct {
 	RFPort            string
 	FilterMacFile     string
-	ExternalIP        string
 	Port              string
 	ServerCRT         string
 	ServerKey         string
@@ -66,31 +66,47 @@ func main() {
 		Build = "devdevdevdevdevdevdev"
 	}
 	// Bing flags for changing parameters of FIND
-	flag.StringVar(&RuntimeArgs.Port, "p", ":8003", "port to bind")
-	flag.StringVar(&RuntimeArgs.Socket, "s", "", "unix socket")
+	var configFileName string
+	flag.StringVar(&configFileName, "config", "", "configuration file to use (default is /etc/findserver.conf if no flags given)")
+	flag.StringVar(&RuntimeArgs.Port, "port", "8003", "port to bind")
+	flag.StringVar(&RuntimeArgs.SourcePath, "data", "", "path to data folder")
+	flag.StringVar(&RuntimeArgs.Socket, "sock", "", "unix socket")
 	flag.StringVar(&RuntimeArgs.ServerCRT, "crt", "", "location of ssl crt")
 	flag.StringVar(&RuntimeArgs.ServerKey, "key", "", "location of ssl key")
 	flag.StringVar(&RuntimeArgs.MqttServer, "mqtt", "", "ADDRESS:PORT of mosquitto server")
+	flag.StringVar(&RuntimeArgs.MosquittoPID, "mqttpid", "", "mosquitto PID (num of path to pid file)")
 	flag.StringVar(&RuntimeArgs.MqttAdmin, "mqttadmin", "", "admin to read all messages")
 	flag.StringVar(&RuntimeArgs.MqttAdminPassword, "mqttadminpass", "", "admin to read all messages")
-	flag.StringVar(&RuntimeArgs.MosquittoPID, "mosquitto", "", "mosquitto PID (`pgrep mosquitto`)")
-	flag.StringVar(&RuntimeArgs.Dump, "dump", "", "group to dump to folder")
 	flag.StringVar(&RuntimeArgs.Message, "message", "", "message to display to all users")
-	flag.StringVar(&RuntimeArgs.SourcePath, "data", "", "path to data folder")
 	flag.StringVar(&RuntimeArgs.RFPort, "rf", "", "port for random forests calculations")
 	flag.StringVar(&RuntimeArgs.FilterMacFile, "filter", "", "JSON file for macs to filter")
+	flag.StringVar(&RuntimeArgs.Dump, "dump", "", "group to dump to folder")
 	flag.CommandLine.Usage = func() {
-		fmt.Println(`find (version ` + VersionNum + ` (` + Build[0:8] + `), built ` + BuildTime + `)
-Example: 'findserver yourserver.com'
-Example: 'findserver -p :8080 localhost:8080'
-Example (mosquitto): 'findserver -mqtt 127.0.0.1:1883 -mqttadmin admin -mqttadminpass somepass -mosquitto ` + "`pgrep mosquitto`" + `
+		fmt.Println(`findserver (version ` + VersionNum + ` (` + Build[0:8] + `), built ` + BuildTime + `)
+Example: 'findserver'
+Example: 'findserver -port 8080'
+Example (mosquitto): 'findserver -mqtt 127.0.0.1:1883 -mqttadmin admin -mqttadminpass somepass -mqttpid ` + "`pgrep mosquitto`" + `
 Options:`)
 		flag.CommandLine.PrintDefaults()
 	}
 	flag.Parse()
-	RuntimeArgs.ExternalIP = flag.Arg(0)
-	if RuntimeArgs.ExternalIP == "" {
-		RuntimeArgs.ExternalIP = GetLocalIP() + RuntimeArgs.Port
+
+	// If no flags set, use try to use /etc/findserver.config as configuration file
+	if flag.NFlag() == 0 && configFileName == "" {
+		configFileName = "/etc/findserver.conf"
+	}
+	// If config file exists, get the Runtime Arguments from it
+	if configFileName != "" {
+		_, err := os.Stat(configFileName)
+		if err == nil {
+			if _, err := toml.DecodeFile(configFileName, &RuntimeArgs); err != nil {
+				Debug.Println(err)
+			} else {
+				Debug.Printf("Loaded configuration file '%s'", configFileName)
+			}
+		} else {
+			Debug.Printf("Configuration file '%s' not found", configFileName)
+		}
 	}
 
 	if RuntimeArgs.SourcePath == "" {
@@ -109,6 +125,7 @@ Options:`)
 	// Check whether random forests are used
 	if len(RuntimeArgs.RFPort) > 0 {
 		RuntimeArgs.RandomForests = true
+		Debug.Println("Using Random Forests")
 	}
 
 	// Check whether macs should be filtered
@@ -131,12 +148,6 @@ Options:`)
 			log.Fatal(err)
 		}
 		os.Exit(1)
-	}
-
-	// Check if there is a message from the admin
-	if _, err := os.Stat(path.Join(RuntimeArgs.Cwd, "message.txt")); err == nil {
-		messageByte, _ := ioutil.ReadFile(path.Join(RuntimeArgs.Cwd, "message.txt"))
-		RuntimeArgs.Message = string(messageByte)
 	}
 
 	// Check whether SVM libraries are available
@@ -223,13 +234,13 @@ cp svm-train /usr/local/bin/`)
 	if RuntimeArgs.Socket != "" {
 		r.RunUnix(RuntimeArgs.Socket)
 	} else if RuntimeArgs.ServerCRT != "" && RuntimeArgs.ServerKey != "" {
-		fmt.Println(`(version ` + VersionNum + ` build ` + Build[0:8] + `) is up and running on https://` + RuntimeArgs.ExternalIP)
+		fmt.Println(`(version ` + VersionNum + ` build ` + Build[0:8] + `) is up and running on https://` + GetLocalIP() + ":" + RuntimeArgs.Port)
 		fmt.Println("-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----")
-		r.RunTLS(RuntimeArgs.Port, RuntimeArgs.ServerCRT, RuntimeArgs.ServerKey)
+		r.RunTLS(":"+RuntimeArgs.Port, RuntimeArgs.ServerCRT, RuntimeArgs.ServerKey)
 	} else {
-		fmt.Println(`(version ` + VersionNum + ` build ` + Build[0:8] + `) is up and running on http://` + RuntimeArgs.ExternalIP)
+		fmt.Println(`(version ` + VersionNum + ` build ` + Build[0:8] + `) is up and running on http://` + GetLocalIP() + ":" + RuntimeArgs.Port)
 		fmt.Println("-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----")
-		r.Run(RuntimeArgs.Port)
+		r.Run(":" + RuntimeArgs.Port)
 	}
 }
 
