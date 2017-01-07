@@ -1,5 +1,6 @@
 # sudo docker build -t finddocker .
-# sudo docker run -it -p 18003:8003 -p 11883:1883 -v /path/to/host/data/folder:/data finddocker bash
+# sudo docker run -it -p 18003:8003 -p 11883:1883 -v /path/to/host/data/folder:/data -v findserver.conf:/etc/findserver.conf finddocker bash
+
 FROM ubuntu:16.04
 
 # Get basics
@@ -33,8 +34,9 @@ WORKDIR "/root"
 RUN go get github.com/schollz/find
 RUN git clone https://github.com/schollz/find.git
 WORKDIR "/root/find"
-RUN go build
+RUN git checkout dev
 RUN echo "\ninclude_dir /root/find/mosquitto" >> /etc/mosquitto/mosquitto.conf
+RUN go build -o findserver
 
 # Old entrypoint
 # ENTRYPOINT git pull && go build && mosquitto -c /root/find/mosquitto/conf -d && ./find -mqtt localhost:1883 -mqttadmin admin -mqttadminpass 123 -mosquitto `pgrep mosquitto` -data /data > log & bash
