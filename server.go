@@ -16,6 +16,7 @@ import (
 	"os"
 	"os/exec"
 	"path"
+	"strconv"
 	"strings"
 
 	"github.com/BurntSushi/toml"
@@ -116,6 +117,16 @@ Options:`)
 
 	// Check whether all the MQTT variables are passed to initiate the MQTT routines
 	if len(RuntimeArgs.MqttServer) > 0 && len(RuntimeArgs.MqttAdmin) > 0 && len(RuntimeArgs.MosquittoPID) > 0 {
+		if _, err := strconv.Atoi(RuntimeArgs.MosquittoPID); err != nil {
+			// need to load from file
+			b, err2 := ioutil.ReadFile(RuntimeArgs.MosquittoPID)
+			if err2 == nil {
+				RuntimeArgs.MosquittoPID = string(b)
+			} else {
+				fmt.Println("Error loading mosquitto pid")
+				os.Exit(-1)
+			}
+		}
 		RuntimeArgs.Mqtt = true
 		setupMqtt()
 	} else {
