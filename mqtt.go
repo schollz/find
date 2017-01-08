@@ -26,10 +26,15 @@ import (
 var adminClient *MQTT.Client
 
 func setupMqtt() {
-	updateMosquittoConfig()
 	server := "tcp://" + RuntimeArgs.MqttServer
+        opts := MQTT.NewClientOptions()
 
-	opts := MQTT.NewClientOptions().AddBroker(server).SetClientID(RandStringBytesMaskImprSrc(5)).SetUsername(RuntimeArgs.MqttAdmin).SetPassword(RuntimeArgs.MqttAdminPassword).SetCleanSession(true)
+        if RuntimeArgs.MqttExisting {
+                opts.AddBroker(server).SetClientID(RandStringBytesMaskImprSrc(5)).SetCleanSession(true)
+        } else {
+                updateMosquittoConfig()
+                opts.AddBroker(server).SetClientID(RandStringBytesMaskImprSrc(5)).SetUsername(RuntimeArgs.MqttAdmin).SetPassword(RuntimeArgs.MqttAdminPassword).SetCleanSession(true)
+        }
 
 	opts.OnConnect = func(c *MQTT.Client) {
 		if token := c.Subscribe("#", 1, messageReceived); token.Wait() && token.Error() != nil {
