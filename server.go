@@ -42,6 +42,7 @@ var RuntimeArgs struct {
 	Dump              string
 	Message           string
 	Mqtt              bool
+	MqttExisting      bool
 	Svm               bool
 	RandomForests     bool
 	Filtering         bool
@@ -130,7 +131,13 @@ Options:`)
 		RuntimeArgs.Mqtt = true
 		setupMqtt()
 	} else {
-		RuntimeArgs.Mqtt = false
+                if len(RuntimeArgs.MqttServer) > 0 {
+                        RuntimeArgs.Mqtt = true
+                        RuntimeArgs.MqttExisting = true
+                        setupMqtt()
+                } else {
+		        RuntimeArgs.Mqtt = false
+                }
 	}
 
 	// Check whether random forests are used
