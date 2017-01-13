@@ -390,18 +390,14 @@ func getUserLocations(c *gin.Context) {
 			return
 		}
 		people := make(map[string][]UserPositionJSON)
-		allusers := getUsers(group)
-		if userQuery != "noneasdf" {
-			usersQuery = userQuery
-		}
 		users := strings.Split(strings.ToLower(usersQuery), ",")
 		if users[0] == "noneasdf" {
-			users = allusers
+			users = []string{userQuery}
+		}
+		if users[0] == "noneasdf" {
+			users = getUsers(group)
 		}
 		for _, user := range users {
-			if !stringInSlice(user, allusers) {
-				continue
-			}
 			if _, ok := people[user]; !ok {
 				people[user] = []UserPositionJSON{}
 			}
@@ -418,7 +414,6 @@ func getUserLocations(c *gin.Context) {
 			message = "No users found for username " + strings.Join(users, " or ")
 			people = nil
 		}
-
 		c.JSON(http.StatusOK, gin.H{"message": message, "success": true, "users": people})
 	} else {
 		c.JSON(http.StatusOK, gin.H{"success": false, "message": "Error parsing request"})
