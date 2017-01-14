@@ -172,7 +172,7 @@ func learnFingerprint(jsonFingerprint Fingerprint) (string, bool) {
 	}
 	putFingerprintIntoDatabase(jsonFingerprint, "fingerprints")
 	go setLearningCache(strings.ToLower(jsonFingerprint.Group), true)
-	message := "Inserted fingerprint containing " + strconv.Itoa(len(jsonFingerprint.WifiFingerprint)) + " APs for " + jsonFingerprint.Username + " at " + jsonFingerprint.Location
+	message := "Inserted fingerprint containing " + strconv.Itoa(len(jsonFingerprint.WifiFingerprint)) + " APs for " + jsonFingerprint.Username + " (" + jsonFingerprint.Group + ") at " + jsonFingerprint.Location
 	return message, true
 }
 
