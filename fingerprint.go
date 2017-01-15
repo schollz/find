@@ -135,9 +135,9 @@ func putFingerprintIntoDatabase(res Fingerprint, database string) error {
 func trackFingerprintPOST(c *gin.Context) {
 	var jsonFingerprint Fingerprint
 	if c.BindJSON(&jsonFingerprint) == nil {
-		message, success, locationGuess, bayes, svm := trackFingerprint(jsonFingerprint)
+		message, success, locationGuess, bayes, svm, rf := trackFingerprint(jsonFingerprint)
 		if success {
-			c.JSON(http.StatusOK, gin.H{"message": message, "success": true, "location": locationGuess, "bayes": bayes, "svm": svm})
+			c.JSON(http.StatusOK, gin.H{"message": message, "success": true, "location": locationGuess, "bayes": bayes, "svm": svm, "rf": rf})
 		} else {
 			c.JSON(http.StatusOK, gin.H{"message": message, "success": false})
 		}
@@ -176,7 +176,7 @@ func learnFingerprint(jsonFingerprint Fingerprint) (string, bool) {
 	return message, true
 }
 
-func trackFingerprint(jsonFingerprint Fingerprint) (string, bool, string, map[string]float64, map[string]float64) {
+func trackFingerprint(jsonFingerprint Fingerprint) (string, bool, string, map[string]float64, map[string]float64, map[string]float64) {
 	// Classify with filter fingerprint
 	fullFingerprint := jsonFingerprint
 	filterFingerprint(&jsonFingerprint)
@@ -185,13 +185,13 @@ func trackFingerprint(jsonFingerprint Fingerprint) (string, bool, string, map[st
 	svmData := make(map[string]float64)
 	cleanFingerprint(&jsonFingerprint)
 	if !groupExists(jsonFingerprint.Group) || len(jsonFingerprint.Group) == 0 {
-		return "You should insert fingerprints before tracking", false, "", bayes, make(map[string]float64)
+		return "You should insert fingerprints before tracking", false, "", bayes, make(map[string]float64), make(map[string]float64)
 	}
 	if len(jsonFingerprint.WifiFingerprint) == 0 {
-		return "No fingerprints found to track, see API", false, "", bayes, make(map[string]float64)
+		return "No fingerprints found to track, see API", false, "", bayes, make(map[string]float64), make(map[string]float64)
 	}
 	if len(jsonFingerprint.Username) == 0 {
-		return "No username defined, see API", false, "", bayes, make(map[string]float64)
+		return "No username defined, see API", false, "", bayes, make(map[string]float64), make(map[string]float64)
 	}
 	wasLearning, ok := getLearningCache(strings.ToLower(jsonFingerprint.Group))
 	if ok {
@@ -268,6 +268,6 @@ func trackFingerprint(jsonFingerprint Fingerprint) (string, bool, string, map[st
 	}
 	go setUserPositionCache(strings.ToLower(jsonFingerprint.Group)+strings.ToLower(jsonFingerprint.Username), userJSON)
 
-	return message, true, locationGuess1, bayes, svmData
+	return message, true, locationGuess1, bayes, svmData, userJSON.Rf
 
 }
