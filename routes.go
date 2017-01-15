@@ -261,7 +261,6 @@ func slashExplore2(c *gin.Context) {
 	} else {
 		m := location
 		for loc := range ps.Priors[network].P {
-			Debug.Println(loc, m)
 			n := ps.Priors[network].P[loc][m]
 			data.Macs = append(data.Macs, macDatum{Name: strings.Replace(loc, " ", "%20", -1), Points: n})
 		}
