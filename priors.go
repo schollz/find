@@ -160,7 +160,7 @@ func crossValidation(group string, n string, ps *FullParameters, fingerprintsInM
 	for _, v1 := range fingerprintsOrdering {
 		v2 := fingerprintsInMemory[v1]
 		it++
-		if math.Mod(it, FoldCrossValidation) != 0 {
+		if math.Mod(it, FoldCrossValidation) == 0 {
 			if len(v2.WifiFingerprint) == 0 {
 				continue
 			}
@@ -224,7 +224,7 @@ func calculatePriors(group string, ps *FullParameters, fingerprintsInMemory map[
 	for _, v1 := range fingerprintsOrdering {
 		v2 := fingerprintsInMemory[v1]
 		it++
-		if math.Mod(it, FoldCrossValidation) == 0 { // cross-validation
+		if math.Mod(it, FoldCrossValidation) != 0 { // cross-validation
 			macs := []string{}
 			for _, router := range v2.WifiFingerprint {
 				macs = append(macs, router.Mac)
