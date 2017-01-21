@@ -1,4 +1,4 @@
-# ![](https://www.internalpositioning.com/guide/img/wifi-marker-darkgrey-small.png) FIND
+# ![](https://raw.githubusercontent.com/schollz/find/master/static/img/FIND_icon_larger.png) FIND
 
 [![Build Status](https://travis-ci.org/schollz/find.svg?branch=master)](https://travis-ci.org/schollz/find)
 [![Version 2.4](https://img.shields.io/badge/version-2.4-brightgreen.svg)](https://www.internalpositioning.com/guide/development/) 
