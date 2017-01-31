@@ -18,7 +18,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/schollz/bolt"
+	"github.com/boltdb/bolt"
 	"github.com/gin-gonic/gin"
 )
 

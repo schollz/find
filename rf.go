@@ -13,7 +13,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/schollz/bolt"
+	"github.com/boltdb/bolt"
 )
 
 func RandomString(strlen int) string {

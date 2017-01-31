@@ -13,7 +13,7 @@ import (
 	"path"
 	"runtime"
 
-	"github.com/schollz/bolt"
+	"github.com/boltdb/bolt"
 )
 
 // following this:https://play.golang.org/p/hK2h-irKyz

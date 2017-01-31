@@ -11,7 +11,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/schollz/bolt"
+	"github.com/boltdb/bolt"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 )

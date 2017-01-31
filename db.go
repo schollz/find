@@ -15,7 +15,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/schollz/bolt"
+	"github.com/boltdb/bolt"
 )
 
 func groupExists(group string) bool {
