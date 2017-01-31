@@ -14,7 +14,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/boltdb/bolt"
+	"github.com/schollz/bolt"
 )
 
 // PersistentParameters are not reloaded each time

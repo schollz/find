@@ -11,7 +11,7 @@ import (
 	"math"
 	"path"
 
-	"github.com/boltdb/bolt"
+	"github.com/schollz/bolt"
 )
 
 // PdfType dictates the width of gaussian smoothing

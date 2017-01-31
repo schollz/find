@@ -14,7 +14,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/boltdb/bolt"
+	"github.com/schollz/bolt"
 )
 
 // # sudo apt-get install g++

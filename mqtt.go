@@ -17,7 +17,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/boltdb/bolt"
+	"github.com/schollz/bolt"
 	"github.com/gin-gonic/gin"
 
 	MQTT "github.com/schollz/org.eclipse.paho.mqtt.golang"

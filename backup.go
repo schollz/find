@@ -11,7 +11,7 @@ import (
 	"os"
 	"path"
 
-	"github.com/boltdb/bolt"
+	"github.com/schollz/bolt"
 )
 
 func dumpFingerprints(group string) error {

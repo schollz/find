@@ -6,7 +6,7 @@ import (
 	"path"
 	"testing"
 
-	"github.com/boltdb/bolt"
+	"github.com/schollz/bolt"
 )
 
 func BenchmarkLoadParameters(b *testing.B) {

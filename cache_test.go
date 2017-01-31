@@ -5,7 +5,7 @@ import (
 	"path"
 	"testing"
 
-	"github.com/boltdb/bolt"
+	"github.com/schollz/bolt"
 	"github.com/stretchr/testify/assert"
 )
 

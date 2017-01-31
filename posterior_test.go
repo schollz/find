@@ -6,7 +6,7 @@ import (
 	"path"
 	"testing"
 
-	"github.com/boltdb/bolt"
+	"github.com/schollz/bolt"
 )
 
 // BenchmarkCalculatePosteriors1 needs to have precomputed parameters for testdb (run Optimize after loading testdb.sh)
