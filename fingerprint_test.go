@@ -163,7 +163,7 @@ func TestLearnFingerprintPOST(t *testing.T) {
 	resp := httptest.NewRecorder()
 	router.ServeHTTP(resp, req)
 	response := "{\"message\":\"Inserted fingerprint containing 18 APs for zack (find) at zakhome floor 2 office\",\"success\":true}"
-	assert.Equal(t, resp.Body.String(), response)
+	assert.Equal(t, response, resp.Body.String())
 }
 
 func TestLearnFingerprint(t *testing.T) {
