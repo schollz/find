@@ -40,7 +40,7 @@ func TestMigrateDatabase(t *testing.T) {
 	resp := httptest.NewRecorder()
 	router.ServeHTTP(resp, req)
 
-	assert.Equal(t, resp.Body.String(), "{\"message\":\"Successfully migrated testdb to newdb\",\"success\":true}\n")
+	assert.Equal(t, resp.Body.String(), "{\"message\":\"Successfully migrated testdb to newdb\",\"success\":true}")
 	os.Remove("data/newdb.db")
 }
 
@@ -54,7 +54,7 @@ func TestDeleteDatabase(t *testing.T) {
 	resp := httptest.NewRecorder()
 	router.ServeHTTP(resp, req)
 
-	assert.Equal(t, resp.Body.String(), "{\"message\":\"Successfully deleted deleteme\",\"success\":true}\n")
+	assert.Equal(t, resp.Body.String(), "{\"message\":\"Successfully deleted deleteme\",\"success\":true}")
 }
 
 func TestCalculate(t *testing.T) {
@@ -65,7 +65,7 @@ func TestCalculate(t *testing.T) {
 	resp := httptest.NewRecorder()
 	router.ServeHTTP(resp, req)
 
-	assert.Equal(t, resp.Body.String(), "{\"message\":\"Parameters optimized.\",\"success\":true}\n")
+	assert.Equal(t, resp.Body.String(), "{\"message\":\"Parameters optimized.\",\"success\":true}")
 }
 
 func TestUserLocations(t *testing.T) {
@@ -87,7 +87,7 @@ func TestGetUserLocations(t *testing.T) {
 	resp := httptest.NewRecorder()
 	router.ServeHTTP(resp, req)
 
-	assert.Equal(t, resp.Body.String(), "{\"message\":\"Error parsing request\",\"success\":false}\n")
+	assert.Equal(t, resp.Body.String(), "{\"message\":\"Error parsing request\",\"success\":false}")
 }
 
 func TestGetUserLocations2(t *testing.T) {
@@ -107,8 +107,7 @@ func TestPutMixinOverrideBad(t *testing.T) {
 	req, _ := http.NewRequest("PUT", "/foo?group=testdb&mixin=100", nil)
 	resp := httptest.NewRecorder()
 	router.ServeHTTP(resp, req)
-	response := `{"message":"mixin must be between 0 and 1","success":false}
-`
+	response := `{"message":"mixin must be between 0 and 1","success":false}`
 	assert.Equal(t, resp.Body.String(), response)
 }
 
@@ -119,8 +118,7 @@ func TestPutMixinOverrideGood(t *testing.T) {
 	req, _ := http.NewRequest("PUT", "/foo?group=testdb&mixin=0", nil)
 	resp := httptest.NewRecorder()
 	router.ServeHTTP(resp, req)
-	response := `{"message":"Overriding mixin for testdb, now set to 0","success":true}
-`
+	response := `{"message":"Overriding mixin for testdb, now set to 0","success":true}`
 	assert.Equal(t, resp.Body.String(), response)
 }
 
@@ -131,7 +129,7 @@ func TestEditNetworkName(t *testing.T) {
 	req, _ := http.NewRequest("GET", "/foo?group=testdb&oldname=0&newname=home", nil)
 	resp := httptest.NewRecorder()
 	router.ServeHTTP(resp, req)
-	response := "{\"message\":\"Finished\",\"success\":true}\n"
+	response := "{\"message\":\"Finished\",\"success\":true}"
 	assert.Equal(t, resp.Body.String(), response)
 }
 
@@ -142,7 +140,7 @@ func TestEditName(t *testing.T) {
 	req, _ := http.NewRequest("GET", "/foo?group=testdb&location=zakhome%20floor%202%20office&newname=office", nil)
 	resp := httptest.NewRecorder()
 	router.ServeHTTP(resp, req)
-	response := "{\"message\":\"Changed name of 175 things\",\"success\":true}\n"
+	response := "{\"message\":\"Changed name of 175 things\",\"success\":true}"
 	assert.Equal(t, resp.Body.String(), response)
 }
 
@@ -153,7 +151,7 @@ func TestEditUserName(t *testing.T) {
 	req, _ := http.NewRequest("GET", "/foo?group=testdb&user=zack&newname=zack2", nil)
 	resp := httptest.NewRecorder()
 	router.ServeHTTP(resp, req)
-	response := "{\"message\":\"Changed name of 344 things\",\"success\":true}\n"
+	response := "{\"message\":\"Changed name of 344 things\",\"success\":true}"
 	assert.Equal(t, resp.Body.String(), response)
 }
 
@@ -164,6 +162,6 @@ func TestDeleteUser(t *testing.T) {
 	req, _ := http.NewRequest("DELETE", "/foo?group=testdb&user=zack2@gmail.com", nil)
 	resp := httptest.NewRecorder()
 	router.ServeHTTP(resp, req)
-	response := "{\"message\":\"Deletes 0 things  with user zack2@gmail.com\",\"success\":true}\n"
+	response := "{\"message\":\"Deletes 0 things  with user zack2@gmail.com\",\"success\":true}"
 	assert.Equal(t, resp.Body.String(), response)
 }
