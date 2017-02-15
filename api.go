@@ -59,8 +59,19 @@ func getLocationList(c *gin.Context) {
 		return
 	}
 	ps, _ := openParameters(group)
+	locationCount := make(map[string]map[string]int)
+	for n := range ps.NetworkLocs {
+		for loc := range ps.NetworkLocs[n] {
+			locationCount[loc] = make(map[string]int)
+			locationCount[loc]["count"] = ps.Results[n].TotalLocations[loc]
+			locationCount[loc]["accuracy"] = ps.Results[n].Accuracy[loc]
+		}
+	}
 
-	c.JSON(http.StatusOK, gin.H{"message": fmt.Sprintf("Found %d unique locations in group %s", len(ps.UniqueLocs), group), "locations": ps.UniqueLocs, "success": true})
+	c.JSON(http.StatusOK, gin.H{
+		"message":   fmt.Sprintf("Found %d unique locations in group %s", len(ps.UniqueLocs), group),
+		"locations": locationCount,
+		"success":   true})
 }
 
 func apiGetLastFingerprint(c *gin.Context) {
