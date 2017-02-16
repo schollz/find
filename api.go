@@ -51,7 +51,7 @@ func getLocationList(c *gin.Context) {
 
 	group := strings.ToLower(c.DefaultQuery("group", "noneasdf"))
 	if group == "noneasdf" {
-		c.JSON(http.StatusOK, gin.H{"message": "You need to speciy group", "success": false})
+		c.JSON(http.StatusOK, gin.H{"message": "You need to specify group", "success": false})
 		return
 	}
 	if !groupExists(group) {
@@ -89,12 +89,12 @@ func apiGetLastFingerprint(c *gin.Context) {
 			return
 		}
 		if user == "noneasdf" {
-			c.JSON(http.StatusOK, gin.H{"message": "You need to speciy user", "success": false})
+			c.JSON(http.StatusOK, gin.H{"message": "You need to specify user", "success": false})
 			return
 		}
 		c.String(http.StatusOK, getLastFingerprint(group, user))
 	} else {
-		c.JSON(http.StatusOK, gin.H{"message": "You need to speciy group", "success": false})
+		c.JSON(http.StatusOK, gin.H{"message": "You need to specify group", "success": false})
 	}
 }
 
