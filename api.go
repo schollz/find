@@ -75,6 +75,12 @@ func getLocationList(c *gin.Context) {
 }
 
 func apiGetLastFingerprint(c *gin.Context) {
+	c.Writer.Header().Set("Content-Type", "application/json")
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+	c.Writer.Header().Set("Access-Control-Max-Age", "86400")
+	c.Writer.Header().Set("Access-Control-Allow-Methods", "GET")
+	c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, X-Max")
+	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
 	group := c.DefaultQuery("group", "noneasdf")
 	user := c.DefaultQuery("user", "noneasdf")
 	if group != "noneasdf" {
@@ -327,6 +333,12 @@ func getCurrentPositionOfUser(group string, user string) UserPositionJSON {
 }
 
 func calculate(c *gin.Context) {
+	c.Writer.Header().Set("Content-Type", "application/json")
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+	c.Writer.Header().Set("Access-Control-Max-Age", "86400")
+	c.Writer.Header().Set("Access-Control-Allow-Methods", "GET")
+	c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, X-Max")
+	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
 	group := c.DefaultQuery("group", "noneasdf")
 	if group != "noneasdf" {
 		if !groupExists(group) {
@@ -523,6 +535,13 @@ func putMixinOverride(c *gin.Context) {
 }
 
 func putCutoffOverride(c *gin.Context) {
+	c.Writer.Header().Set("Content-Type", "application/json")
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+	c.Writer.Header().Set("Access-Control-Max-Age", "86400")
+	c.Writer.Header().Set("Access-Control-Allow-Methods", "GET")
+	c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, X-Max")
+	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+
 	group := strings.ToLower(c.DefaultQuery("group", "noneasdf"))
 	newCutoff := c.DefaultQuery("cutoff", "none")
 	Debug.Println(group)
@@ -546,6 +565,13 @@ func putCutoffOverride(c *gin.Context) {
 }
 
 func editNetworkName(c *gin.Context) {
+	c.Writer.Header().Set("Content-Type", "application/json")
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+	c.Writer.Header().Set("Access-Control-Max-Age", "86400")
+	c.Writer.Header().Set("Access-Control-Allow-Methods", "GET")
+	c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, X-Max")
+	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+
 	group := c.DefaultQuery("group", "noneasdf")
 	oldname := c.DefaultQuery("oldname", "none")
 	newname := c.DefaultQuery("newname", "none")
@@ -560,6 +586,13 @@ func editNetworkName(c *gin.Context) {
 }
 
 func editName(c *gin.Context) {
+	c.Writer.Header().Set("Content-Type", "application/json")
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+	c.Writer.Header().Set("Access-Control-Max-Age", "86400")
+	c.Writer.Header().Set("Access-Control-Allow-Methods", "GET")
+	c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, X-Max")
+	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+
 	group := c.DefaultQuery("group", "noneasdf")
 	location := c.DefaultQuery("location", "none")
 	newname := c.DefaultQuery("newname", "none")
@@ -641,6 +674,13 @@ func editName(c *gin.Context) {
 }
 
 func editUserName(c *gin.Context) {
+	c.Writer.Header().Set("Content-Type", "application/json")
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+	c.Writer.Header().Set("Access-Control-Max-Age", "86400")
+	c.Writer.Header().Set("Access-Control-Allow-Methods", "GET")
+	c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, X-Max")
+	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+
 	group := strings.ToLower(c.DefaultQuery("group", "noneasdf"))
 	user := strings.ToLower(c.DefaultQuery("user", "none"))
 	newname := strings.ToLower(c.DefaultQuery("newname", "none"))
@@ -725,6 +765,13 @@ func editUserName(c *gin.Context) {
 }
 
 func deleteLocation(c *gin.Context) {
+	c.Writer.Header().Set("Content-Type", "application/json")
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+	c.Writer.Header().Set("Access-Control-Max-Age", "86400")
+	c.Writer.Header().Set("Access-Control-Allow-Methods", "GET")
+	c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, X-Max")
+	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+
 	group := strings.ToLower(c.DefaultQuery("group", "noneasdf"))
 	location := strings.ToLower(c.DefaultQuery("location", "none"))
 	if group != "noneasdf" {
@@ -760,6 +807,13 @@ func deleteLocation(c *gin.Context) {
 }
 
 func deleteLocations(c *gin.Context) {
+	c.Writer.Header().Set("Content-Type", "application/json")
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+	c.Writer.Header().Set("Access-Control-Max-Age", "86400")
+	c.Writer.Header().Set("Access-Control-Allow-Methods", "GET")
+	c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, X-Max")
+	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+
 	group := strings.ToLower(c.DefaultQuery("group", "noneasdf"))
 	locationsQuery := strings.ToLower(c.DefaultQuery("names", "none"))
 	if group != "noneasdf" && locationsQuery != "none" {
@@ -796,6 +850,13 @@ func deleteLocations(c *gin.Context) {
 }
 
 func deleteUser(c *gin.Context) {
+	c.Writer.Header().Set("Content-Type", "application/json")
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+	c.Writer.Header().Set("Access-Control-Max-Age", "86400")
+	c.Writer.Header().Set("Access-Control-Allow-Methods", "GET")
+	c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, X-Max")
+	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+
 	group := strings.ToLower(c.DefaultQuery("group", "noneasdf"))
 	user := strings.ToLower(c.DefaultQuery("user", "noneasdf"))
 	if group != "noneasdf" && user != "noneasdf" {
@@ -839,6 +900,13 @@ type whereAmIJson struct {
 }
 
 func whereAmI(c *gin.Context) {
+	c.Writer.Header().Set("Content-Type", "application/json")
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+	c.Writer.Header().Set("Access-Control-Max-Age", "86400")
+	c.Writer.Header().Set("Access-Control-Allow-Methods", "GET")
+	c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, X-Max")
+	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+
 	var jsonData whereAmIJson
 	if c.BindJSON(&jsonData) == nil {
 		defer timeTrack(time.Now(), "getUniqueMacs")

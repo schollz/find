@@ -133,6 +133,12 @@ func putFingerprintIntoDatabase(res Fingerprint, database string) error {
 }
 
 func trackFingerprintPOST(c *gin.Context) {
+	c.Writer.Header().Set("Content-Type", "application/json")
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+	c.Writer.Header().Set("Access-Control-Max-Age", "86400")
+	c.Writer.Header().Set("Access-Control-Allow-Methods", "GET")
+	c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, X-Max")
+	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
 	var jsonFingerprint Fingerprint
 	if c.BindJSON(&jsonFingerprint) == nil {
 		message, success, locationGuess, bayes, svm, rf := trackFingerprint(jsonFingerprint)
@@ -148,6 +154,12 @@ func trackFingerprintPOST(c *gin.Context) {
 }
 
 func learnFingerprintPOST(c *gin.Context) {
+	c.Writer.Header().Set("Content-Type", "application/json")
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+	c.Writer.Header().Set("Access-Control-Max-Age", "86400")
+	c.Writer.Header().Set("Access-Control-Allow-Methods", "GET")
+	c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, X-Max")
+	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
 	var jsonFingerprint Fingerprint
 	if c.BindJSON(&jsonFingerprint) == nil {
 		message, success := learnFingerprint(jsonFingerprint)
