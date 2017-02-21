@@ -45,7 +45,7 @@ func getLocationList(c *gin.Context) {
 	c.Writer.Header().Set("Content-Type", "application/json")
 	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 	c.Writer.Header().Set("Access-Control-Max-Age", "86400")
-	c.Writer.Header().Set("Access-Control-Allow-Methods", "GET")
+	c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
 	c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, X-Max")
 	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
 
@@ -78,7 +78,7 @@ func apiGetLastFingerprint(c *gin.Context) {
 	c.Writer.Header().Set("Content-Type", "application/json")
 	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 	c.Writer.Header().Set("Access-Control-Max-Age", "86400")
-	c.Writer.Header().Set("Access-Control-Allow-Methods", "GET")
+	c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
 	c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, X-Max")
 	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
 	group := c.DefaultQuery("group", "noneasdf")
@@ -336,7 +336,7 @@ func calculate(c *gin.Context) {
 	c.Writer.Header().Set("Content-Type", "application/json")
 	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 	c.Writer.Header().Set("Access-Control-Max-Age", "86400")
-	c.Writer.Header().Set("Access-Control-Allow-Methods", "GET")
+	c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
 	c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, X-Max")
 	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
 	group := c.DefaultQuery("group", "noneasdf")
@@ -398,7 +398,7 @@ func getUserLocations(c *gin.Context) {
 	c.Writer.Header().Set("Content-Type", "application/json")
 	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 	c.Writer.Header().Set("Access-Control-Max-Age", "86400")
-	c.Writer.Header().Set("Access-Control-Allow-Methods", "GET")
+	c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
 	c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, X-Max")
 	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
 
@@ -507,7 +507,7 @@ func deleteDatabase(c *gin.Context) {
 	c.Writer.Header().Set("Content-Type", "application/json")
 	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 	c.Writer.Header().Set("Access-Control-Max-Age", "86400")
-	c.Writer.Header().Set("Access-Control-Allow-Methods", "DELETE")
+	c.Writer.Header().Set("Access-Control-Allow-Methods", "DELETE, OPTIONS")
 	c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, X-Max")
 	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
 
@@ -582,7 +582,7 @@ func editNetworkName(c *gin.Context) {
 	c.Writer.Header().Set("Content-Type", "application/json")
 	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 	c.Writer.Header().Set("Access-Control-Max-Age", "86400")
-	c.Writer.Header().Set("Access-Control-Allow-Methods", "GET")
+	c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
 	c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, X-Max")
 	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
 
@@ -603,7 +603,7 @@ func editName(c *gin.Context) {
 	c.Writer.Header().Set("Content-Type", "application/json")
 	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 	c.Writer.Header().Set("Access-Control-Max-Age", "86400")
-	c.Writer.Header().Set("Access-Control-Allow-Methods", "GET")
+	c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
 	c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, X-Max")
 	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
 
@@ -691,7 +691,7 @@ func editUserName(c *gin.Context) {
 	c.Writer.Header().Set("Content-Type", "application/json")
 	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 	c.Writer.Header().Set("Access-Control-Max-Age", "86400")
-	c.Writer.Header().Set("Access-Control-Allow-Methods", "GET")
+	c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
 	c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, X-Max")
 	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
 
@@ -782,7 +782,7 @@ func deleteLocation(c *gin.Context) {
 	c.Writer.Header().Set("Content-Type", "application/json")
 	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 	c.Writer.Header().Set("Access-Control-Max-Age", "86400")
-	c.Writer.Header().Set("Access-Control-Allow-Methods", "DELETE")
+	c.Writer.Header().Set("Access-Control-Allow-Methods", "DELETE, OPTIONS")
 	c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, X-Max")
 	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
 
@@ -824,7 +824,7 @@ func deleteLocations(c *gin.Context) {
 	c.Writer.Header().Set("Content-Type", "application/json")
 	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 	c.Writer.Header().Set("Access-Control-Max-Age", "86400")
-	c.Writer.Header().Set("Access-Control-Allow-Methods", "DELETE")
+	c.Writer.Header().Set("Access-Control-Allow-Methods", "DELETE, OPTIONS")
 	c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, X-Max")
 	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
 
@@ -867,7 +867,7 @@ func deleteUser(c *gin.Context) {
 	c.Writer.Header().Set("Content-Type", "application/json")
 	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 	c.Writer.Header().Set("Access-Control-Max-Age", "86400")
-	c.Writer.Header().Set("Access-Control-Allow-Methods", "DELETE")
+	c.Writer.Header().Set("Access-Control-Allow-Methods", "DELETE, OPTIONS")
 	c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, X-Max")
 	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
 
@@ -917,7 +917,7 @@ func whereAmI(c *gin.Context) {
 	c.Writer.Header().Set("Content-Type", "application/json")
 	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 	c.Writer.Header().Set("Access-Control-Max-Age", "86400")
-	c.Writer.Header().Set("Access-Control-Allow-Methods", "GET")
+	c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
 	c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, X-Max")
 	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
 
