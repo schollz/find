@@ -40,7 +40,7 @@ func TestMigrateDatabase(t *testing.T) {
 	resp := httptest.NewRecorder()
 	router.ServeHTTP(resp, req)
 
-	assert.Equal(t, resp.Body.String(), "{\"message\":\"Successfully migrated testdb to newdb\",\"success\":true}")
+	assert.Equal(t, strings.TrimSpace(resp.Body.String()), "{\"message\":\"Successfully migrated testdb to newdb\",\"success\":true}")
 	os.Remove("data/newdb.db")
 }
 
@@ -54,7 +54,7 @@ func TestDeleteDatabase(t *testing.T) {
 	resp := httptest.NewRecorder()
 	router.ServeHTTP(resp, req)
 
-	assert.Equal(t, resp.Body.String(), "{\"message\":\"Successfully deleted deleteme\",\"success\":true}")
+	assert.Equal(t, strings.TrimSpace(resp.Body.String()), "{\"message\":\"Successfully deleted deleteme\",\"success\":true}")
 }
 
 func TestCalculate(t *testing.T) {
@@ -65,7 +65,7 @@ func TestCalculate(t *testing.T) {
 	resp := httptest.NewRecorder()
 	router.ServeHTTP(resp, req)
 
-	assert.Equal(t, resp.Body.String(), "{\"message\":\"Parameters optimized.\",\"success\":true}")
+	assert.Equal(t, strings.TrimSpace(resp.Body.String()), "{\"message\":\"Parameters optimized.\",\"success\":true}")
 }
 
 func TestUserLocations(t *testing.T) {
@@ -87,7 +87,7 @@ func TestGetUserLocations(t *testing.T) {
 	resp := httptest.NewRecorder()
 	router.ServeHTTP(resp, req)
 
-	assert.Equal(t, resp.Body.String(), "{\"message\":\"Error parsing request\",\"success\":false}")
+	assert.Equal(t, strings.TrimSpace(resp.Body.String()), "{\"message\":\"Error parsing request\",\"success\":false}")
 }
 
 func TestGetUserLocations2(t *testing.T) {
@@ -108,7 +108,7 @@ func TestPutMixinOverrideBad(t *testing.T) {
 	resp := httptest.NewRecorder()
 	router.ServeHTTP(resp, req)
 	response := `{"message":"mixin must be between 0 and 1","success":false}`
-	assert.Equal(t, resp.Body.String(), response)
+	assert.Equal(t, strings.TrimSpace(resp.Body.String()), response)
 }
 
 func TestPutMixinOverrideGood(t *testing.T) {
@@ -119,7 +119,7 @@ func TestPutMixinOverrideGood(t *testing.T) {
 	resp := httptest.NewRecorder()
 	router.ServeHTTP(resp, req)
 	response := `{"message":"Overriding mixin for testdb, now set to 0","success":true}`
-	assert.Equal(t, resp.Body.String(), response)
+	assert.Equal(t, strings.TrimSpace(resp.Body.String()), response)
 }
 
 func TestEditNetworkName(t *testing.T) {
@@ -130,7 +130,7 @@ func TestEditNetworkName(t *testing.T) {
 	resp := httptest.NewRecorder()
 	router.ServeHTTP(resp, req)
 	response := "{\"message\":\"Finished\",\"success\":true}"
-	assert.Equal(t, resp.Body.String(), response)
+	assert.Equal(t, strings.TrimSpace(resp.Body.String()), response)
 }
 
 func TestEditName(t *testing.T) {
@@ -141,7 +141,7 @@ func TestEditName(t *testing.T) {
 	resp := httptest.NewRecorder()
 	router.ServeHTTP(resp, req)
 	response := "{\"message\":\"Changed name of 175 things\",\"success\":true}"
-	assert.Equal(t, resp.Body.String(), response)
+	assert.Equal(t, strings.TrimSpace(resp.Body.String()), response)
 }
 
 func TestEditUserName(t *testing.T) {
@@ -152,7 +152,7 @@ func TestEditUserName(t *testing.T) {
 	resp := httptest.NewRecorder()
 	router.ServeHTTP(resp, req)
 	response := "{\"message\":\"Changed name of 344 things\",\"success\":true}"
-	assert.Equal(t, resp.Body.String(), response)
+	assert.Equal(t, strings.TrimSpace(resp.Body.String()), response)
 }
 
 func TestDeleteUser(t *testing.T) {
@@ -163,5 +163,5 @@ func TestDeleteUser(t *testing.T) {
 	resp := httptest.NewRecorder()
 	router.ServeHTTP(resp, req)
 	response := "{\"message\":\"Deletes 0 things  with user zack2@gmail.com\",\"success\":true}"
-	assert.Equal(t, resp.Body.String(), response)
+	assert.Equal(t, strings.TrimSpace(resp.Body.String()), response)
 }

@@ -163,7 +163,7 @@ func TestLearnFingerprintPOST(t *testing.T) {
 	resp := httptest.NewRecorder()
 	router.ServeHTTP(resp, req)
 	response := "{\"message\":\"Inserted fingerprint containing 18 APs for zack (find) at zakhome floor 2 office\",\"success\":true}"
-	assert.Equal(t, response, resp.Body.String())
+	assert.Equal(t, response, strings.TrimSpace(resp.Body.String()))
 }
 
 func TestLearnFingerprint(t *testing.T) {
@@ -171,7 +171,7 @@ func TestLearnFingerprint(t *testing.T) {
 	res := Fingerprint{}
 	json.Unmarshal([]byte(jsonTest), &res)
 	message, _ := learnFingerprint(res)
-	assert.Equal(t, message, "Inserted fingerprint containing 18 APs for zack (find) at zakhome floor 2 office")
+	assert.Equal(t, strings.TrimSpace(message), "Inserted fingerprint containing 18 APs for zack (find) at zakhome floor 2 office")
 }
 
 func TestTrackFingerprintPOST(t *testing.T) {
@@ -184,7 +184,7 @@ func TestTrackFingerprintPOST(t *testing.T) {
 	resp := httptest.NewRecorder()
 	router.ServeHTTP(resp, req)
 	response := "{\"message\":\"Inserted fingerprint containing 18 APs for zack (find) at zakhome floor 2 office\",\"success\":true}"
-	assert.Equal(t, response, resp.Body.String())
+	assert.Equal(t, response, strings.TrimSpace(resp.Body.String()))
 }
 
 func TestTrackFingerprintFunction(t *testing.T) {
@@ -192,7 +192,7 @@ func TestTrackFingerprintFunction(t *testing.T) {
 	res := Fingerprint{}
 	json.Unmarshal([]byte(jsonTest), &res)
 	message, _, _, _, _, _ := trackFingerprint(res)
-	assert.Equal(t, message, "Current location: zakhome floor 2 office")
+	assert.Equal(t, strings.TrimSpace(message), "Current location: zakhome floor 2 office")
 }
 
 //
