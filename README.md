@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/schollz/find.svg?branch=master)](https://travis-ci.org/schollz/find)
 [![Version 2.4](https://img.shields.io/badge/version-2.4-brightgreen.svg)](https://www.internalpositioning.com/guide/development/) 
 [![Github All Releases](https://img.shields.io/github/downloads/schollz/find/total.svg)](https://github.com/schollz/find/releases)
-[![FIND documentation](https://img.shields.io/badge/find-documentation-blue.svg)](https://doc.internalpositioning.com/) 
+[![FIND documentation](https://img.shields.io/badge/find-documentation-blue.svg)](https://www.internalpositioning.com/) 
 ![Coverage](https://img.shields.io/badge/coverage-57%25-orange.svg) 
 [![Donate](https://img.shields.io/badge/donate-$1-brown.svg)](https://www.paypal.me/ZackScholl/1.00)
 [![Join the chat at https://gitter.im/schollz/find](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/schollz/find?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) 
@@ -22,24 +22,24 @@ The system is built on two main components - [a server](https://ml.internalposit
 
 **FAQ (abbreviated)**:
 
-- How does it work? It uses already available WiFi information to classify locations. [See here for more detailed information](https://doc.internalpositioning.com/faq/#how-does-it-work).
-- Doesn't this already exist? [Yes, kinda](https://doc.internalpositioning.com/faq/#doesnt-this-already-exist).
-- What's the point? This short piece of code can do [home automation](https://doc.internalpositioning.com/faq/#can-i-run-the-server-at-home-on-the-lan-connection) and [replace motion sensors](https://doc.internalpositioning.com/faq/#can-it-replace-motion-sensors) and [more](https://doc.internalpositioning.com/faq/#whats-the-point-of-this).
-- Can I use an iPhone? [Sorry, no](https://doc.internalpositioning.com/faq/#can-i-use-an-iphone).
-- Does it work on a Raspberry Pi? [Yes](https://doc.internalpositioning.com/faq/#can-you-run-the-server-on-a-raspberry-pi).
-- Does it work with [home-assistant.io](https://home-assistant.io/)? [Yes](https://doc.internalpositioning.com/faq/#does-it-work-with-home-assistantio).
+- How does it work? It uses already available WiFi information to classify locations. [See here for more detailed information](https://www.internalpositioning.com/faq/#how-does-it-work).
+- Doesn't this already exist? [Yes, kinda](https://www.internalpositioning.com/faq/#doesnt-this-already-exist).
+- What's the point? This short piece of code can do [home automation](https://www.internalpositioning.com/faq/#can-i-run-the-server-at-home-on-the-lan-connection) and [replace motion sensors](https://www.internalpositioning.com/faq/#can-it-replace-motion-sensors) and [more](https://www.internalpositioning.com/faq/#whats-the-point-of-this).
+- Can I use an iPhone? [Sorry, no](https://www.internalpositioning.com/faq/#can-i-use-an-iphone).
+- Does it work on a Raspberry Pi? [Yes](https://www.internalpositioning.com/faq/#can-you-run-the-server-on-a-raspberry-pi).
+- Does it work with [home-assistant.io](https://home-assistant.io/)? [Yes](https://www.internalpositioning.com/faq/#does-it-work-with-home-assistantio).
 - Can I help? [Yes, please](https://github.com/schollz/find/issues).
 - How do I try it? It's easy. Just [download and run](https://github.com/schollz/find#usage).
 
-More questions? See the [unabbreviated FAQ](https://doc.internalpositioning.com/faq/).
+More questions? See the [unabbreviated FAQ](https://www.internalpositioning.com/faq/).
 
 # Quickstart
 
-If you'd like to install things yourself, see [the documentation](https://doc.internalpositioning.com/setup/). You don't need to do this to try it though. Follow the 3 steps below to get started quickly.
+If you'd like to install things yourself, see [the documentation](https://www.internalpositioning.com/setup/). You don't need to do this to try it though. Follow the 3 steps below to get started quickly.
 
 ## 1\. Download the software
 
-**Android users:** [download the current version of the app](https://play.google.com/store/apps/details?id=com.hcp.find). _Sorry iPhone users but [the Apple store prevents apps that access WiFi information](https://doc.internalpositioning.com/faq/#can-i-use-an-iphone), so I will be unable to release a iPhone version._
+**Android users:** [download the current version of the app](https://play.google.com/store/apps/details?id=com.hcp.find). _Sorry iPhone users but [the Apple store prevents apps that access WiFi information](https://www.internalpositioning.com/faq/#can-i-use-an-iphone), so I will be unable to release a iPhone version._
 
 **OR**
 
@@ -68,7 +68,7 @@ Once you've collected data in a few locations, you can track yourself.
 
 # More information
 
-See the documentation at <https://doc.internalpositioning.com>.
+See the documentation at <https://www.internalpositioning.com>.
 
 # Acknowledgements
 
