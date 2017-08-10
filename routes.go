@@ -51,7 +51,7 @@ func slashLogin(c *gin.Context) {
 func slashLoginPOST(c *gin.Context) {
 	loginGroup := sessions.Default(c)
 	group := strings.ToLower(c.PostForm("group"))
-	if _, err := os.Stat(path.Join("data", group+".db")); err == nil {
+	if _, err := os.Stat(path.Join(RuntimeArgs.SourcePath, group+".db")); err == nil {
 		loginGroup.Set("group", group)
 		loginGroup.Save()
 		c.Redirect(302, "/dashboard/"+group)
