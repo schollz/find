@@ -13,8 +13,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/codegangsta/cli"
-	"github.com/op/go-logging"
+	logging "github.com/op/go-logging"
+	"github.com/urfave/cli"
 )
 
 // Fingerprint to be sent to the server
