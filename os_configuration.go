@@ -97,7 +97,7 @@ func DownloadVerifyFile(url string, target string, sha1sum string) error {
 			return err
 		}
 
-		log.Info(n, "bytes downloaded.")
+		log.Infof("%d bytes downloaded.",n )
 		fd.Close()
 
 		fileSum, err := ComputeSHA1Sum(target)
