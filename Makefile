@@ -1,7 +1,7 @@
 SOURCEDIR=.
 SOURCES := $(shell find $(SOURCEDIR) -name '*.go')
 
-BINARY=findclient
+BINARY=fingerprint
 
 VERSION=0.6
 BUILD_TIME=`date +%FT%T%z`
@@ -26,7 +26,7 @@ clean:
 	if [ -f ${BINARY} ] ; then rm ${BINARY} ; fi
 	rm -rf builds
 	rm -rf find
-	rm -rf findclient*
+	rm -rf fingerprint*
 
 .PHONY: binaries
 binaries:
@@ -34,22 +34,22 @@ binaries:
 	rm -rf builds
 	mkdir builds
 	# Build Windows
-	env GOOS=windows GOARCH=amd64 go build ${LDFLAGS} -o findclient.exe -v *.go
-	zip -r findclient_${VERSION}_windows_amd64.zip findclient.exe LICENSE
-	mv findclient_${VERSION}_windows_amd64.zip builds/
-	rm findclient.exe
+	env GOOS=windows GOARCH=amd64 go build ${LDFLAGS} -o fingerprint.exe -v *.go
+	zip -r fingerprint_${VERSION}_windows_amd64.zip fingerprint.exe LICENSE
+	mv fingerprint_${VERSION}_windows_amd64.zip builds/
+	rm fingerprint.exe
 	# Build Linux
-	env GOOS=linux GOARCH=amd64 go build ${LDFLAGS} -o findclient -v *.go
-	zip -r findclient_${VERSION}_linux_amd64.zip findclient LICENSE
-	mv findclient_${VERSION}_linux_amd64.zip builds/
-	rm findclient
+	env GOOS=linux GOARCH=amd64 go build ${LDFLAGS} -o fingerprint -v *.go
+	zip -r fingerprint_${VERSION}_linux_amd64.zip fingerprint LICENSE
+	mv fingerprint_${VERSION}_linux_amd64.zip builds/
+	rm fingerprint
 	# Build OS X
-	env GOOS=darwin GOARCH=amd64 go build ${LDFLAGS} -o findclient -v *.go
-	zip -r findclient_${VERSION}_osx.zip findclient LICENSE
-	mv findclient_${VERSION}_osx.zip builds/
-	rm findclient
+	env GOOS=darwin GOARCH=amd64 go build ${LDFLAGS} -o fingerprint -v *.go
+	zip -r fingerprint_${VERSION}_osx.zip fingerprint LICENSE
+	mv fingerprint_${VERSION}_osx.zip builds/
+	rm fingerprint
 	# Build Raspberry Pi / Chromebook
-	env GOOS=linux GOARCH=arm go build ${LDFLAGS} -o findclient -v *.go
-	zip -r findclient_${VERSION}_linux_arm.zip findclient LICENSE
-	mv findclient_${VERSION}_linux_arm.zip builds/
-	rm findclient
+	env GOOS=linux GOARCH=arm go build ${LDFLAGS} -o fingerprint -v *.go
+	zip -r fingerprint_${VERSION}_linux_arm.zip fingerprint LICENSE
+	mv fingerprint_${VERSION}_linux_arm.zip builds/
+	rm fingerprint
