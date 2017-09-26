@@ -30,7 +30,6 @@ clean:
 
 .PHONY: binaries
 binaries:
-	go test
 	rm -rf builds
 	mkdir builds
 	# Build Windows
