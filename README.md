@@ -25,10 +25,10 @@ NAME:
    fingerprint - client for sending WiFi fingerprints to a FIND server
 
 USAGE:
-   find2.exe [global options] command [command options] [arguments...]
+   fingerprint [global options] command [command options] [arguments...]
 
 VERSION:
-   0.2
+   0.6
 
 COMMANDS:
 GLOBAL OPTIONS:

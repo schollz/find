@@ -3,7 +3,7 @@ SOURCES := $(shell find $(SOURCEDIR) -name '*.go')
 
 BINARY=findclient
 
-VERSION=0.5
+VERSION=0.6
 BUILD_TIME=`date +%FT%T%z`
 BUILD=`git rev-parse HEAD`
 
