@@ -12,8 +12,7 @@ LDFLAGS=-ldflags "-X main.VersionNum=${VERSION} -X main.Build=${BUILD} -X main.B
 .DEFAULT_GOAL: $(BINARY)
 
 $(BINARY): $(SOURCES)
-	go get -u -v github.com/schollz/find
-	go build ${LDFLAGS} -o ${BINARY} ${SOURCES}
+	go build ${LDFLAGS} -o ${BINARY}
 
 .PHONY: install
 install:
