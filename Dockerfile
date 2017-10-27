@@ -5,9 +5,7 @@ FROM ubuntu:16.04
 # Get basics
 RUN apt-get update
 RUN apt-get -y upgrade
-RUN apt-get install -y golang git wget curl vim
-RUN mkdir /usr/local/work
-ENV GOPATH /usr/local/work
+RUN apt-get install -y git wget curl vim
 
 # Add Python stuff
 RUN apt-get install -y python3 python3-dev python3-pip
@@ -27,6 +25,14 @@ RUN rm -rf *
 
 # Install mosquitto
 RUN apt-get install -y mosquitto-clients mosquitto
+
+# Install Go
+RUN wget https://storage.googleapis.com/golang/go1.9.2.linux-amd64.tar.gz
+RUN tar -C /usr/local -xzf go1.9.2.linux-amd64.tar.gz
+RUN rm go1.9*
+ENV PATH="/usr/local/go/bin:${PATH}"
+RUN mkdir /usr/local/work
+ENV GOPATH /usr/local/work
 
 # Install FIND
 RUN go get github.com/schollz/find
