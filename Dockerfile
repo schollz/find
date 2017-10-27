@@ -29,15 +29,11 @@ RUN rm -rf *
 RUN apt-get install -y mosquitto-clients mosquitto
 
 # Install FIND
-WORKDIR "/root"
 RUN go get github.com/schollz/find
-RUN git clone https://github.com/schollz/find.git
-WORKDIR "/root/find"
-RUN go build
-RUN echo "\ninclude_dir /root/find/mosquitto" >> /etc/mosquitto/mosquitto.conf
-
-# Old entrypoint
-# ENTRYPOINT git pull && go build && mosquitto -c /root/find/mosquitto/conf -d && ./find -mqtt localhost:1883 -mqttadmin admin -mqttadminpass 123 -mosquitto `pgrep mosquitto` -data /data > log & bash
+WORKDIR "/usr/local/work/src/github.com/schollz/find"
+RUN rm supervisord.conf
+RUN go build -v
+RUN echo "\ninclude_dir /usr/local/work/src/github.com/schollz/find/mosquitto" >> /etc/mosquitto/mosquitto.conf
 
 # Setup supervisor
 RUN apt-get update 
