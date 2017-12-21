@@ -42,7 +42,7 @@ RUN go build -v
 RUN echo "\ninclude_dir /usr/local/work/src/github.com/schollz/find/mosquitto" >> /etc/mosquitto/mosquitto.conf
 
 # Setup supervisor
-RUN apt-get update 
+RUN apt-get update
 RUN apt-get install -y supervisor
 
 # Add supervisor
@@ -53,6 +53,9 @@ ENV TINI_VERSION v0.13.0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
 RUN chmod +x /tini
 ENTRYPOINT ["/tini", "--"]
+
+# Default MQTT connection settings
+ENV MQTT_SERVER=localhost:1883 MQTT_USERNAME=admin MQTT_PASSWORD=123
 
 # Startup
 CMD ["/usr/bin/supervisord"]
