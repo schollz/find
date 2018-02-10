@@ -272,14 +272,14 @@ func trackFingerprint(jsonFingerprint Fingerprint) (string, bool, string, map[st
 			Timestamp     int64              `json:"time"`
 			Bayes         map[string]float64 `json:"bayes"`
 			Svm           map[string]float64 `json:"svm"`
-                        rf            map[string]float64 `json:"rf"`
+                        Rf            map[string]float64 `json:"rf"`
 		}
 		mqttMessage, _ := json.Marshal(FingerprintResponse{
 			LocationGuess: locationGuess1,
 			Timestamp:     time.Now().UnixNano(),
 			Bayes:         bayes,
 			Svm:           svmData,
-                        rf:            rfData,
+                        Rf:            rfData,
 		})
 		go sendMQTTLocation(string(mqttMessage), jsonFingerprint.Group, jsonFingerprint.Username)
 	}
