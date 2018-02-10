@@ -195,6 +195,7 @@ func trackFingerprint(jsonFingerprint Fingerprint) (string, bool, string, map[st
 
 	bayes := make(map[string]float64)
 	svmData := make(map[string]float64)
+        rfData := make(map[string]float64)
 	cleanFingerprint(&jsonFingerprint)
 	if !groupExists(jsonFingerprint.Group) || len(jsonFingerprint.Group) == 0 {
 		return "You should insert fingerprints before tracking", false, "", bayes, make(map[string]float64), make(map[string]float64)
@@ -252,23 +253,6 @@ func trackFingerprint(jsonFingerprint Fingerprint) (string, bool, string, map[st
 		svmData = svmData2
 	}
 
-	// Send MQTT if needed
-	if RuntimeArgs.Mqtt {
-		type FingerprintResponse struct {
-			LocationGuess string             `json:"location"`
-			Timestamp     int64              `json:"time"`
-			Bayes         map[string]float64 `json:"bayes"`
-			Svm           map[string]float64 `json:"svm"`
-		}
-		mqttMessage, _ := json.Marshal(FingerprintResponse{
-			LocationGuess: locationGuess1,
-			Timestamp:     time.Now().UnixNano(),
-			Bayes:         bayes,
-			Svm:           svmData,
-		})
-		go sendMQTTLocation(string(mqttMessage), jsonFingerprint.Group, jsonFingerprint.Username)
-	}
-
 	// Send out the final responses
 	var userJSON UserPositionJSON
 	userJSON.Location = locationGuess1
@@ -276,9 +260,30 @@ func trackFingerprint(jsonFingerprint Fingerprint) (string, bool, string, map[st
 	userJSON.Svm = svmData
 	userJSON.Time = time.Now().String()
 	if RuntimeArgs.RandomForests {
-		userJSON.Rf = rfClassify(strings.ToLower(jsonFingerprint.Group), jsonFingerprint)
+                rfData = rfClassify(strings.ToLower(jsonFingerprint.Group), jsonFingerprint)
+                userJSON.Rf = rfData
 	}
 	go setUserPositionCache(strings.ToLower(jsonFingerprint.Group)+strings.ToLower(jsonFingerprint.Username), userJSON)
+
+	// Send MQTT if needed
+	if RuntimeArgs.Mqtt {
+		type FingerprintResponse struct {
+			LocationGuess string             `json:"location"`
+			Timestamp     int64              `json:"time"`
+			Bayes         map[string]float64 `json:"bayes"`
+			Svm           map[string]float64 `json:"svm"`
+                        rf            map[string]float64 `json:"rf"`
+		}
+		mqttMessage, _ := json.Marshal(FingerprintResponse{
+			LocationGuess: locationGuess1,
+			Timestamp:     time.Now().UnixNano(),
+			Bayes:         bayes,
+			Svm:           svmData,
+                        rf:            rfData,
+		})
+		go sendMQTTLocation(string(mqttMessage), jsonFingerprint.Group, jsonFingerprint.Username)
+	}
+
 
 	return message, true, locationGuess1, bayes, svmData, userJSON.Rf
 
