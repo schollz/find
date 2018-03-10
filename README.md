@@ -12,6 +12,8 @@
 
 **Keywords**: indoor GPS, WiFi positioning, indoor mapping, indoor navigation, indoor positioning
 
+# There is a new version, [FIND3](https://github.com/schollz/find3). It has [numerous improvements](https://www.internalpositioning.com/doc/overview.md#new-version) over this version.
+
 # About
 
 **The Framework for Internal Navigation and Discovery** (_FIND_) allows you to use your (Android) smartphone or WiFi-enabled computer (laptop or Raspberry Pi or etc.) to determine your position within your home or office. You can easily use this system in place of motion sensors as its resolution will allow your phone to distinguish whether you are in the living room, the kitchen or the bedroom, etc. The position information can then be used in a variety of ways including home automation, way-finding, or tracking!
