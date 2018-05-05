@@ -1,12 +1,12 @@
 # ![](https://raw.githubusercontent.com/schollz/find/master/static/img/FIND_icon_larger.png) FIND
 
-[![Build Status](https://travis-ci.org/schollz/find.svg?branch=master)](https://travis-ci.org/schollz/find)
-[![Version 2.4](https://img.shields.io/badge/version-2.4-brightgreen.svg)](https://www.internalpositioning.com/guide/development/) 
-[![Github All Releases](https://img.shields.io/github/downloads/schollz/find/total.svg)](https://github.com/schollz/find/releases)
-[![FIND documentation](https://img.shields.io/badge/find-documentation-blue.svg)](https://www.internalpositioning.com/) 
-![Coverage](https://img.shields.io/badge/coverage-57%25-orange.svg) 
-[![Donate](https://img.shields.io/badge/donate-$1-brown.svg)](https://www.paypal.me/ZackScholl/1.00)
-[![Join the chat at https://gitter.im/schollz/find](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/schollz/find?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) 
+[![Version 2.4](https://img.shields.io/badge/version-2.4-brightgreen.svg?style=flat-square)](https://www.internalpositioning.com/guide/development/) 
+[![Github All Releases](https://img.shields.io/github/downloads/schollz/find/total.svg?style=flat-square)](https://github.com/schollz/find/releases)
+[![FIND documentation](https://img.shields.io/badge/find-documentation-blue.svg?style=flat-square)](https://www.internalpositioning.com/) 
+![Coverage](https://img.shields.io/badge/coverage-57%25-orange.svg?style=flat-square) 
+[![Donate](https://img.shields.io/badge/donate-$-brown.svg?style=flat-square)](https://www.paypal.me/ZackScholl/5.00)
+[![Say Thanks](https://img.shields.io/badge/Say%20Thanks-!-yellow.svg?style=flat-square)](https://saythanks.io/to/schollz)
+
 
 [![](https://raw.githubusercontent.com/schollz/find/master/static/splash.gif)](https://www.internalpositioning.com/)
 
